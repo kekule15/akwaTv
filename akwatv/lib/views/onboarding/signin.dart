@@ -82,7 +82,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 },
                 title: Text(
                   'Login',
-                  style: TextStyle(color: AppColors.white),
+                  style: TextStyle(color: AppColors.white, fontSize: 16.sp),
                 ),
               ),
               const SizedBox(

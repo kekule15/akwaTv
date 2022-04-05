@@ -109,13 +109,13 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 },
                 title: Text(
                   'Register',
-                  style: TextStyle(color: AppColors.white),
+                  style: TextStyle(color: AppColors.white, fontSize: 16.sp),
                 ),
               ),
               const SizedBox(
                 height: ySpace3,
               ),
-              Text(
+              const Text(
                 'By creating an account you agree to our',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppColors.white),
@@ -128,13 +128,13 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       // Get.to(const CreateAccountScreen());
                     },
                   text: 'terms ',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,
                   ),
                   children: <TextSpan>[
-                    TextSpan(
+                    const TextSpan(
                       text: 'and ',
                       style: TextStyle(
                         fontSize: 16,
@@ -144,7 +144,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     ),
                     TextSpan(
                       text: 'Conditions',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: AppColors.primary,

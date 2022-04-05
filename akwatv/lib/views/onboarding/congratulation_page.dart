@@ -2,6 +2,7 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -85,11 +86,13 @@ class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
               borderColor: false,
               color: AppColors.primary,
               onclick: () {
-                //  Get.to(() => CongratulationScreen());
+                Get.to(() => DashBoard(
+                      currentPage: 0,
+                    ));
               },
-              title: const Text(
+              title: Text(
                 'Continue',
-                style: TextStyle(color: AppColors.white),
+                style: TextStyle(color: AppColors.white, fontSize: 16.sp),
               ),
             ),
           ),
