@@ -1,10 +1,12 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:get/get.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -59,7 +61,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(() => const AuthScreen());
+                        },
                         child: Text(
                           'Skip',
                           style: TextStyle(
@@ -174,11 +178,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         InkWell(
                           splashColor: AppColors.black,
                           onTap: () {
-                            setState(() {
-                              controller.nextPage(
-                                  duration: const Duration(microseconds: 200),
-                                  curve: Curves.ease);
-                            });
+                            if (index == 2) {
+                              Get.to(() => const AuthScreen());
+                            } else {
+                              setState(() {
+                                controller.nextPage(
+                                    duration: const Duration(microseconds: 200),
+                                    curve: Curves.ease);
+                              });
+                            }
                           },
                           child: const SvgImage(
                               asset: onBoardingArrowIcon,

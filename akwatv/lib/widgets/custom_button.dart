@@ -6,9 +6,10 @@ class CustomButton extends StatelessWidget {
   final Widget? title;
   final Function? onclick;
   final Color? color;
-  final bool? borderColor ;
+  final bool? borderColor;
 
-  const CustomButton({Key? key, this.title, this.onclick, this.color, this.borderColor})
+  const CustomButton(
+      {Key? key,required this.title,required this.onclick,required this.color,required this.borderColor})
       : super(key: key);
 
   @override
@@ -18,10 +19,11 @@ class CustomButton extends StatelessWidget {
         onclick!();
       },
       child: Container(
-        height: 55.h,
+        height: 48.h,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          border: Border.all(color: borderColor! ? AppColors.white : AppColors.primary),
+          border: Border.all(
+              color: borderColor! ? AppColors.white : AppColors.primary),
           borderRadius: BorderRadius.circular(10.r),
           color: color!,
         ),

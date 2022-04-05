@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const primary = Color(0xFFFC4B51);
+  static const primary = Color.fromARGB(255, 217, 5, 12);
   static const goldBackground = Color(0xFFD5CBC1);
   static const darkGold = Color(0xFF4C4742);
   static const lightGold = Color(0xFFF5F2F0);
@@ -21,7 +21,7 @@ class AppColors {
   static const lightGreen = Color(0xFFA4CFBE);
   static const gray2 = Color(0xFFDDE2E5);
   static const textGold = Color(0xFFCAB79F);
-  static const gray = Color(0xFF4F4F4F);
+  static const gray = Color.fromARGB(255, 170, 170, 170);
   static const rareGold = Color(0xFFD5CBC1);
   static const tabLabelColor = Color(0xFF545151);
   static const unselectedTabIndicator = Color(0XFFACB5BD);
