@@ -1,6 +1,7 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +30,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     emailIcon,
     passwordIcon,
   ];
+ final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  void _openMyDrawer() {
+    _scaffoldKey.currentState!.openDrawer();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       key: _scaffoldKey,
+      drawer: MyDrawerPage(),
       body: Stack(children: [
         SizedBox(
           height: 300,
@@ -60,6 +67,24 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ],
           ),
         ),
+         Padding(
+            padding: const EdgeInsets.fromLTRB(30, 70, 30, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    _scaffoldKey.currentState!.openDrawer();
+                  },
+                  child: Icon(
+                    Icons.menu,
+                    color: AppColors.white,
+                    size: 25.w,
+                  ),
+                ),
+              ],
+            ),
+          ),
         Padding(
           padding: const EdgeInsets.only(top: 300),
           child: DefaultTabController(

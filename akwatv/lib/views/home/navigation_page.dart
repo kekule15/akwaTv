@@ -1,6 +1,6 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
-import 'package:akwatv/views/home/coming_soon.dart';
+import 'package:akwatv/views/home/coming_soon/coming_soon.dart';
 import 'package:akwatv/views/home/downloads/downloads_view.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/home_view.dart';
@@ -32,13 +32,6 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   Future<bool> _onBackPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => const DashBoard(
-                currentPage: 0,
-              )),
-    );
     return Future.delayed(Duration(seconds: 2));
   }
 
@@ -106,27 +99,7 @@ class _DashBoardState extends State<DashBoard> {
             ],
           ),
           backgroundColor: Colors.white,
-          body: Stack(children: [
-            _children[_currentIndex!],
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 70, 30, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      _scaffoldKey.currentState!.openDrawer();
-                    },
-                    child: Icon(
-                      Icons.menu,
-                      color: AppColors.white,
-                      size: 25.w,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ])),
+          body: _children[_currentIndex!]),
     );
   }
 

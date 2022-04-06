@@ -161,6 +161,9 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                 ),
               ),
             ),
+            const SizedBox(
+              height: ySpace3 * 2,
+            ),
           ],
         ),
       ),
