@@ -23,6 +23,7 @@ dependencies:
   get_storage: ^2.0.3
   get_it:
   flutter_screenutil: ^5.3.1
+  flutter_launcher_icons: ^0.9.1
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +31,15 @@ dev_dependencies:
 
 
   flutter_lints: ^1.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_ios: "assets/image/logo.png"
+  image_path_android: "assets/image/logo.png"
+
+
+
 
 
 flutter:
