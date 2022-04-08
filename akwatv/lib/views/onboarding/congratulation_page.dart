@@ -86,9 +86,7 @@ class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
               borderColor: false,
               color: AppColors.primary,
               onclick: () {
-                Get.to(() => DashBoard(
-                      currentPage: 0,
-                    ));
+                Get.to(() => HomeNavigation());
               },
               title: Text(
                 'Continue',
