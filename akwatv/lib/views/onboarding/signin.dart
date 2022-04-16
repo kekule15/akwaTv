@@ -2,6 +2,7 @@ import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/views/onboarding/congratulation_page.dart';
+import 'package:akwatv/views/onboarding/forgot_password/forgot_password_page.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
 import 'package:flutter/gestures.dart';
@@ -78,7 +79,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 borderColor: false,
                 color: AppColors.primary,
                 onclick: () {
-                  Get.to(() => CongratulationScreen());
+                  Get.to(() => const CongratulationScreen());
                 },
                 title: Text(
                   'Login',
@@ -110,7 +111,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ],
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(() => const ForgotPasswordPage());
+                    },
                     child: const Text(
                       'Forgot Password?',
                       style: TextStyle(color: AppColors.white),

@@ -77,7 +77,7 @@ class CustomField extends StatelessWidget {
         headtext == null
             ? const SizedBox.shrink()
             : Text(headtext!,
-                style: Theme.of(context).primaryTextTheme.headline5),
+                style: Theme.of(context).primaryTextTheme.headline6),
         const SizedBox(
           height: 10,
         ),
