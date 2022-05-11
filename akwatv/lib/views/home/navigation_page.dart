@@ -1,6 +1,7 @@
 import 'package:akwatv/providers/navigators.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
+import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/views/home/coming_soon/coming_soon.dart';
 import 'package:akwatv/views/home/downloads/downloads_view.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
@@ -130,7 +131,8 @@ class HomeNavigation extends ConsumerWidget {
   const HomeNavigation({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _viewModel = ref.watch(homeViewModel);
+       final _viewModel = ref.watch(homeViewModel);
+   // final user = _viewModel.user.data;
     Future<bool> _onBackPressed() {
       return Future.delayed(const Duration(seconds: 2));
     }

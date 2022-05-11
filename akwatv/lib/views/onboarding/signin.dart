@@ -1,15 +1,20 @@
 import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
+import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/views/onboarding/congratulation_page.dart';
 import 'package:akwatv/views/onboarding/forgot_password/forgot_password_page.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
-import 'package:flutter/gestures.dart';
+import 'package:akwatv/widgets/obscure_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+final obscurePasswordProvider = passwordObscureProvider;
+final viewModel = loginViewModel;
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -19,12 +24,18 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   bool rememberMe = false;
+  bool btnLoader = false;
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    bool _obscure = ref.watch(obscurePasswordProvider);
+    final _loginViewModel = ref.watch(viewModel);
     return Scaffold(
       body: Form(
+        key: _formKey,
         child: Padding(
           padding:
               const EdgeInsets.symmetric(horizontal: generalHorizontalPadding),
@@ -33,7 +44,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               const SizedBox(
                 height: ySpace3 * 1,
               ),
-              ListTile(
+              const ListTile(
                 contentPadding: EdgeInsets.all(0),
                 title: Text(
                   'SignIn',
@@ -48,29 +59,37 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 height: ySpace3,
               ),
               CustomField(
-                validator: () {},
-                onChanged: (value) {},
+                style: const TextStyle(color: AppColors.white),
+                textInputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp('[ ]')),
+                ],
+                validate: true,
                 fillColor: AppColors.gray,
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                controller: nameController,
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                controller: emailController,
                 hint: 'Email',
-                hintstyle: TextStyle(color: AppColors.white),
-                fieldType: TextFieldType.name,
+                hintstyle: const TextStyle(color: AppColors.white),
+                fieldType: TextFieldType.email,
               ),
               const SizedBox(
                 height: ySpace1,
               ),
               CustomField(
-                validator: () {},
-                onChanged: (value) {},
+                style: const TextStyle(color: AppColors.white),
+                fieldType: TextFieldType.password,
+                textInputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp('[ ]')),
+                ],
+                validate: true,
                 fillColor: AppColors.gray,
+                obscureText: _obscure,
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                controller: nameController,
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                controller: passwordController,
                 hint: 'Password',
-                hintstyle: TextStyle(color: AppColors.white),
-                fieldType: TextFieldType.name,
+                hintstyle: const TextStyle(color: AppColors.white),
+                sIcon: const IsObscure(),
               ),
               const SizedBox(
                 height: ySpace3,
@@ -78,13 +97,47 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               CustomButton(
                 borderColor: false,
                 color: AppColors.primary,
-                onclick: () {
-                  Get.to(() => const CongratulationScreen());
+                onclick: () async {
+                  setState(() {
+                    btnLoader = true;
+                  });
+                  final form = _formKey.currentState;
+                  if (form!.validate()) {
+                    form.save();
+                    _loginViewModel.login(emailController.text.toString(),
+                        passwordController.text.toString(), );
+                    await Future.delayed(Duration(seconds: 2), () {
+                      if (_loginViewModel.loginData.data != null) {
+                        setState(() {
+                          btnLoader = false;
+                        });
+                        Get.to(() => const CongratulationScreen());
+                      } else {
+                        setState(() {
+                          btnLoader = false;
+                        });
+                      }
+                    });
+                  } else {
+                    setState(() {
+                      btnLoader = false;
+                    });
+                  }
+                  // Get.to(() => const CongratulationScreen());
                 },
-                title: Text(
-                  'Login',
-                  style: TextStyle(color: AppColors.white, fontSize: 16.sp),
-                ),
+                title: btnLoader
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: AppColors.white,
+                        ),
+                      )
+                    : Text(
+                        'Login',
+                        style:
+                            TextStyle(color: AppColors.white, fontSize: 16.sp),
+                      ),
               ),
               const SizedBox(
                 height: ySpace3,
@@ -97,7 +150,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       Checkbox(
                           activeColor: AppColors.white,
                           checkColor: AppColors.primary,
-                          side: BorderSide(width: 1, color: AppColors.primary),
+                          side: const BorderSide(
+                              width: 1, color: AppColors.primary),
                           value: rememberMe,
                           onChanged: (value) {
                             setState(() {

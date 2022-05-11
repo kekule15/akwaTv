@@ -1,9 +1,6 @@
-import 'package:akwatv/view_models.dart/home_vm.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:akwatv/utils/exports.dart';
 
-
-    class NavigationService {
+class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   Future<dynamic> navigateTo(String routeName, {dynamic arguments}) {

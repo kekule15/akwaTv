@@ -42,7 +42,6 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
           margin: EdgeInsets.fromLTRB(25.w, 70.h, 20.w, 20.h),
           child: Form(
             key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

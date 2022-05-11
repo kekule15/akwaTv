@@ -5,6 +5,7 @@ import 'package:akwatv/utils/images.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
+import 'package:akwatv/views/home/home_view/video_details.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:chewie/chewie.dart';
@@ -64,7 +65,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     _videoPlayerController1!.addListener(() async {
       if (_videoPlayerController1!.value.position ==
           _videoPlayerController1!.value.duration) {
-        await Future.delayed(Duration(seconds: 2), () async{
+        await Future.delayed(Duration(seconds: 2), () async {
           print('Video Stopped');
           setState(() {
             currPlayIndex = (currPlayIndex + 1) % srcs.length;
@@ -184,16 +185,22 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   const EdgeInsets.only(left: 10, right: 10),
                               child: Column(
                                 children: [
-                                  Container(
-                                    height: 180,
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                        color: AppColors.termsTextColor,
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                            image: AssetImage(PlayModel
-                                                .movieList[index].movieImage),
-                                            fit: BoxFit.cover)),
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(() => const VideoDetailsPage());
+                                    },
+                                    child: Container(
+                                      height: 180,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                          color: AppColors.termsTextColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                              image: AssetImage(PlayModel
+                                                  .movieList[index].movieImage),
+                                              fit: BoxFit.cover)),
+                                    ),
                                   ),
                                   const SizedBox(
                                     height: ySpaceMin,

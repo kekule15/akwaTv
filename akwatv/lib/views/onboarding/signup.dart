@@ -4,8 +4,10 @@ import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
+import 'package:akwatv/widgets/obscure_icon.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,10 +21,19 @@ class SignUpPage extends ConsumerStatefulWidget {
 
 class _SignUpPageState extends ConsumerState<SignUpPage> {
   final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool btnLoader = false;
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    bool _obscure = ref.watch(obscurePasswordProvider);
+    final _loginViewModel = ref.watch(viewModel);
     return Scaffold(
       body: Form(
+        key: _formKey,
         child: Padding(
           padding:
               const EdgeInsets.symmetric(horizontal: generalHorizontalPadding),
@@ -31,7 +42,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               const SizedBox(
                 height: ySpace3 * 1,
               ),
-              ListTile(
+              const ListTile(
                 contentPadding: EdgeInsets.all(0),
                 title: Text(
                   'SignUp',
@@ -46,57 +57,68 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 height: ySpace3,
               ),
               CustomField(
-                validator: () {},
-                onChanged: (value) {},
+                style: const TextStyle(color: AppColors.white),
+                validate: true,
                 fillColor: AppColors.gray,
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: nameController,
-                hint: 'Name',
-                hintstyle: TextStyle(color: AppColors.white),
+                hint: 'UserName',
+                hintstyle: const TextStyle(color: AppColors.white),
                 fieldType: TextFieldType.name,
               ),
               const SizedBox(
                 height: ySpace1,
               ),
               CustomField(
-                validator: () {},
-                onChanged: (value) {},
+                style: const TextStyle(color: AppColors.white),
+                textInputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp('[ ]')),
+                ],
+                validate: true,
                 fillColor: AppColors.gray,
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                controller: nameController,
-                hint: 'Email',
-                hintstyle: TextStyle(color: AppColors.white),
-                fieldType: TextFieldType.name,
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                controller: emailController,
+                hint: 'Email address',
+                hintstyle: const TextStyle(color: AppColors.white),
+                fieldType: TextFieldType.email,
               ),
               const SizedBox(
                 height: ySpace1,
               ),
               CustomField(
-                validator: () {},
-                onChanged: (value) {},
+                style: const TextStyle(color: AppColors.white),
+                textInputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp('[ ]')),
+                ],
+                validate: true,
                 fillColor: AppColors.gray,
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                controller: nameController,
-                hint: 'Phone Number',
-                hintstyle: TextStyle(color: AppColors.white),
-                fieldType: TextFieldType.name,
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                controller: phoneController,
+                hint: 'Phone number',
+                hintstyle: const TextStyle(color: AppColors.white),
+                fieldType: TextFieldType.phone,
               ),
               const SizedBox(
                 height: ySpace1,
               ),
               CustomField(
-                validator: () {},
-                onChanged: (value) {},
+                style: const TextStyle(color: AppColors.white),
+                fieldType: TextFieldType.password,
+                textInputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp('[ ]')),
+                ],
+                validate: true,
                 fillColor: AppColors.gray,
+                obscureText: _obscure,
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                controller: nameController,
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                controller: passwordController,
                 hint: 'Password',
-                hintstyle: TextStyle(color: AppColors.white),
-                fieldType: TextFieldType.name,
+                hintstyle: const TextStyle(color: AppColors.white),
+                sIcon: const IsObscure(),
               ),
               const SizedBox(
                 height: ySpace3,
@@ -104,13 +126,50 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               CustomButton(
                 borderColor: false,
                 color: AppColors.primary,
-                onclick: () {
-                  Get.to(() => const LoginPage());
+                onclick: () async {
+                  setState(() {
+                    btnLoader = true;
+                  });
+                  final form = _formKey.currentState;
+                  if (form!.validate()) {
+                    form.save();
+                    _loginViewModel.register(
+                        nameController.text.toString(),
+                        emailController.text.toString(),
+                        passwordController.text.toString(),
+                        phoneController.text.toString());
+                    await Future.delayed(const Duration(seconds: 2), () {
+                      if (_loginViewModel.signupData.data != null) {
+                        setState(() {
+                          btnLoader = false;
+                        });
+                        Get.to(() => const LoginPage());
+                      } else {
+                        setState(() {
+                          btnLoader = false;
+                        });
+                      }
+                    });
+                  } else {
+                    setState(() {
+                      btnLoader = false;
+                    });
+                  }
+                  // Get.to(() => const CongratulationScreen());
                 },
-                title: Text(
-                  'Register',
-                  style: TextStyle(color: AppColors.white, fontSize: 16.sp),
-                ),
+                title: btnLoader
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: AppColors.white,
+                        ),
+                      )
+                    : Text(
+                        'Register',
+                        style:
+                            TextStyle(color: AppColors.white, fontSize: 16.sp),
+                      ),
               ),
               const SizedBox(
                 height: ySpace3,

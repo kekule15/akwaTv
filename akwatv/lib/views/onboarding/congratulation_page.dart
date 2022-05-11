@@ -3,6 +3,7 @@ import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
+import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,6 +21,7 @@ class CongratulationScreen extends ConsumerStatefulWidget {
 class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
   @override
   Widget build(BuildContext context) {
+    final _loginViewModel = ref.watch(viewModel);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -35,6 +37,14 @@ class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
                 color: AppColors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.sp),
+          ),
+          const SizedBox(
+            height: ySpaceMin,
+          ),
+          Text(
+            _loginViewModel.userProfileData.data!.data!.username!,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: AppColors.white, fontSize: 17.sp),
           ),
           const SizedBox(
             height: ySpaceMin,
@@ -58,7 +68,7 @@ class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: 'April 17, 2022',
+                  text: 'May 23, 2022',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -74,7 +84,7 @@ class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
           SizedBox(
             height: 200,
             width: MediaQuery.of(context).size.width,
-            child: SvgImage(asset: congratulationIcon),
+            child: const SvgImage(asset: congratulationIcon),
           ),
           const SizedBox(
             height: ySpace3 * 3,
@@ -86,7 +96,7 @@ class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
               borderColor: false,
               color: AppColors.primary,
               onclick: () {
-                Get.to(() => HomeNavigation());
+                Get.to(() => const HomeNavigation());
               },
               title: Text(
                 'Continue',

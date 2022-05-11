@@ -1,5 +1,6 @@
 import 'package:akwatv/providers/navigators.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BaseViewModel extends ChangeNotifier {

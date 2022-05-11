@@ -2,6 +2,7 @@ import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:flutter/services.dart';
 
 class CustomField extends StatelessWidget {
   CustomField(
@@ -30,6 +31,8 @@ class CustomField extends StatelessWidget {
       this.inputDecoration,
       this.fillColor,
       this.onCompleted,
+      this.style,
+      this.textInputFormatters,
       this.shape = BoxShape.rectangle,
       this.validator})
       : super(key: key);
@@ -61,6 +64,8 @@ class CustomField extends StatelessWidget {
   final int? maxLength;
   final bool autoFocus;
   final BoxShape? shape;
+  final TextStyle? style;
+  final List<TextInputFormatter>? textInputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +105,8 @@ class CustomField extends StatelessWidget {
                     ? TextInputType.phone
                     : keyboardType ?? TextInputType.text,
                 onChanged: onChanged,
+                style: style,
+                inputFormatters: textInputFormatters,
                 decoration: InputDecoration(
                   fillColor: fillColor,
                   filled: true,
