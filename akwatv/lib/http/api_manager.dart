@@ -31,8 +31,10 @@ abstract class ApiManager {
 
   //GET
   Future<FormattedResponse> getHttp(String route,
-      {Map<String, dynamic>? params, bool formdata = false, dynamic token}) async {
-    setHeader(formdata: formdata, token:token );
+      {Map<String, dynamic>? params,
+      bool formdata = false,
+      dynamic token}) async {
+    setHeader(formdata: formdata, token: token);
     params?.removeWhere((key, value) => value == null);
     final fullRoute = '$baseURL$route';
     return makeRequest(dio.get(
@@ -45,7 +47,8 @@ abstract class ApiManager {
   Future<FormattedResponse> postHttp(String route, dynamic body,
       {Map<String, dynamic>? params,
       bool formdata = false,
-      bool formEncoded = false,  dynamic token}) async {
+      bool formEncoded = false,
+      dynamic token}) async {
     setHeader(formdata: formdata, formEncoded: formEncoded, token: token);
     params?.removeWhere((key, value) => value == null);
     //body?.removeWhere((key, value) => value == null);
@@ -64,7 +67,8 @@ abstract class ApiManager {
   }
 
   //PUT
-  Future putHttp(String route, body, {Map<String, dynamic>? params,  dynamic token}) async {
+  Future putHttp(String route, body,
+      {Map<String, dynamic>? params, dynamic token}) async {
     setHeader(token: token);
     params?.removeWhere((key, value) => value == null);
     //body?.removeWhere((key, value) => value == null);
@@ -80,7 +84,8 @@ abstract class ApiManager {
   }
 
   //DELETE
-  Future deleteHttp(String route, {Map<String, dynamic>? params,  dynamic token}) async {
+  Future deleteHttp(String route,
+      {Map<String, dynamic>? params, dynamic token}) async {
     setHeader(token: token);
     params?.removeWhere((key, value) => value == null);
     final fullRoute = '$baseURL$route';
@@ -111,6 +116,7 @@ abstract class ApiManager {
           data: e.response?.data,
           responseCodeError: "Connection Timeout",
           success: false,
+          statusCode: e.response!.statusCode,
         );
       } else if (e.type == DioErrorType.other) {
         if (e.message.contains('SocketException')) {
@@ -119,20 +125,23 @@ abstract class ApiManager {
             responseCodeError:
                 "Oops! An error occured. Please check your internet and try again.",
             success: false,
+            statusCode: response!.statusCode,
           );
         }
       } else if (e.response!.statusCode == 401) {
-        _navigationService.navigateAndClearHistory(Routes.authScreen);
+        // _navigationService.navigateAndClearHistory(Routes.authScreen);
         return FormattedResponse(
           data: e.response?.data,
           responseCodeError: "Session Expired",
           success: false,
+          statusCode: e.response!.statusCode,
         );
       } else if (e.response!.statusCode == 404) {
         return FormattedResponse(
           data: e.response?.data,
           responseCodeError: "Oops! Resource not found",
           success: false,
+          statusCode: e.response!.statusCode,
         );
       } else if (e.response!.statusCode == 500 ||
           e.response!.statusCode == 403) {
@@ -141,11 +150,13 @@ abstract class ApiManager {
           responseCodeError:
               "Oops! It's not you, it's us. Give us a minute and then try again.",
           success: false,
+          statusCode: e.response!.statusCode,
         );
       } else if (e.response!.statusCode == 400) {
         return FormattedResponse(
           data: e.response?.data,
           success: false,
+          statusCode: e.response!.statusCode,
         );
       } else if (e.type == DioErrorType.response ||
           e.type == DioErrorType.other) {
@@ -153,6 +164,7 @@ abstract class ApiManager {
           data: e.response?.data,
           responseCodeError: "${e.error} - ${e.message}",
           success: false,
+          statusCode: e.response!.statusCode,
         );
       }
       //ErrorManager.parseError(e);
@@ -166,6 +178,7 @@ abstract class ApiManager {
     return FormattedResponse(
       data: response?.data,
       success: "${response?.statusCode}".startsWith('2'),
+      statusCode: response!.statusCode,
     );
   }
 

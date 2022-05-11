@@ -1,6 +1,7 @@
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/images.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/views/onboarding/onboarding_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:flutter/animation.dart';
@@ -36,9 +37,9 @@ class _SplashViewState extends ConsumerState<SplashView>
         curve: const Interval(0.0, 1.0, curve: Curves.easeOut))
       ..addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
-         
-          Get.to(() => const OnboardingScreen());
-          //ref.read(viewModel).navigateToReplacement(Routes.landing);
+          Get.to(() => box.read('token') == null
+              ? const OnboardingScreen()
+              : const HomeNavigation());
         }
       }));
 
@@ -49,8 +50,8 @@ class _SplashViewState extends ConsumerState<SplashView>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-     final _loginViewModel = ref.watch(viewModel);
-          _loginViewModel.getProfile;
+    final _loginViewModel = ref.watch(viewModel);
+    _loginViewModel.getProfile;
   }
 
   @override

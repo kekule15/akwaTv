@@ -3,8 +3,10 @@ import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/user_model.dart';
 import 'package:akwatv/utils/providers.dart';
+import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:get/get.dart';
 
 class OnBoardingService extends ApiManager {
   final Reader reader;
@@ -59,8 +61,15 @@ class OnBoardingService extends ApiManager {
   // get profile details
   Future<GetProfileModel> getProfileService() async {
     final response = await getHttp(getProfileUrl, token: box.read('token'));
+    print("this is my data ${response.responseCodeError}");
     if (response.responseCodeError == null) {
       return GetProfileModel.fromJson(response.data);
+    } else if (response.statusCode == 401 || response.statusCode == 403 || response.statusCode == 404) {
+      box.erase();
+      Get.to(() => const AuthScreen());
+      return GetProfileModel(
+        success: false,
+      );
     } else {
       return GetProfileModel(
         success: false,

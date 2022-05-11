@@ -26,7 +26,7 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool rememberMe = false;
+  bool rememberMe = true;
   bool btnLoader = false;
   final _formKey = GlobalKey<FormState>();
   @override
@@ -64,12 +64,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
                 validate: true,
-                fillColor: AppColors.gray,
+                fillColor: AppColors.termsTextColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
                 hint: 'Email',
-                hintstyle: const TextStyle(color: AppColors.white),
+                hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.email,
               ),
               const SizedBox(
@@ -82,13 +82,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
                 validate: true,
-                fillColor: AppColors.gray,
+                fillColor: AppColors.termsTextColor,
                 obscureText: _obscure,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: passwordController,
                 hint: 'Password',
-                hintstyle: const TextStyle(color: AppColors.white),
+                hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 sIcon: const IsObscure(),
               ),
               const SizedBox(
@@ -104,14 +104,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   final form = _formKey.currentState;
                   if (form!.validate()) {
                     form.save();
-                    _loginViewModel.login(emailController.text.toString(),
-                        passwordController.text.toString(), );
-                    await Future.delayed(Duration(seconds: 2), () {
+                    _loginViewModel.login(
+                      emailController.text.toString(),
+                      passwordController.text.toString(),
+                    );
+                    await Future.delayed(const Duration(seconds: 2), () {
                       if (_loginViewModel.loginData.data != null) {
                         setState(() {
                           btnLoader = false;
                         });
-                        Get.to(() => const CongratulationScreen());
+                        Get.offAll(() => const CongratulationScreen());
                       } else {
                         setState(() {
                           btnLoader = false;

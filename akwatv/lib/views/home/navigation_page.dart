@@ -8,11 +8,11 @@ import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/home_view.dart';
 import 'package:akwatv/views/home/profile/profile_view.dart';
 import 'package:akwatv/views/home/search_screen.dart';
+import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 // class DashBoard extends ConsumerStatefulWidget {
 //   const DashBoard({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //   void _openMyDrawer() {
 //     _scaffoldKey.currentState!.openDrawer();
 //   }
- 
+
 //  final _viewModel = ref.watch(homeViewModel);
 //   @override
 //   Widget build(BuildContext context) {
@@ -126,13 +126,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //   }
 // }
 
-
-class HomeNavigation extends ConsumerWidget {
+class HomeNavigation extends ConsumerStatefulWidget {
   const HomeNavigation({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-       final _viewModel = ref.watch(homeViewModel);
-   // final user = _viewModel.user.data;
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeNavigation();
+}
+
+class _HomeNavigation extends ConsumerState<HomeNavigation> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final _loginViewModel = ref.watch(viewModel);
+    _loginViewModel.getProfile;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final _viewModel = ref.watch(homeViewModel);
+    // final user = _viewModel.user.data;
     Future<bool> _onBackPressed() {
       return Future.delayed(const Duration(seconds: 2));
     }
@@ -142,18 +154,16 @@ class HomeNavigation extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).drawerTheme.backgroundColor,
         body: _pages.elementAt(ref.watch(homeViewModel).selectedIndex),
-        drawer:const MyDrawerPage(),
+        drawer: const MyDrawerPage(),
         bottomNavigationBar: Theme(
           data: Theme.of(context),
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-             showUnselectedLabels: true,
+            showUnselectedLabels: true,
             selectedLabelStyle: const TextStyle(
               color: AppColors.primary,
             ),
-            unselectedLabelStyle: TextStyle(color: AppColors.gray),
-            
-            
+            unselectedLabelStyle: const TextStyle(color: AppColors.gray),
             unselectedItemColor: AppColors.gray,
             backgroundColor: AppColors.black,
             showSelectedLabels: true,
@@ -163,35 +173,37 @@ class HomeNavigation extends ConsumerWidget {
             items: [
               BottomNavigationBarItem(
                 backgroundColor: Colors.white,
-                icon: ref.watch(homeViewModel).selectedIndex == 0 ? Icon(Icons.home) : Icon(Icons.home),
+                icon: ref.watch(homeViewModel).selectedIndex == 0
+                    ? const Icon(Icons.home)
+                    : const Icon(Icons.home),
                 label: "Home",
               ),
               BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: ref.watch(homeViewModel).selectedIndex == 1
-                    ? Icon(Icons.search)
-                    : Icon(Icons.search),
+                    ? const Icon(Icons.search)
+                    : const Icon(Icons.search),
                 label: "Search",
               ),
               BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: ref.watch(homeViewModel).selectedIndex == 2
-                    ? Icon(Icons.download_for_offline)
-                    : Icon(Icons.download_for_offline),
+                    ? const Icon(Icons.download_for_offline)
+                    : const Icon(Icons.download_for_offline),
                 label: "Downloads",
               ),
+              // BottomNavigationBarItem(
+              //   backgroundColor: Colors.white,
+              //   icon: ref.watch(homeViewModel).selectedIndex == 3
+              //       ? Icon(Icons.ondemand_video)
+              //       : Icon(Icons.ondemand_video),
+              //   label: "ComingSoon",
+              // ),
               BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: ref.watch(homeViewModel).selectedIndex == 3
-                    ? Icon(Icons.ondemand_video)
-                    : Icon(Icons.ondemand_video),
-                label: "ComingSoon",
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: Colors.white,
-                icon: ref.watch(homeViewModel).selectedIndex == 3
-                    ? Icon(Icons.person)
-                    : Icon(Icons.person),
+                    ? const Icon(Icons.person)
+                    : const Icon(Icons.person),
                 label: "Profile",
               ),
             ],
@@ -202,10 +214,10 @@ class HomeNavigation extends ConsumerWidget {
   }
 
   static const List<Widget> _pages = <Widget>[
-     HomePage(),
-     SearchPage(),
-     DownLoadsPage(),
-     ComingSoonPage(),
-     ProfilePage()
+    HomePage(),
+    SearchPage(),
+    DownLoadsPage(),
+    // ComingSoonPage(),
+    ProfilePage()
   ];
 }

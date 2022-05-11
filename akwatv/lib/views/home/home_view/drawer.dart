@@ -1,7 +1,11 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/views/home/navigation_page.dart';
+import 'package:akwatv/views/home/settings/settings_screen.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
+import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,16 +36,21 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
     'Account',
     'Help',
   ];
-
+  GetStorage box = GetStorage();
   @override
   Widget build(BuildContext context) {
+    final _loginViewModel = ref.watch(viewModel);
+
     return SafeArea(
       child: Drawer(
         elevation: 10,
         backgroundColor: AppColors.black,
-        child: SizedBox(
+        child: Container(
           width: 500,
           height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+              border:
+                  Border(right: BorderSide(width: 0.4, color: AppColors.gray))),
           child: Stack(
             children: [
               SizedBox(
@@ -51,10 +60,10 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                     const SizedBox(
                       height: ySpace1,
                     ),
-                    const Text(
-                      'User1',
+                    Text(
+                      _loginViewModel.userProfileData.data!.data!.username!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: AppColors.white),
+                      style: const TextStyle(color: AppColors.white),
                     ),
                     const SizedBox(
                       height: ySpace1,
@@ -64,15 +73,20 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            Icons.settings,
-                            size: 20.w,
-                            color: AppColors.white,
+                          InkWell(
+                            onTap: () {
+                              Get.to(() => const SettingsPage());
+                            },
+                            child: Icon(
+                              Icons.settings,
+                              size: 25.w,
+                              color: AppColors.white,
+                            ),
                           ),
                           CircleAvatar(
                             radius: 30.r,
                             backgroundColor: AppColors.primary,
-                            child: Icon(Icons.person),
+                            child: const Icon(Icons.person),
                           ),
                           InkWell(
                             onTap: () {
@@ -80,7 +94,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                             },
                             child: Icon(
                               Icons.sync_alt,
-                              size: 20.w,
+                              size: 25.w,
                               color: AppColors.white,
                             ),
                           ),
@@ -142,7 +156,32 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                             (index) => Padding(
                               padding: const EdgeInsets.only(bottom: 20),
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  switch (subs[index]) {
+                                    case 'Settings':
+                                      Get.to(() => const SettingsPage());
+
+                                      break;
+                                    case 'Account':
+                                      ref.watch(homeViewModel).selectedIndex =
+                                          3;
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const HomeNavigation()));
+
+                                      break;
+                                    case 'Help':
+                                      Get.to(() {
+                                        const SettingsPage();
+                                      });
+
+                                      break;
+
+                                    default:
+                                  }
+                                },
                                 child: Text(
                                   subs[index],
                                   style: TextStyle(
@@ -155,7 +194,10 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20, left: 20),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          box.erase();
+                          Get.offAll(() => const AuthScreen());
+                        },
                         child: Row(
                           children: [
                             Text(

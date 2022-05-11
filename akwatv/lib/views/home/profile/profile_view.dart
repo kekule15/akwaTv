@@ -2,7 +2,11 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
+import 'package:akwatv/views/home/notifications/notification_screen.dart';
+import 'package:akwatv/views/home/profile/edit_profile.dart';
+import 'package:akwatv/views/home/settings/settings_screen.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
+import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,16 +34,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     emailIcon,
     passwordIcon,
   ];
- final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _openMyDrawer() {
     _scaffoldKey.currentState!.openDrawer();
   }
+
+  GetStorage box = GetStorage();
   @override
   Widget build(BuildContext context) {
+    final _loginViewModel = ref.watch(viewModel);
+    var user = _loginViewModel.userProfileData.data!.data;
     return Scaffold(
-       key: _scaffoldKey,
-      drawer: MyDrawerPage(),
+      key: _scaffoldKey,
+      drawer: const MyDrawerPage(),
       body: Stack(children: [
         SizedBox(
           height: 300,
@@ -51,44 +59,59 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               SizedBox(
                 height: 100.h,
               ),
-              const Text(
-                'User1',
+              Text(
+                user!.username!,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.white),
+                style: const TextStyle(color: AppColors.white),
               ),
               const SizedBox(
                 height: ySpace1,
               ),
-              CircleAvatar(
-                radius: 40.r,
-                backgroundColor: AppColors.primary,
-                child: Icon(Icons.person),
+              InkWell(
+                onTap: () {
+                  Get.to(() => const EditProfilePage());
+                },
+                child: CircleAvatar(
+                  radius: 40.r,
+                  backgroundColor: AppColors.primary,
+                  child: const Icon(Icons.person),
+                ),
               ),
             ],
           ),
         ),
-         Padding(
-            padding: const EdgeInsets.fromLTRB(30, 70, 30, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    _scaffoldKey.currentState!.openDrawer();
-                  },
-                  child: Icon(
-                    Icons.menu,
-                    color: AppColors.white,
-                    size: 25.w,
-                  ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(30, 70, 30, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () {
+                  _scaffoldKey.currentState!.openDrawer();
+                },
+                child: Icon(
+                  Icons.menu,
+                  color: AppColors.white,
+                  size: 25.w,
                 ),
-              ],
-            ),
+              ),
+              InkWell(
+                onTap: () {
+                  Get.to(() => const ViewNotificationScreen());
+                },
+                child: Icon(
+                  Icons.notifications,
+                  color: AppColors.white,
+                  size: 25.w,
+                ),
+              ),
+            ],
           ),
+        ),
         Padding(
           padding: const EdgeInsets.only(top: 300),
           child: DefaultTabController(
-            length: 3,
+            length: 2,
             child: Column(
               children: <Widget>[
                 Container(
@@ -110,19 +133,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           Tab(
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("Favourite"),
-                            ),
-                          ),
-                          Tab(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text("Bookmarks"),
-                            ),
-                          ),
-                          Tab(
-                            child: Align(
-                              alignment: Alignment.center,
                               child: Text("Account"),
+                            ),
+                          ),
+                          Tab(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text("WatchList"),
                             ),
                           ),
                         ]),
@@ -137,6 +154,54 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TabBarView(children: [
+                      //Account Tab
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: ListView(
+                          padding: EdgeInsets.all(0),
+                          children: [
+                            mylistCard(user.username!, userIcon),
+                            mylistCard(user.phone ?? '+234...', callIcon),
+                            mylistCard(user.email!, emailIcon),
+                            mylistCard('Settings', settingsIcon, ontap: () {
+                              Get.to(() => const SettingsPage());
+                            }),
+                            mylistCard('Logout', logoutIcon, ontap: () {
+                              box.erase();
+                              Get.to(() => const AuthScreen());
+                            }),
+                            const SizedBox(
+                              height: ySpace2,
+                            ),
+                            // CustomButton(
+                            //     title: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       children: [
+                            //         Icon(
+                            //           Icons.edit,
+                            //           color: AppColors.white,
+                            //           size: 15.w,
+                            //         ),
+                            //         SizedBox(
+                            //           width: 10.w,
+                            //         ),
+                            //         Text(
+                            //           'Edit Profile',
+                            //           style: TextStyle(
+                            //               fontSize: 13.sp,
+                            //               color: AppColors.white),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //     onclick: () {
+                            //       Get.to(() => const EditProfilePage());
+                            //     },
+                            //     color: AppColors.primary,
+                            //     borderColor: false)
+                          ],
+                        ),
+                      ),
+
                       //Favourite Tab
                       MediaQuery.removePadding(
                         context: context,
@@ -152,87 +217,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           ],
                         ),
                       ),
-                      //Bookmark Tab
-
-                      ListView(
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 20, left: 10, right: 10),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Continue Watching ',
-                                    style: TextStyle(
-                                        fontSize: 17.sp,
-                                        color: AppColors.white),
-                                  ),
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
-                                ],
-                              )),
-                        ],
-                      ),
-                      //Account Tab
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: ListView(
-                          padding: EdgeInsets.all(0),
-                          children: [
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                    userDetails.length,
-                                    (index) => ListTile(
-                                          contentPadding: EdgeInsets.all(0),
-                                          horizontalTitleGap: 0,
-                                          leading: SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: SvgImage(
-                                                asset: userDetailIcon[index]),
-                                          ),
-                                          title: Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                              userDetails[index],
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  color: AppColors.white),
-                                            ),
-                                          ),
-                                        ))),
-                            const SizedBox(
-                              height: ySpace2,
-                            ),
-                            CustomButton(
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.edit,
-                                      color: AppColors.white,
-                                      size: 15.w,
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Text(
-                                      'Edit Profile',
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: AppColors.white),
-                                    ),
-                                  ],
-                                ),
-                                onclick: () {},
-                                color: AppColors.primary,
-                                borderColor: false)
-                          ],
-                        ),
-                      )
                     ]),
                   ),
                 ),
@@ -241,6 +225,28 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           ),
         ),
       ]),
+    );
+  }
+
+  Widget mylistCard(String title, String icon, {VoidCallback? ontap}) {
+    return ListTile(
+      contentPadding: const EdgeInsets.all(0),
+      horizontalTitleGap: 0,
+      onTap: () {
+        ontap!();
+      },
+      leading: SizedBox(
+        height: 20,
+        width: 20,
+        child: SvgImage(asset: icon),
+      ),
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Text(
+          title,
+          style: TextStyle(fontSize: 14.sp, color: AppColors.white),
+        ),
+      ),
     );
   }
 }
