@@ -59,12 +59,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               CustomField(
                 style: const TextStyle(color: AppColors.white),
                 validate: true,
-                fillColor: AppColors.gray,
+                fillColor: AppColors.termsTextColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: nameController,
                 hint: 'UserName',
-                hintstyle: const TextStyle(color: AppColors.white),
+                hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.name,
               ),
               const SizedBox(
@@ -76,12 +76,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
                 validate: true,
-                fillColor: AppColors.gray,
+                fillColor: AppColors.termsTextColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
                 hint: 'Email address',
-                hintstyle: const TextStyle(color: AppColors.white),
+                hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.email,
               ),
               const SizedBox(
@@ -93,12 +93,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
                 validate: true,
-                fillColor: AppColors.gray,
+                fillColor: AppColors.termsTextColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: phoneController,
                 hint: 'Phone number',
-                hintstyle: const TextStyle(color: AppColors.white),
+                hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.phone,
               ),
               const SizedBox(
@@ -111,13 +111,13 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
                 validate: true,
-                fillColor: AppColors.gray,
+                fillColor: AppColors.termsTextColor,
                 obscureText: _obscure,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: passwordController,
                 hint: 'Password',
-                hintstyle: const TextStyle(color: AppColors.white),
+                hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 sIcon: const IsObscure(),
               ),
               const SizedBox(

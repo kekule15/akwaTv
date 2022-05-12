@@ -122,13 +122,13 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: MyDrawerPage(),
+      drawer: const MyDrawerPage(),
       body: Stack(
         children: [
           Stack(
             children: [
               Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
                               width: 1, color: AppColors.termsTextColor))),
@@ -153,7 +153,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            Center(
+                            const Center(
                               child: CircularProgressIndicator(
                                 color: AppColors.primary,
                               ),
@@ -168,7 +168,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       'Akwa Amaka Originals',
                       style: TextStyle(color: AppColors.white, fontSize: 13.sp),
                     ),
-                    Divider(
+                    const Divider(
                       color: AppColors.white,
                     ),
                     const SizedBox(
@@ -187,7 +187,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Get.to(() => const VideoDetailsPage());
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  VideoDetailsPage(
+                                                    title: PlayModel
+                                                        .movieList[index]
+                                                        .movieName,
+                                                    image: PlayModel
+                                                        .movieList[index]
+                                                        .movieImage,
+                                                  )));
+
+                                      //  Navigator.pop(context);
+                                      // Get.to(() => AppVideo());
                                     },
                                     child: Container(
                                       height: 180,
@@ -220,7 +234,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       'Top Of The Week',
                       style: TextStyle(color: AppColors.white, fontSize: 13.sp),
                     ),
-                    Divider(
+                    const Divider(
                       color: AppColors.white,
                     ),
                     const SizedBox(

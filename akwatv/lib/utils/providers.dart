@@ -10,6 +10,7 @@ import 'package:akwatv/providers/navigators.dart';
 import 'package:akwatv/services/onboarding_http_service.dart';
 import 'package:akwatv/view_models.dart/home_vm.dart';
 import 'package:akwatv/view_models.dart/login_vm.dart';
+import 'package:akwatv/view_models.dart/video_data_usage_vm.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final navService =
@@ -20,6 +21,8 @@ final navService =
 //     Provider.autoDispose<LandingViewModel>((ref) => LandingViewModel(ref.read));
 final homeViewModel =
     ChangeNotifierProvider<HomeViewModel>((ref) => HomeViewModel(ref.read));
+    final videoDataUsageModel =
+    ChangeNotifierProvider<VideoDataUsageVM>((ref) => VideoDataUsageVM(ref.read));
 final loginViewModel =
     ChangeNotifierProvider<LoginViewModel>((ref) => LoginViewModel(ref.read));
 // final signUpViewModel =
