@@ -138,7 +138,9 @@ class _HomeNavigation extends ConsumerState<HomeNavigation> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final _loginViewModel = ref.watch(viewModel);
+    final _videoViewModel = ref.watch(videoViewModel);
     _loginViewModel.getProfile;
+    _videoViewModel.getVideoList;
   }
 
   @override
@@ -148,6 +150,8 @@ class _HomeNavigation extends ConsumerState<HomeNavigation> {
     Future<bool> _onBackPressed() {
       return Future.delayed(const Duration(seconds: 2));
     }
+
+    final _videoViewModel = ref.watch(videoViewModel);
 
     return WillPopScope(
       onWillPop: _onBackPressed,

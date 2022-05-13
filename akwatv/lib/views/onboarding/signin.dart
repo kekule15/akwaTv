@@ -1,4 +1,5 @@
 import 'package:akwatv/enums/text_field_type_enum.dart';
+import 'package:akwatv/providers/video_view_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/utils/providers.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final obscurePasswordProvider = passwordObscureProvider;
 final viewModel = loginViewModel;
+final videoViewModel = videoRequestProvider;
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

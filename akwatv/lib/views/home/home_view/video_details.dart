@@ -28,32 +28,7 @@ class VideoDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
-  final List<Map<String, Object>> _list = [
-    {
-      'id': "2",
-      'name': "Elephant Dream",
-      'videoUrl':
-          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-      'thumbnailUrl':
-          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg",
-    },
-    {
-      'id': "3",
-      'name': "Big Buck Bunny",
-      'videoUrl':
-          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-      'thumbnailUrl':
-          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
-    },
-    {
-      'id': "4",
-      'name': "For Bigger Blazes",
-      'videoUrl':
-          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-      'thumbnailUrl':
-          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg"
-    }
-  ];
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(

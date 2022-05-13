@@ -51,7 +51,9 @@ class _SplashViewState extends ConsumerState<SplashView>
   void didChangeDependencies() {
     super.didChangeDependencies();
     final _loginViewModel = ref.watch(viewModel);
+    final _videoViewModel = ref.watch(videoViewModel);
     _loginViewModel.getProfile;
+    _videoViewModel.getVideoList;
   }
 
   @override
