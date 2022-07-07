@@ -13,6 +13,7 @@ import 'package:akwatv/utils/router.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
 import 'package:akwatv/views/onboarding/congratulation_page.dart';
+import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -28,6 +29,7 @@ class LoginViewModel extends BaseViewModel {
   }
 
   bool loginBtn = false;
+  bool signupBtn = false;
   GetStorage box = GetStorage();
   login(String email, String password) async {
     loginBtn = true;
@@ -88,21 +90,31 @@ class LoginViewModel extends BaseViewModel {
     String password,
     String phoneNumber,
   ) async {
+    signupBtn = true;
     signupData.load();
+    notifyListeners();
     final res = await read(onboardingProvider)
         .signUp(name, email, password, phoneNumber);
 
     if (res.message == "Verification email sent") {
       signupData.onSuccess(res);
       NotifyMe.showAlert(res.message!);
+      Get.to(() => const LoginPage());
+      signupBtn = false;
+      notifyListeners();
+    } else if (res.message == 'ACT-EMAIL-EXIST') {
+      signupData.onError;
+      NotifyMe.showAlert(res.message!);
+      signupBtn = false;
       notifyListeners();
     } else {
-      NotifyMe.showAlert(res.message!);
-
       signupData.onError;
-      setErrorMessage('Registration was not completed.');
+      NotifyMe.showAlert(
+          'Registration was not completed. Phone number already used.');
+      signupBtn = false;
+      notifyListeners();
     }
-    setBusy(false);
+    signupBtn = false;
   }
 
   Future getProfile({required dynamic userId}) async {

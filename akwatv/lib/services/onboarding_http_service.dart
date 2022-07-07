@@ -16,10 +16,9 @@ import 'package:get/get.dart';
 class OnBoardingService extends ApiManager {
   final Reader reader;
   GetStorage box = GetStorage();
-  final signupRoute = '/auth/register';
+  final signupRoute = 'auth/register';
   final loginRoute = 'auth/login';
   final getProfileUrl = 'auth/get-user/';
-  final getvideoListUrl = '/movies';
 
   OnBoardingService(this.reader) : super(reader);
 
@@ -60,7 +59,7 @@ class OnBoardingService extends ApiManager {
     if (response.responseCodeError == null) {
       return SignUpModel.fromJson(response.data);
     } else {
-      return SignUpModel(message: "Error");
+      return SignUpModel.fromJson(response.data);
     }
   }
 

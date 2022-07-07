@@ -17,7 +17,7 @@ class SignUpModel {
 
     final Data? data;
     final Data? errors;
-    final String? message;
+    final dynamic message;
 
     factory SignUpModel.fromJson(Map<String, dynamic> json) => SignUpModel(
         data: Data.fromJson(json["data"]),

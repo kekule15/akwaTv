@@ -133,9 +133,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 borderColor: false,
                 color: AppColors.primary,
                 onclick: () async {
-                  setState(() {
-                    btnLoader = true;
-                  });
                   final form = _formKey.currentState;
                   if (form!.validate()) {
                     form.save();
@@ -144,26 +141,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         emailController.text.toString(),
                         passwordController.text.toString(),
                         phoneController.text.toString());
-                    await Future.delayed(const Duration(seconds: 2), () {
-                      if (_loginViewModel.signupData.data != null) {
-                        setState(() {
-                          btnLoader = false;
-                        });
-                        Get.to(() => const LoginPage());
-                      } else {
-                        setState(() {
-                          btnLoader = false;
-                        });
-                      }
-                    });
-                  } else {
-                    setState(() {
-                      btnLoader = false;
-                    });
-                  }
-                  // Get.to(() => const CongratulationScreen());
+                  } else {}
                 },
-                title: btnLoader
+                title: _loginViewModel.signupBtn
                     ? const SizedBox(
                         height: 20,
                         width: 20,
