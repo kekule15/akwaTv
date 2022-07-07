@@ -1,6 +1,7 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class CongratulationScreen extends ConsumerStatefulWidget {
   const CongratulationScreen({Key? key}) : super(key: key);
@@ -19,9 +21,13 @@ class CongratulationScreen extends ConsumerStatefulWidget {
 }
 
 class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
+  GetStorage box = GetStorage();
   @override
   Widget build(BuildContext context) {
     final _loginViewModel = ref.watch(viewModel);
+    final _videoViewModel = ref.watch(videoViewModel);
+    final movieViewModel = ref.watch(movieController);
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +48,7 @@ class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
             height: ySpaceMin,
           ),
           Text(
-            _loginViewModel.userProfileData.data!.data!.username!,
+            box.read('username'),
             textAlign: TextAlign.center,
             style: TextStyle(color: AppColors.white, fontSize: 17.sp),
           ),
@@ -96,6 +102,8 @@ class _CongratulationScreenState extends ConsumerState<CongratulationScreen> {
               borderColor: false,
               color: AppColors.primary,
               onclick: () {
+                _videoViewModel.getVideoList();
+                //  movieViewModel.setMovieUrl( 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
                 Get.offAll(() => const HomeNavigation());
               },
               title: Text(

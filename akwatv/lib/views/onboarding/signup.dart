@@ -38,6 +38,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           padding:
               const EdgeInsets.symmetric(horizontal: generalHorizontalPadding),
           child: ListView(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
             children: [
               const SizedBox(
                 height: ySpace3 * 1,
@@ -63,7 +65,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: nameController,
-                hint: 'UserName',
+                headtext: 'Full name',
+                hint: 'Enter your full name',
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.name,
               ),
@@ -77,10 +80,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 ],
                 validate: true,
                 fillColor: AppColors.termsTextColor,
+                headtext: 'Email address',
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
-                hint: 'Email address',
+                hint: 'Enter your email address',
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.email,
               ),
@@ -94,10 +98,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 ],
                 validate: true,
                 fillColor: AppColors.termsTextColor,
+                headtext: 'phone number',
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: phoneController,
-                hint: 'Phone number',
+                hint: 'Enter your phone number',
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.phone,
               ),
@@ -113,10 +118,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 validate: true,
                 fillColor: AppColors.termsTextColor,
                 obscureText: _obscure,
+                headtext: 'Password',
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: passwordController,
-                hint: 'Password',
+                hint: 'Enter your password',
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 sIcon: const IsObscure(),
               ),

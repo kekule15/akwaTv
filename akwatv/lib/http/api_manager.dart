@@ -13,7 +13,8 @@ import 'dart:developer' as _logger;
 abstract class ApiManager {
   late Dio dio;
 
-  final baseURL = 'http://139.162.208.200:8800/api';
+  final baseURL =
+      'http://akwaamaka-env.eba-ws9utthj.us-east-1.elasticbeanstalk.com/api/';
   final Reader read;
   late NavigationService _navigationService;
 
@@ -37,6 +38,7 @@ abstract class ApiManager {
     setHeader(formdata: formdata, token: token);
     params?.removeWhere((key, value) => value == null);
     final fullRoute = '$baseURL$route';
+    print(fullRoute);
     return makeRequest(dio.get(
       fullRoute,
       queryParameters: params,
@@ -53,6 +55,7 @@ abstract class ApiManager {
     params?.removeWhere((key, value) => value == null);
     //body?.removeWhere((key, value) => value == null);
     final fullRoute = '$baseURL$route';
+    print(fullRoute);
     if (formdata) {
       body = FormData.fromMap(body as Map<String, dynamic>);
     }
@@ -73,6 +76,7 @@ abstract class ApiManager {
     params?.removeWhere((key, value) => value == null);
     //body?.removeWhere((key, value) => value == null);
     final fullRoute = '$baseURL$route';
+    print(fullRoute);
 
     return makeRequest(dio.put(
       fullRoute,

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:akwatv/http/api_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
-import 'package:akwatv/models/user_model.dart';
+import 'package:akwatv/models/login)response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/video_model.dart';
@@ -17,30 +17,27 @@ class VideoViewService extends ApiManager {
   final Reader reader;
   GetStorage box = GetStorage();
 
-  final getvideoListUrl = '/movies';
+  final getvideoListUrl = "movies";
 
   VideoViewService(this.reader) : super(reader);
 
   // get list of videos
-  Future<List<HomeVideoModel>?> getListOfVideos() async {
+  Future<HomeVideoModel?> getListOfVideos() async {
     final response = await getHttp(getvideoListUrl, token: box.read('token'));
 
     if (response.responseCodeError == null) {
-      List data = response.data;
-      final userDataList = data.map((e) => HomeVideoModel.fromJson(e)).toList();
-      return userDataList;
+      // List data = response.data;
+      // final userDataList = data.map((e) => HomeVideoModel.fromJson(e)).toList();
+      // return userDataList;
+      return HomeVideoModel.fromJson(response.data);
     } else if (response.statusCode == 401 ||
         response.statusCode == 403 ||
         response.statusCode == 404) {
       // box.erase();
       Get.to(() => const AuthScreen());
-      //  return List<HomeVideoModel>(
-
-      // );
+      return HomeVideoModel(message: 'Request Not Succesful');
     } else {
-      // return GetProfileModel(
-      //   success: false,
-      // );
+      return HomeVideoModel(message: 'Request Not Succesful');
     }
   }
 }

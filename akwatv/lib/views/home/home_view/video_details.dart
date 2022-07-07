@@ -28,7 +28,6 @@ class VideoDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -281,12 +280,12 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Get.to(() => VideoDetailsPage(
-                                        title: PlayModel
-                                            .movieList[index].movieName,
-                                        image: PlayModel
-                                            .movieList[index].movieImage,
-                                      ));
+                                  // Get.to(() => VideoDetailsPage(
+                                  //       title: PlayModel
+                                  //           .movieList[index].movieName,
+                                  //       image: PlayModel
+                                  //           .movieList[index].movieImage,
+                                  //     ));
                                 },
                                 child: Container(
                                   height: 180,

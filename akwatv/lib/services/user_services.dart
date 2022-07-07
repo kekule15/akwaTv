@@ -1,27 +1,27 @@
-import 'package:akwatv/models/user_model.dart';
+import 'package:akwatv/models/login)response_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class UserService {
   static const userBox = 'User';
   static const boxIndex = 0;
 
-  static void addUser(UserModel? user) async {
-    var box = Hive.box<UserModel?>(userBox);
-    await box.put(boxIndex, user);
-  }
+  // static void addUser(UserModel? user) async {
+  //   var box = Hive.box<UserModel?>(userBox);
+  //   await box.put(boxIndex, user);
+  // }
 
-  static void updateUser(UserModel? user) async {
-    var box = Hive.box<UserModel?>(userBox);
-    box.putAt(boxIndex, user);
-  }
+  // static void updateUser(UserModel? user) async {
+  //   var box = Hive.box<UserModel?>(userBox);
+  //   box.putAt(boxIndex, user);
+  // }
 
-  static Future<UserModel?> getUser() async {
-    var box = Hive.box<UserModel?>(userBox);
-    return box.get(boxIndex);
-  }
+  // static Future<UserModel?> getUser() async {
+  //   var box = Hive.box<UserModel?>(userBox);
+  //   return box.get(boxIndex);
+  // }
 
-  static void deleteUser() async {
-    var box = Hive.box<UserModel?>(userBox);
-    await box.delete(userBox);
-  }
+  // static void deleteUser() async {
+  //   var box = Hive.box<UserModel?>(userBox);
+  //   await box.delete(userBox);
+  // }
 }

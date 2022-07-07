@@ -64,6 +64,7 @@ class _SplashViewState extends ConsumerState<SplashView>
 
   @override
   Widget build(BuildContext context) {
+      final _loginViewModel = ref.watch(viewModel);
     //bool _visible = true;
 
     return Scaffold(

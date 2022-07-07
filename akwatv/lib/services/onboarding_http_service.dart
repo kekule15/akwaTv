@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:akwatv/http/api_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
-import 'package:akwatv/models/user_model.dart';
+import 'package:akwatv/models/login)response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/video_model.dart';
@@ -17,14 +17,14 @@ class OnBoardingService extends ApiManager {
   final Reader reader;
   GetStorage box = GetStorage();
   final signupRoute = '/auth/register';
-  final loginRoute = '/auth/login';
-  final getProfileUrl = '/auth/getMe';
+  final loginRoute = 'auth/login';
+  final getProfileUrl = 'auth/get-user/';
   final getvideoListUrl = '/movies';
 
   OnBoardingService(this.reader) : super(reader);
 
   //Login with email and password
-  Future<UserModel> signIn(
+  Future<LoginResponseModel> signIn(
     String email,
     String password,
   ) async {
@@ -35,11 +35,9 @@ class OnBoardingService extends ApiManager {
 
     final response = await postHttp(loginRoute, _signInBody);
     if (response.responseCodeError == null) {
-      return UserModel.fromJson(response.data);
+      return LoginResponseModel.fromJson(response.data);
     } else {
-      return UserModel(
-        id: '00',
-      );
+      return LoginResponseModel.fromJson(response.data);
     }
   }
 
@@ -54,19 +52,22 @@ class OnBoardingService extends ApiManager {
       "username": name,
       "email": email,
       "password": password,
+      "confirm_password": password,
       "phone": phoneNumber,
+      "verified": false
     };
     final response = await postHttp(signupRoute, _signUpBody);
     if (response.responseCodeError == null) {
       return SignUpModel.fromJson(response.data);
     } else {
-      return SignUpModel(id: '00');
+      return SignUpModel(message: "Error");
     }
   }
 
   // get profile details
-  Future<GetProfileModel> getProfileService() async {
-    final response = await getHttp(getProfileUrl, token: box.read('token'));
+  Future<GetProfileModel> getProfileService({required dynamic userId}) async {
+    final response =
+        await getHttp(getProfileUrl + '$userId', token: box.read('token'));
     if (response.responseCodeError == null) {
       return GetProfileModel.fromJson(response.data);
     } else if (response.statusCode == 401 ||
@@ -75,11 +76,11 @@ class OnBoardingService extends ApiManager {
       // box.erase();
       Get.to(() => const AuthScreen());
       return GetProfileModel(
-        success: false,
+        message: 'Error',
       );
     } else {
       return GetProfileModel(
-        success: false,
+        message: 'Error',
       );
     }
   }

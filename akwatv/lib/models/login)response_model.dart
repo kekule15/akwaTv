@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final getProfileModel = getProfileModelFromJson(jsonString);
+//     final loginResponseModel = loginResponseModelFromJson(jsonString);
 
 import 'dart:convert';
 
-GetProfileModel getProfileModelFromJson(String str) => GetProfileModel.fromJson(json.decode(str));
+LoginResponseModel loginResponseModelFromJson(String str) => LoginResponseModel.fromJson(json.decode(str));
 
-String getProfileModelToJson(GetProfileModel data) => json.encode(data.toJson());
+String loginResponseModelToJson(LoginResponseModel data) => json.encode(data.toJson());
 
-class GetProfileModel {
-    GetProfileModel({
+class LoginResponseModel {
+    LoginResponseModel({
         this.data,
         this.errors,
         this.message,
@@ -19,8 +19,8 @@ class GetProfileModel {
     final Errors? errors;
     final String? message;
 
-    factory GetProfileModel.fromJson(Map<String, dynamic> json) => GetProfileModel(
-        data: Data.fromJson(json["data"]),
+    factory LoginResponseModel.fromJson(Map<String, dynamic> json) => LoginResponseModel(
+        data: json["data"] == null? null: Data.fromJson(json["data"]),
         errors: Errors.fromJson(json["errors"]),
         message: json["message"],
     );
@@ -34,6 +34,26 @@ class GetProfileModel {
 
 class Data {
     Data({
+        this.account,
+        this.accessToken,
+    });
+
+    final Account? account;
+    final String? accessToken;
+
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
+        account: json["account"] == null ? null : Account.fromJson(json["account"]),
+        accessToken: json["accessToken"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "account": account!.toJson(),
+        "accessToken": accessToken,
+    };
+}
+
+class Account {
+    Account({
         this.id,
         this.username,
         this.email,
@@ -69,7 +89,7 @@ class Data {
     final List<dynamic>? ratedList;
     final bool? subscriptionIsActive;
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
+    factory Account.fromJson(Map<String, dynamic> json) => Account(
         id: json["_id"],
         username: json["username"],
         email: json["email"],

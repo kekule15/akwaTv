@@ -39,8 +39,6 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
   GetStorage box = GetStorage();
   @override
   Widget build(BuildContext context) {
-    final _loginViewModel = ref.watch(viewModel);
-
     return SafeArea(
       child: Drawer(
         elevation: 10,
@@ -61,7 +59,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                       height: ySpace1,
                     ),
                     Text(
-                      _loginViewModel.userProfileData.data!.data!.username!,
+                      box.read('username'),
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: AppColors.white),
                     ),

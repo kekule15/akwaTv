@@ -10,15 +10,15 @@ import 'package:akwatv/providers/navigators.dart';
 import 'package:akwatv/services/onboarding_http_service.dart';
 import 'package:akwatv/view_models.dart/home_vm.dart';
 import 'package:akwatv/view_models.dart/login_vm.dart';
+import 'package:akwatv/view_models.dart/movie_controller_vm.dart';
 import 'package:akwatv/view_models.dart/video_service_vm.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final navService =
     Provider.autoDispose<NavigationService>((ref) => NavigationService());
 
-// //...ONBOARDING...
-// final landingViewModel =
-//     Provider.autoDispose<LandingViewModel>((ref) => LandingViewModel(ref.read));
+final movieController = ChangeNotifierProvider<MovieControllerViewModel>(
+    (ref) => MovieControllerViewModel(ref.read));
 final homeViewModel =
     ChangeNotifierProvider<HomeViewModel>((ref) => HomeViewModel(ref.read));
 

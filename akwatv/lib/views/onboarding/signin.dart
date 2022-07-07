@@ -65,12 +65,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
+                headtext: 'Email',
                 validate: true,
                 fillColor: AppColors.termsTextColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
-                hint: 'Email',
+                hint: 'Enter your email',
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.email,
               ),
@@ -83,13 +84,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
+                headtext: 'Password',
                 validate: true,
                 fillColor: AppColors.termsTextColor,
                 obscureText: _obscure,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: passwordController,
-                hint: 'Password',
+                hint: 'Enter your password',
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 sIcon: const IsObscure(),
               ),
@@ -100,9 +102,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 borderColor: false,
                 color: AppColors.primary,
                 onclick: () async {
-                  setState(() {
-                    btnLoader = true;
-                  });
                   final form = _formKey.currentState;
                   if (form!.validate()) {
                     form.save();
@@ -110,26 +109,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       emailController.text.toString(),
                       passwordController.text.toString(),
                     );
-                    await Future.delayed(const Duration(seconds: 2), () {
-                      if (_loginViewModel.loginData.data != null) {
-                        setState(() {
-                          btnLoader = false;
-                        });
-                        Get.offAll(() => const CongratulationScreen());
-                      } else {
-                        setState(() {
-                          btnLoader = false;
-                        });
-                      }
-                    });
-                  } else {
-                    setState(() {
-                      btnLoader = false;
-                    });
-                  }
+                  } else {}
                   // Get.to(() => const CongratulationScreen());
                 },
-                title: btnLoader
+                title: _loginViewModel.loginBtn
                     ? const SizedBox(
                         height: 20,
                         width: 20,

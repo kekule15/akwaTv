@@ -18,12 +18,13 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
+  //
+
   @override
   Widget build(BuildContext context) {
-    
     return ScreenUtilInit(
         designSize: const Size(360, 700),
-        builder: () => GetMaterialApp(
+        builder: (widget, child) => GetMaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Akwa Tv',
               theme: ThemeData(

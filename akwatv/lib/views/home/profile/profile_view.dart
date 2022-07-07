@@ -43,8 +43,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   GetStorage box = GetStorage();
   @override
   Widget build(BuildContext context) {
-    final _loginViewModel = ref.watch(viewModel);
-    var user = _loginViewModel.userProfileData.data!.data;
     return Scaffold(
       key: _scaffoldKey,
       drawer: const MyDrawerPage(),
@@ -60,7 +58,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 height: 100.h,
               ),
               Text(
-                user!.username!,
+                box.read('username'),
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: AppColors.white),
               ),
@@ -160,9 +158,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         child: ListView(
                           padding: EdgeInsets.all(0),
                           children: [
-                            mylistCard(user.username!, userIcon),
-                            mylistCard(user.phone ?? '+234...', callIcon),
-                            mylistCard(user.email!, emailIcon),
+                            mylistCard(box.read('username'), userIcon),
+                            mylistCard(
+                                box.read('phone') ?? '+234...', callIcon),
+                            mylistCard(box.read('email'), emailIcon),
                             mylistCard('Settings', settingsIcon, ontap: () {
                               Get.to(() => const SettingsPage());
                             }),

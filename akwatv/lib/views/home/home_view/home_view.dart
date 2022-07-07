@@ -25,11 +25,26 @@ class _HomePageState extends ConsumerState<HomePage> {
     _scaffoldKey.currentState!.openDrawer();
   }
 
+  BetterPlayerController? _betterPlayerController;
   @override
   void initState() {
+    BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
+        BetterPlayerDataSourceType.network,
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+    _betterPlayerController = BetterPlayerController(
+      const BetterPlayerConfiguration(
+          //deviceOrientationsAfterFullScreen: const [DeviceOrientation.portraitUp],
+          aspectRatio: 16 / 9,
+          controlsConfiguration: BetterPlayerControlsConfiguration(
+            enableSkips: false,
+            enableOverflowMenu: false,
+          )),
+      betterPlayerDataSource: betterPlayerDataSource,
+    );
     super.initState();
   }
- @override
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final _loginViewModel = ref.watch(viewModel);
@@ -37,6 +52,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     _loginViewModel.getProfile;
     _videoViewModel.getVideoList;
   }
+
   @override
   void dispose() {
     // _betterPlayerController!.dispose();
@@ -45,12 +61,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   bool switchMode = false;
 
-  // BetterPlayerController? _betterPlayerController;
   @override
   Widget build(BuildContext context) {
-    final _loginViewModel = ref.watch(viewModel);
     final _videoViewModel = ref.watch(videoViewModel);
-    var user = _loginViewModel.userProfileData.data!.data;
     var videoData = _videoViewModel.listVideoData.data;
     //print(videoData!.length);
     // var firstVideo = videoData![0].video.
@@ -79,43 +92,83 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       width: 1,
                                       color: AppColors.termsTextColor))),
                           width: MediaQuery.of(context).size.width,
-                          height: 300,
+                          height: 320,
                           child: Column(
                             children: [
                               Container(
                                 color: AppColors.white,
                                 child: AspectRatio(
                                   aspectRatio: 18 / 10,
-                                  child: BetterPlayer.network(''
-                                      //'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-                                      ),
+                                  child: BetterPlayer(
+                                    controller: _betterPlayerController!,
+                                  ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: Container(
-                                  color: AppColors.primary,
+                                  height: 85,
+                                  //color: AppColors.primary,
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(
-                                        height: ySpace1,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            videoData![0].title!,
-                                            style: TextStyle(
-                                                color: AppColors.white,
-                                                fontSize: 17.sp,
-                                                fontWeight:
-                                                    FontWeight.bold),
-                                          )
-                                        ],
+                                      ListTile(
+                                        dense: true,
+                                        minVerticalPadding: 0.0,
+                                        visualDensity: const VisualDensity(
+                                            horizontal: 0, vertical: -4),
+                                        contentPadding: EdgeInsets.all(0),
+                                        title: Text(
+                                          videoData!.data![0].title!,
+                                          style: TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 17.sp,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Row(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "${videoData.data![0].year!}  |",
+                                                  style: const TextStyle(
+                                                    color: AppColors.white,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text(
+                                                  "${videoData.data![0].ageLimit.toString()}+",
+                                                  style: const TextStyle(
+                                                    color: AppColors.white,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        trailing: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        VideoDetailsPage(
+                                                          title: videoData
+                                                              .data![0].title!,
+                                                          image: videoData
+                                                              .data![0].img,
+                                                        )));
+                                          },
+                                          child: const Icon(
+                                            Icons.info,
+                                            size: 30,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       )
                                     ],
                                   ),
@@ -136,6 +189,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                               // )
                             ],
                           )),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 350, 0, 10),
                         child: ListView(

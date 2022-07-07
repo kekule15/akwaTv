@@ -72,30 +72,34 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                   height: ySpace3,
                 ),
                 CustomField(
+                  style: const TextStyle(color: AppColors.white),
                   headtext: 'Enter New Password',
                   validator: () {},
                   onChanged: (value) {},
-                  fillColor: AppColors.gray,
+                  fillColor: AppColors.termsTextColor,
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   controller: newPasswordController,
                   hint: '****************',
-                  hintstyle: TextStyle(color: AppColors.white),
+                  hintstyle:
+                      const TextStyle(color: AppColors.gray, fontSize: 11),
                   fieldType: TextFieldType.name,
                 ),
                 const SizedBox(
                   height: ySpace3,
                 ),
                 CustomField(
+                  style: const TextStyle(color: AppColors.white),
                   headtext: 'Confirm New Password',
                   validator: () {},
                   onChanged: (value) {},
-                  fillColor: AppColors.gray,
+                  fillColor: AppColors.termsTextColor,
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   controller: confirmPasswordController,
                   hint: '****************',
-                  hintstyle: TextStyle(color: AppColors.white),
+                  hintstyle:
+                      const TextStyle(color: AppColors.gray, fontSize: 11),
                   fieldType: TextFieldType.name,
                 ),
               ],

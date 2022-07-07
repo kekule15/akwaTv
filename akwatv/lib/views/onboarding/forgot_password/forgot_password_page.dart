@@ -56,15 +56,16 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
               height: ySpace3 * 2,
             ),
             CustomField(
+              style: const TextStyle(color: AppColors.white),
               headtext: 'Email Address',
               validator: () {},
               onChanged: (value) {},
-              fillColor: AppColors.gray,
+              fillColor: AppColors.termsTextColor,
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               controller: emailController,
               hint: 'Enter valid email address',
-              hintstyle: TextStyle(color: AppColors.white),
+              hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
               fieldType: TextFieldType.name,
             ),
           ],
