@@ -50,7 +50,7 @@ class _ComingSoonPageState extends ConsumerState<ComingSoonPage> {
                       padding: const EdgeInsets.only(bottom: 30),
                       child: ComingSoonCard(
                           title: comingSoonVideos[index],
-                          playButton: PlayButtonWidget(
+                          playButton: playButtonWidget(
                             icon: Icon(
                               Icons.play_arrow,
                               color: AppColors.white,

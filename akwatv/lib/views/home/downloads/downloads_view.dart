@@ -77,7 +77,7 @@ class _DownLoadsPageState extends ConsumerState<DownLoadsPage> {
                                 ],
                               ),
                               SizedBox(
-                                child: PlayButtonWidget(
+                                child: playButtonWidget(
                                   icon: Icon(
                                     Icons.check,
                                     color: AppColors.white,

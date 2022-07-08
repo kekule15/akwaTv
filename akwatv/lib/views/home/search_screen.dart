@@ -100,7 +100,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                 ],
                               ),
                               SizedBox(
-                                child: PlayButtonWidget(
+                                child: playButtonWidget(
                                   icon: Icon(
                                     Icons.play_arrow,
                                     color: AppColors.white,

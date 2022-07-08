@@ -69,11 +69,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 onTap: () {
                   Get.to(() => const EditProfilePage());
                 },
-                child: CircleAvatar(
-                  radius: 40.r,
-                  backgroundColor: AppColors.primary,
-                  child: const Icon(Icons.person),
-                ),
+                child: box.read('avatar') != null
+                    ? CircleAvatar(
+                        radius: 30,
+                        backgroundColor: AppColors.primary,
+                        backgroundImage: NetworkImage(box.read('avatar')),
+                      )
+                    : CircleAvatar(
+                        radius: 40.r,
+                        backgroundColor: AppColors.primary,
+                        child: const Icon(Icons.person)),
               ),
             ],
           ),

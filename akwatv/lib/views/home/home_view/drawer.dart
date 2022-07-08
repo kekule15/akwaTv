@@ -81,11 +81,17 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                               color: AppColors.white,
                             ),
                           ),
-                          CircleAvatar(
-                            radius: 30.r,
-                            backgroundColor: AppColors.primary,
-                            child: const Icon(Icons.person),
-                          ),
+                          box.read('avatar') != null
+                              ? CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: AppColors.primary,
+                                  backgroundImage:
+                                      NetworkImage(box.read('avatar')),
+                                )
+                              : const CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: AppColors.primary,
+                                  child: const Icon(Icons.person)),
                           InkWell(
                             onTap: () {
                               Navigator.of(context).pop();

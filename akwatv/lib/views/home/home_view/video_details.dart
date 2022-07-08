@@ -1,4 +1,5 @@
 import 'package:akwatv/enums/text_field_type_enum.dart';
+import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/images.dart';
@@ -7,9 +8,11 @@ import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/forgot_password/otp_verification_page.dart';
+import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
 import 'package:akwatv/widgets/play_button_widget.dart';
+import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,10 +20,7 @@ import 'package:get/get.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class VideoDetailsPage extends ConsumerStatefulWidget {
-  final String? title;
-  final String? image;
-
-  const VideoDetailsPage({required this.title, required this.image});
+  const VideoDetailsPage({Key? key}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -28,28 +28,45 @@ class VideoDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
+  BetterPlayerController? _betterPlayerController;
+  @override
+  void didChangeDependencies() {
+    var videoData = ModalRoute.of(context)?.settings.arguments as Datum;
+    BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
+        BetterPlayerDataSourceType.network, videoData.video!);
+    _betterPlayerController = BetterPlayerController(
+      const BetterPlayerConfiguration(
+          //deviceOrientationsAfterFullScreen: const [DeviceOrientation.portraitUp],
+          aspectRatio: 16 / 9,
+          controlsConfiguration: BetterPlayerControlsConfiguration(
+            enableSkips: true,
+            enableOverflowMenu: true,
+          )),
+      betterPlayerDataSource: betterPlayerDataSource,
+    );
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _betterPlayerController!.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var videoData = ModalRoute.of(context)?.settings.arguments as Datum;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.black,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Icon(Icons.search),
-          )
-        ],
-      ),
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(0),
         children: [
           Container(
-            height: 160.h,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(widget.image!), fit: BoxFit.fill)),
+            height: 300,
+            //color: AppColors.white,
+            child: BetterPlayer(
+              controller: _betterPlayerController!,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -58,7 +75,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.title!,
+                  videoData.title!,
                   style: TextStyle(
                       color: AppColors.white,
                       fontSize: 24.sp,

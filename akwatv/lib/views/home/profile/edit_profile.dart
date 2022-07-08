@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_storage/get_storage.dart';
 
 class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   final phoneController = TextEditingController();
   bool btnLoader = false;
   final _formKey = GlobalKey<FormState>();
+  GetStorage box = GetStorage();
   @override
   void dispose() {
     nameController.clear();
@@ -38,24 +40,19 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   updateData(BuildContext context) {
-    final _loginViewModel = ref.watch(viewModel);
-    var user = _loginViewModel.userProfileData.data!.data;
-    if (user!.username != '') {
-      nameController.text = user.username!;
+    if (box.read('username') != '') {
+      nameController.text = box.read('username');
     }
-    if (user.email != '') {
-      emailController.text = user.email!;
+    if (box.read('email') != '') {
+      emailController.text = box.read('email');
     }
-    if (user.phone != '') {
-      phoneController.text = user.phone!;
+    if (box.read('phone') != '') {
+      phoneController.text = box.read('phone');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final _loginViewModel = ref.watch(viewModel);
-    var user = _loginViewModel.userProfileData.data!.data;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.black,
@@ -72,11 +69,17 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
             const SizedBox(
               height: ySpace1,
             ),
-            CircleAvatar(
-              radius: 40.r,
-              backgroundColor: AppColors.primary,
-              child: const Icon(Icons.person),
-            ),
+            box.read('avatar') != null
+                ? CircleAvatar(
+                    radius: 40.r,
+                    backgroundColor: AppColors.primary,
+                    backgroundImage: NetworkImage(box.read('avatar')),
+                  )
+                : CircleAvatar(
+                    radius: 40.r,
+                    backgroundColor: AppColors.primary,
+                    child: const Icon(Icons.person),
+                  ),
             const SizedBox(
               height: ySpace1,
             ),
