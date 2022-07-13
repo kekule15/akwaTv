@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:akwatv/http/api_manager.dart';
+import 'package:akwatv/models/change_user_password_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login)response_model.dart';
+import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/video_model.dart';
@@ -16,9 +18,11 @@ import 'package:get/get.dart';
 class OnBoardingService extends ApiManager {
   final Reader reader;
   GetStorage box = GetStorage();
-  final signupRoute = 'auth/register';
-  final loginRoute = 'auth/login';
-  final getProfileUrl = 'auth/get-user/';
+  final signupRoute = 'api/auth/register';
+  final loginRoute = 'api/auth/login';
+  final getProfileUrl = 'api/auth/get-user/';
+  final changeUserPasswordUrl = 'api/auth/update/password';
+  final uploadPicUrl = 'image/upload/';
 
   OnBoardingService(this.reader) : super(reader);
 
@@ -81,6 +85,52 @@ class OnBoardingService extends ApiManager {
       return GetProfileModel(
         message: 'Error',
       );
+    }
+  }
+
+  //change user password
+  Future<ChangeUserPassword> changeUserPassWord(
+      {required String email,
+      required String password,
+      required String newPassword,
+      required String confirmPassword}) async {
+    final body = {
+      "email": email,
+      "password": password,
+      "new_password": newPassword,
+      "confirm_new_password": confirmPassword,
+    };
+
+    final response =
+        await postHttp(changeUserPasswordUrl, body, token: box.read('token'));
+
+    if (response.responseCodeError == null) {
+      return ChangeUserPassword.fromJson(response.data);
+    } else {
+      return ChangeUserPassword.fromJson(response.data);
+    }
+  }
+
+  //upload pic service
+  Future<UploadPicModel> uploadPicService({
+    required dynamic image,
+  }) async {
+    final body = {
+      "image": image,
+    };
+
+    final response = await postHttp(
+      uploadPicUrl.replaceAll("/api", "") + box.read('userId'),
+      body,
+      formdata: true,
+      token: box.read('token'),
+    );
+    print('body sent $image');
+
+    if (response.responseCodeError == null) {
+      return UploadPicModel.fromJson(response.data);
+    } else {
+      return UploadPicModel(message: 'Error');
     }
   }
 }

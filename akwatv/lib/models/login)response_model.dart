@@ -102,7 +102,7 @@ class Account {
         lastLogin: DateTime.parse(json["last_login"]),
         avatar: json["avatar"],
         cloudinaryId: json["cloudinary_id"],
-        emailToken: EmailToken.fromJson(json["email_token"]),
+        emailToken:json["email_token"] == null? null: EmailToken.fromJson(json["email_token"]),
         watchList: List<dynamic>.from(json["watchList"].map((x) => x)),
         ratedList: List<dynamic>.from(json["ratedList"].map((x) => x)),
         subscriptionIsActive: json["subscriptionIsActive"],

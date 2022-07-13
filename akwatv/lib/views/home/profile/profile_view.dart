@@ -1,5 +1,6 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/notifications/notification_screen.dart';
@@ -8,11 +9,15 @@ import 'package:akwatv/views/home/settings/settings_screen.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
+import 'package:dio/dio.dart' as DIO;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:get/get.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:get/get.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -41,8 +46,38 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   GetStorage box = GetStorage();
+
+  XFile? image;
+  final ImagePicker _picker = ImagePicker();
+
+  takePhoto(ImageSource source, cxt) async {
+    final loginViewModel = ref.watch(viewModel);
+    setState(() {
+      loginViewModel.uploadPicBTN = true;
+    });
+    final pickedFile = await _picker.pickImage(
+        source: source, imageQuality: 50, maxHeight: 500.0, maxWidth: 500.0);
+    if (pickedFile != null) {
+      setState(() {
+        image = pickedFile;
+      });
+      String fileName = image!.path.split('/').last;
+      loginViewModel.uploadProfilePic(
+        image: await DIO.MultipartFile.fromFile(image!.path,
+            filename: fileName, contentType: MediaType('image', 'jpg')),
+      );
+
+      setState(() {
+        loginViewModel.uploadPicBTN = false;
+      });
+    }
+
+    // Navigator.pop(cxt);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final loginViewModel = ref.watch(viewModel);
     return Scaffold(
       key: _scaffoldKey,
       drawer: const MyDrawerPage(),
@@ -57,29 +92,48 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               SizedBox(
                 height: 100.h,
               ),
-              Text(
-                box.read('username'),
+              InkWell(
+                  onTap: () {
+                    takePhoto(ImageSource.gallery, context);
+                  },
+                  child: box.read('avatar') == null
+                      ? CircleAvatar(
+                          radius: 50,
+                          backgroundColor: AppColors.primary,
+                          child: loginViewModel.uploadPicBTN
+                              ? const Center(
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                )
+                              : const Icon(Icons.person))
+                      : CircleAvatar(
+                          radius: 50,
+                          backgroundColor: AppColors.primary,
+                          backgroundImage: NetworkImage(box.read('avatar')),
+                          child: loginViewModel.uploadPicBTN
+                              ? const Center(
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                )
+                              : null)),
+              SizedBox(
+                height: 10.h,
+              ),
+              const Text(
+                'Tap to Change profile picture',
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: AppColors.white),
-              ),
-              const SizedBox(
-                height: ySpace1,
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(() => const EditProfilePage());
-                },
-                child: box.read('avatar') != null
-                    ? CircleAvatar(
-                        radius: 30,
-                        backgroundColor: AppColors.primary,
-                        backgroundImage: NetworkImage(box.read('avatar')),
-                      )
-                    : CircleAvatar(
-                        radius: 40.r,
-                        backgroundColor: AppColors.primary,
-                        child: const Icon(Icons.person)),
-              ),
+              )
             ],
           ),
         ),
@@ -97,6 +151,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   color: AppColors.white,
                   size: 25.w,
                 ),
+              ),
+              Text(
+                box.read('username'),
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: AppColors.white),
               ),
               InkWell(
                 onTap: () {
@@ -171,8 +230,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                               Get.to(() => const SettingsPage());
                             }),
                             mylistCard('Logout', logoutIcon, ontap: () {
-                              box.erase();
-                              Get.to(() => const AuthScreen());
+                              showDialogWithFields();
                             }),
                             const SizedBox(
                               height: ySpace2,
@@ -251,6 +309,56 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           style: TextStyle(fontSize: 14.sp, color: AppColors.white),
         ),
       ),
+    );
+  }
+
+  void showDialogWithFields() {
+    final _viewModel = ref.watch(homeViewModel);
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text('Logout'),
+          content: Text('Sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () async {
+                box.remove('token');
+                box.remove(
+                  'phone',
+                );
+                box.remove(
+                  'avatar',
+                );
+                box.remove(
+                  'email',
+                );
+                box.remove(
+                  'username',
+                );
+                box.remove(
+                  'verified',
+                );
+                box.remove(
+                  'cloudId',
+                );
+                box.remove(
+                  'userId',
+                );
+
+                _viewModel.changeIndex(0);
+                box.erase();
+                Get.offAll(() => const AuthScreen());
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

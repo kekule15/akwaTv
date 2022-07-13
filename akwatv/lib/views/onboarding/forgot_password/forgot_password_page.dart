@@ -1,18 +1,10 @@
 import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
-import 'package:akwatv/utils/images.dart';
-import 'package:akwatv/utils/svgs.dart';
-import 'package:akwatv/utils/video_model.dart';
-import 'package:akwatv/views/home/home_view/drawer.dart';
-import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/forgot_password/otp_verification_page.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
-import 'package:akwatv/widgets/play_button_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -61,7 +53,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
               validator: () {},
               onChanged: (value) {},
               fillColor: AppColors.termsTextColor,
-              contentPadding:
+              contentPadding: const
                   EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               controller: emailController,
               hint: 'Enter valid email address',

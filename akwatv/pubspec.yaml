@@ -35,6 +35,7 @@ dependencies:
   fluttertoast: ^8.0.9
   better_player: ^0.0.82
   cached_network_image: ^3.2.1
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   flutter_test:

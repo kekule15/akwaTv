@@ -34,18 +34,6 @@ class VideoBoxWidget extends ConsumerWidget {
           children: [
             InkWell(
               onTap: ontap,
-
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => VideoDetailsPage(
-              //               title: PlayModel.movieList[index].movieName,
-              //               image: PlayModel.movieList[index].movieImage,
-              //             )));
-
-              //  Navigator.pop(context);
-              // Get.to(() => AppVideo());
-
               child: Container(
                 height: 200,
                 width: MediaQuery.of(context).size.width,

@@ -14,7 +14,7 @@ abstract class ApiManager {
   late Dio dio;
 
   final baseURL =
-      'http://akwaamaka-env.eba-ws9utthj.us-east-1.elasticbeanstalk.com/api/';
+      'http://akwaamaka-env.eba-ws9utthj.us-east-1.elasticbeanstalk.com/';
   final Reader read;
   late NavigationService _navigationService;
 

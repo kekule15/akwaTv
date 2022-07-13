@@ -17,11 +17,15 @@ class VideoViewService extends ApiManager {
   final Reader reader;
   GetStorage box = GetStorage();
 
-  final getvideoListUrl = "movies";
+  final getvideoListUrl = "api/movies";
 
   VideoViewService(this.reader) : super(reader);
 
   // get list of videos
+  //
+  //
+  
+
   Future<HomeVideoModel?> getListOfVideos() async {
     final response = await getHttp(getvideoListUrl, token: box.read('token'));
 
@@ -32,7 +36,9 @@ class VideoViewService extends ApiManager {
       return HomeVideoModel.fromJson(response.data);
     } else if (response.statusCode == 401 ||
         response.statusCode == 403 ||
-        response.statusCode == 404) {
+        response.statusCode == 404 ||
+        response.statusCode == 502 ||
+        response.statusCode == 500 ) {
       // box.erase();
       Get.to(() => const AuthScreen());
       return HomeVideoModel(message: 'Request Not Succesful');

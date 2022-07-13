@@ -74,7 +74,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomCenter,
-                  stops: [
+                  stops: const [
                 0.0,
                 1.7
               ],

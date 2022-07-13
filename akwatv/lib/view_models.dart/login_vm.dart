@@ -1,28 +1,26 @@
 //import 'dart:developer' as _logger;
 
+import 'package:akwatv/models/change_user_password_model.dart';
 import 'package:akwatv/models/future_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login)response_model.dart';
-import 'package:akwatv/models/vidoe_model.dart';
-import 'package:akwatv/services/user_services.dart';
-import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
-import 'package:akwatv/utils/router.dart';
-import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
 import 'package:akwatv/views/onboarding/congratulation_page.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hive/hive.dart';
 
 class LoginViewModel extends BaseViewModel {
   final Reader read;
   FutureManager<LoginResponseModel?> loginData = FutureManager();
   FutureManager<SignUpModel?> signupData = FutureManager();
+  FutureManager<ChangeUserPassword?> changePasswordData = FutureManager();
+  FutureManager<UploadPicModel?> uploadPicData = FutureManager();
   FutureManager<GetProfileModel?> userProfileData = FutureManager();
   LoginViewModel(this.read) : super(read) {
     getProfile(userId: box.read('userId'));
@@ -30,6 +28,9 @@ class LoginViewModel extends BaseViewModel {
 
   bool loginBtn = false;
   bool signupBtn = false;
+  bool changePasswordBTN = false;
+  bool uploadPicBTN = false;
+
   GetStorage box = GetStorage();
   login(String email, String password) async {
     loginBtn = true;
@@ -131,7 +132,6 @@ class LoginViewModel extends BaseViewModel {
       userProfileData.onSuccess(res);
 
       box.write('phone', res.data!.phone);
-      box.write('avatar', res.data!.avatar);
       box.write('email', res.data!.email);
       box.write('username', res.data!.username);
       box.write('verified', res.data!.verified);
@@ -142,5 +142,72 @@ class LoginViewModel extends BaseViewModel {
       userProfileData.onError;
     }
     setBusy(false);
+  }
+
+  // change user password
+  Future changeUserPassword(
+      {required String email,
+      required String password,
+      required String newPassword,
+      required String confirmPassword}) async {
+    changePasswordBTN = true;
+    changePasswordData.load();
+    notifyListeners();
+    final res = await read(onboardingProvider).changeUserPassWord(
+        email: email,
+        password: password,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword);
+
+    if (res.message == "ACT-PASSWORD-RESET-SUCCESS") {
+      changePasswordData.onSuccess(res);
+      NotifyMe.showAlert(res.message!);
+      changePasswordBTN = false;
+      Get.back();
+      notifyListeners();
+    } else if (res.message == 'WRONG-PASSWORD-CODE') {
+      changePasswordData.onError;
+      NotifyMe.showAlert(res.message!);
+      changePasswordBTN = false;
+      notifyListeners();
+    } else if (res.message == 'PASSWORD-CANT-BE-SAME-WITH-OLD-PASSWORD') {
+      changePasswordData.onError;
+      NotifyMe.showAlert(res.message!);
+      changePasswordBTN = false;
+      notifyListeners();
+    } else if (res.message == 'Invalid requests') {
+      changePasswordData.onError;
+      NotifyMe.showAlert(res.message!);
+      changePasswordBTN = false;
+      notifyListeners();
+    } else {
+      changePasswordData.onError;
+      NotifyMe.showAlert('Change of password was not completed');
+      changePasswordBTN = false;
+      notifyListeners();
+    }
+    changePasswordBTN = false;
+  }
+
+  // upload profile picture
+   uploadProfilePic({required dynamic image}) async {
+    uploadPicData.load();
+    uploadPicBTN = true;
+    notifyListeners();
+
+    final res = await read(onboardingProvider).uploadPicService(image: image);
+
+    if (res.message == 'Request successful') {
+      uploadPicData.onSuccess(res);
+
+      box.write('avatar', res.data!.user!.avatar);
+      uploadPicBTN = false;
+      notifyListeners();
+    } else {
+      uploadPicData.onError;
+      uploadPicBTN = false;
+      notifyListeners();
+    }
+    uploadPicBTN = false;
   }
 }
