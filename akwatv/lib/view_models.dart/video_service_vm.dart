@@ -1,5 +1,6 @@
 //import 'dart:developer' as _logger;
 
+import 'package:akwatv/models/addto_watchlist_model.dart';
 import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/future_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
@@ -24,11 +25,13 @@ class VideoServiceViewModel extends BaseViewModel {
   final Reader read;
   FutureManager<HomeVideoModel> listVideoData = FutureManager();
   FutureManager<CategoryModel> categoryListData = FutureManager();
+  FutureManager<AddToWatchListModel> addToWatchListData = FutureManager();
   VideoServiceViewModel(this.read) : super(read) {
     getVideoList();
     getCategoryList();
   }
   GetStorage box = GetStorage();
+  bool addTOListBTN = false;
 
   getVideoList() async {
     listVideoData.load();
@@ -55,5 +58,27 @@ class VideoServiceViewModel extends BaseViewModel {
       categoryListData.onError;
     }
     setBusy(false);
+  }
+
+  //add to watch list
+
+  addToWatchListService({required dynamic movieID}) async {
+    addTOListBTN = true;
+    addToWatchListData.load();
+    notifyListeners();
+    final res =
+        await read(videoServiceProvider).addToWatchList(movieID: movieID);
+    if (res != null) {
+      addToWatchListData.onSuccess(res);
+      NotifyMe.showAlert(res.message!);
+      addTOListBTN = false;
+      notifyListeners();
+    } else {
+      addTOListBTN = false;
+      NotifyMe.showAlert(res!.message!);
+      addToWatchListData.onError;
+      notifyListeners();
+    }
+    addTOListBTN = false;
   }
 }

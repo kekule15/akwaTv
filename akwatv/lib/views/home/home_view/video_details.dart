@@ -26,6 +26,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
   String url = '';
   String description = '';
   String mtitle = '';
+  dynamic movieID = '';
   @override
   void didChangeDependencies() {
     // var videoData = ModalRoute.of(context)?.settings.arguments as Datum;
@@ -33,6 +34,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
       url = widget.videoData.video!;
       description = widget.videoData.desc!;
       mtitle = widget.videoData.title!;
+      movieID = widget.videoData.id;
     });
     initPlayer(link: url);
 
@@ -69,13 +71,15 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
   void resetPlayer(
       {required dynamic videoLink,
       required String title,
-      required String desc}) {
+      required String desc,
+      required String id}) {
     disposePlayer();
     initPlayer(link: videoLink);
     setState(() {
       mtitle = title;
       description = desc;
       url = videoLink;
+      movieID = id;
     });
   }
 
@@ -162,15 +166,26 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                         Row(
                           children: [
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                _videoViewModel.addToWatchListService(
+                                    movieID: movieID);
+                              },
                               child: Column(
-                                children: const [
-                                  Icon(
-                                    Icons.add,
-                                    color: AppColors.white,
-                                    size: 20,
-                                  ),
-                                  Text(
+                                children: [
+                                  _videoViewModel.addTOListBTN
+                                      ? const SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator(
+                                            color: AppColors.primary,
+                                          ),
+                                        )
+                                      : const Icon(
+                                          Icons.add,
+                                          color: AppColors.white,
+                                          size: 20,
+                                        ),
+                                  const Text(
                                     'Add To List',
                                     style: TextStyle(
                                         color: AppColors.white, fontSize: 12),
@@ -286,14 +301,17 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                                           child: HorizontalVideoBoxWidget(
                                               ontap: () {
                                                 resetPlayer(
-                                                  videoLink:
-                                                      similarVideoData[index]
-                                                          .video!,
-                                                  title: similarVideoData[index]
-                                                      .title!,
-                                                  desc: similarVideoData[index]
-                                                      .desc!,
-                                                );
+                                                    videoLink:
+                                                        similarVideoData[index]
+                                                            .video!,
+                                                    title:
+                                                        similarVideoData[index]
+                                                            .title!,
+                                                    desc:
+                                                        similarVideoData[index]
+                                                            .desc!,
+                                                    id: similarVideoData[index]
+                                                        .id!);
                                               },
                                               img: similarVideoData[index].img!,
                                               title: similarVideoData[index]
