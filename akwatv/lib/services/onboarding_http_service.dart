@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:akwatv/http/api_manager.dart';
 import 'package:akwatv/models/change_user_password_model.dart';
+import 'package:akwatv/models/forgot_password_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login)response_model.dart';
@@ -23,6 +24,7 @@ class OnBoardingService extends ApiManager {
   final getProfileUrl = 'api/auth/get-user/';
   final changeUserPasswordUrl = 'api/auth/update/password';
   final uploadPicUrl = 'image/upload/';
+  final forgotPasswordUrl = 'api/auth/forgot-password';
 
   OnBoardingService(this.reader) : super(reader);
 
@@ -120,7 +122,7 @@ class OnBoardingService extends ApiManager {
     };
 
     final response = await postHttp(
-      uploadPicUrl.replaceAll("/api", "") + box.read('userId'),
+      uploadPicUrl + box.read('userId'),
       body,
       formdata: true,
       token: box.read('token'),
@@ -131,6 +133,25 @@ class OnBoardingService extends ApiManager {
       return UploadPicModel.fromJson(response.data);
     } else {
       return UploadPicModel(message: 'Error');
+    }
+  }
+
+  //forgot password stage 1
+  Future<ForgotPassWordModel> forgotPassword({
+    required dynamic email,
+  }) async {
+    final body = {"email": email, "stage": 1};
+
+    final response = await postHttp(
+      forgotPasswordUrl,
+      body,
+      token: box.read('token'),
+    );
+
+    if (response.responseCodeError == null) {
+      return ForgotPassWordModel.fromJson(response.data);
+    } else {
+      return ForgotPassWordModel(message: 'Error');
     }
   }
 }

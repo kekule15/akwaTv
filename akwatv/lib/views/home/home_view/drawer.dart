@@ -3,6 +3,7 @@ import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/responsive.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/views/home/home_view/video_category_page.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/views/home/settings/settings_screen.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
@@ -40,6 +41,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
   GetStorage box = GetStorage();
   @override
   Widget build(BuildContext context) {
+    final videoProvider = ref.watch(videoViewModel);
     return Drawer(
       elevation: 10,
       backgroundColor: AppColors.black,
@@ -128,13 +130,18 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: List.generate(
-                          movieTypes.length,
+                          videoProvider.categoryListData.data!.data!.length,
                           (index) => Padding(
                             padding: const EdgeInsets.only(bottom: 20),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(() => VideoCategoryPage(),
+                                    arguments: videoProvider
+                                        .categoryListData.data!.data![index]);
+                              },
                               child: Text(
-                                movieTypes[index],
+                                videoProvider.categoryListData.data!
+                                    .data![index].genre!.capitalizeFirst!,
                                 style: TextStyle(
                                     color: AppColors.white, fontSize: 13.sp),
                               ),
@@ -277,7 +284,4 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
       },
     );
   }
-
-
-
 }

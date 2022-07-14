@@ -1,5 +1,6 @@
 //import 'dart:developer' as _logger;
 
+import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/future_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
@@ -22,8 +23,10 @@ import 'package:hive/hive.dart';
 class VideoServiceViewModel extends BaseViewModel {
   final Reader read;
   FutureManager<HomeVideoModel> listVideoData = FutureManager();
+  FutureManager<CategoryModel> categoryListData = FutureManager();
   VideoServiceViewModel(this.read) : super(read) {
     getVideoList();
+    getCategoryList();
   }
   GetStorage box = GetStorage();
 
@@ -38,6 +41,18 @@ class VideoServiceViewModel extends BaseViewModel {
       notifyListeners();
     } else {
       listVideoData.onError;
+    }
+    setBusy(false);
+  }
+
+  getCategoryList() async {
+    categoryListData.load();
+    final res = await read(videoServiceProvider).getCategoryList();
+    if (res != null) {
+      categoryListData.onSuccess(res);
+      notifyListeners();
+    } else {
+      categoryListData.onError;
     }
     setBusy(false);
   }

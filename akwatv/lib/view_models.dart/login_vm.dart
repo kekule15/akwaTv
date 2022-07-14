@@ -1,6 +1,7 @@
 //import 'dart:developer' as _logger;
 
 import 'package:akwatv/models/change_user_password_model.dart';
+import 'package:akwatv/models/forgot_password_model.dart';
 import 'package:akwatv/models/future_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
@@ -10,6 +11,7 @@ import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
 import 'package:akwatv/views/onboarding/congratulation_page.dart';
+import 'package:akwatv/views/onboarding/forgot_password/otp_verification_page.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -21,6 +23,8 @@ class LoginViewModel extends BaseViewModel {
   FutureManager<SignUpModel?> signupData = FutureManager();
   FutureManager<ChangeUserPassword?> changePasswordData = FutureManager();
   FutureManager<UploadPicModel?> uploadPicData = FutureManager();
+
+  FutureManager<ForgotPassWordModel?> forgotPasswordData = FutureManager();
   FutureManager<GetProfileModel?> userProfileData = FutureManager();
   LoginViewModel(this.read) : super(read) {
     getProfile(userId: box.read('userId'));
@@ -30,6 +34,7 @@ class LoginViewModel extends BaseViewModel {
   bool signupBtn = false;
   bool changePasswordBTN = false;
   bool uploadPicBTN = false;
+  bool forgotPasswordBTN = false;
 
   GetStorage box = GetStorage();
   login(String email, String password) async {
@@ -190,7 +195,7 @@ class LoginViewModel extends BaseViewModel {
   }
 
   // upload profile picture
-   uploadProfilePic({required dynamic image}) async {
+  uploadProfilePic({required dynamic image}) async {
     uploadPicData.load();
     uploadPicBTN = true;
     notifyListeners();
@@ -209,5 +214,26 @@ class LoginViewModel extends BaseViewModel {
       notifyListeners();
     }
     uploadPicBTN = false;
+  }
+
+  // forgot password
+  forgotPasswordService({required dynamic email}) async {
+    forgotPasswordData.load();
+    forgotPasswordBTN = true;
+    notifyListeners();
+
+    final res = await read(onboardingProvider).forgotPassword(email: email);
+
+    if (res.message == 'Verification token sent') {
+      forgotPasswordData.onSuccess(res);
+      forgotPasswordBTN = false;
+      Get.to(() => const OTPVerificationPage());
+      notifyListeners();
+    } else {
+      forgotPasswordData.onError;
+      forgotPasswordBTN = false;
+      notifyListeners();
+    }
+    forgotPasswordBTN = false;
   }
 }

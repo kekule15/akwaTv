@@ -75,7 +75,7 @@ class VideoBoxWidget extends ConsumerWidget {
                   fontWeight: FontWeight.bold),
             ),
             const SizedBox(
-              height: 5,
+              height: 15,
             ),
             SizedBox(
               width: 300,
@@ -88,11 +88,57 @@ class VideoBoxWidget extends ConsumerWidget {
               ),
             ),
             const SizedBox(
-              height: 5,
+              height: 10,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class HorizontalVideoBoxWidget extends ConsumerWidget {
+  final VoidCallback ontap;
+  final String img;
+  final String title;
+  const HorizontalVideoBoxWidget({
+    Key? key,
+    required this.ontap,
+    required this.img,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: ontap,
+          child: Container(
+            height: 180,
+            width: 120,
+            decoration: BoxDecoration(
+                color: AppColors.termsTextColor,
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                    image: NetworkImage(img), fit: BoxFit.cover)),
+          ),
+        ),
+        const SizedBox(
+          height: ySpaceMin,
+        ),
+        SizedBox(
+          width: 150,
+          child: Text(
+            title,
+            style: const TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: AppColors.white,
+                fontSize: 12),
+          ),
+        ),
+      ],
     );
   }
 }

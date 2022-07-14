@@ -60,7 +60,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Get.to(() => const VideoDetailsPage(),
+                            Get.to(
+                                () => VideoDetailsPage(
+                                      videoData: videoData!.data![0],
+                                    ),
                                 arguments: videoData!.data![0]);
                           },
                           child: Container(
@@ -211,7 +214,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                               padding: const EdgeInsets.only(bottom: 20),
                               child: VideoBoxWidget(
                                 ontap: () {
-                                  Get.to(() => const VideoDetailsPage(),
+                                  Get.to(
+                                      () => VideoDetailsPage(
+                                            videoData: videoData.data![index],
+                                          ),
                                       arguments: videoData.data![index]);
                                 },
                                 img: videoData.data![index].img!,
