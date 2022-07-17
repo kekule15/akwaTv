@@ -72,7 +72,8 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
             Column(
               children: List.generate(
                   categoryVideoData.length,
-                  (index) => InkWell(
+                  (index) => 
+                  InkWell(
                         onTap: () {
                           Get.to(
                               () => VideoDetailsPage(
@@ -143,6 +144,9 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
                           ),
                         ),
                       )),
+           
+           
+           
             ),
             const SizedBox(
               height: ySpace3,

@@ -2,6 +2,7 @@
 
 import 'package:akwatv/models/addto_watchlist_model.dart';
 import 'package:akwatv/models/category_model.dart';
+import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/future_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
@@ -26,12 +27,14 @@ class VideoServiceViewModel extends BaseViewModel {
   FutureManager<HomeVideoModel> listVideoData = FutureManager();
   FutureManager<CategoryModel> categoryListData = FutureManager();
   FutureManager<AddToWatchListModel> addToWatchListData = FutureManager();
+  FutureManager<DeleteWatchListModel> deleteWatchListData = FutureManager();
   VideoServiceViewModel(this.read) : super(read) {
     getVideoList();
     getCategoryList();
   }
   GetStorage box = GetStorage();
   bool addTOListBTN = false;
+  bool deleteTOListBTN = false;
 
   getVideoList() async {
     listVideoData.load();
@@ -66,11 +69,14 @@ class VideoServiceViewModel extends BaseViewModel {
     addTOListBTN = true;
     addToWatchListData.load();
     notifyListeners();
+
     final res =
         await read(videoServiceProvider).addToWatchList(movieID: movieID);
     if (res != null) {
       addToWatchListData.onSuccess(res);
       NotifyMe.showAlert(res.message!);
+      await read(loginViewModel).getProfile(userId: box.read('userId'));
+
       addTOListBTN = false;
       notifyListeners();
     } else {
@@ -80,5 +86,28 @@ class VideoServiceViewModel extends BaseViewModel {
       notifyListeners();
     }
     addTOListBTN = false;
+  }
+
+//delete watchlist item
+  deleteWatchListservice({required dynamic movieID}) async {
+    deleteTOListBTN = true;
+    deleteWatchListData.load();
+    notifyListeners();
+
+    final res =
+        await read(videoServiceProvider).deleteWatchList(movieID: movieID);
+    if (res != null) {
+      deleteWatchListData.onSuccess(res);
+      NotifyMe.showAlert(res.message!);
+      await read(loginViewModel).getProfile(userId: box.read('userId'));
+      deleteTOListBTN = false;
+      notifyListeners();
+    } else {
+      deleteTOListBTN = false;
+      NotifyMe.showAlert(res!.message!);
+      deleteWatchListData.onError;
+      notifyListeners();
+    }
+    deleteTOListBTN = false;
   }
 }

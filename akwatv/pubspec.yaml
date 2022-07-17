@@ -36,6 +36,9 @@ dependencies:
   better_player: ^0.0.82
   cached_network_image: ^3.2.1
   image_picker: ^0.8.5+3
+  path_provider: ^2.0.11
+  permission_handler: ^10.0.0
+  dio_http_cache: ^0.3.0
 
 dev_dependencies:
   flutter_test:

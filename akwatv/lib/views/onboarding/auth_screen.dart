@@ -26,9 +26,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
+                      
                       begin: Alignment.topLeft,
                       end: Alignment.bottomCenter,
-                      stops: [
+                      stops: const [
                     0.1,
                     1.7
                   ],
@@ -54,7 +55,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      stops: [
+                      stops: const [
                         0,
                         1
                       ],
@@ -88,7 +89,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ImageWidget(asset: akwaTvLogo),
+                const ImageWidget(asset: akwaTvLogo),
                 const Text(
                   "LET’S GET STARTED",
                   style: TextStyle(color: AppColors.white),
@@ -101,7 +102,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     Get.to(() => const SignUpPage());
                   },
                   borderColor: false,
-                  title: Text(
+                  title: const Text(
                     'SignUp',
                     style: TextStyle(color: AppColors.white),
                   ),
@@ -115,7 +116,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     Get.to(() => const LoginPage());
                   },
                   borderColor: true,
-                  title: Text(
+                  title: const Text(
                     'Login',
                     style: TextStyle(color: AppColors.white),
                   ),

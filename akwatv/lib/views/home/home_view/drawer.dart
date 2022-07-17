@@ -246,7 +246,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('No'),
+              child: Text('No', style: TextStyle(color: AppColors.gray)),
             ),
             TextButton(
               onPressed: () async {
@@ -277,11 +277,14 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                 box.erase();
                 Get.offAll(() => const AuthScreen());
               },
-              child: Text('Yes'),
+              child: Text('Yes', style: TextStyle(color: AppColors.primary)),
             ),
           ],
         );
       },
     );
   }
+
+
+
 }

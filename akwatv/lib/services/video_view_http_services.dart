@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:akwatv/http/api_manager.dart';
 import 'package:akwatv/models/addto_watchlist_model.dart';
 import 'package:akwatv/models/category_model.dart';
+import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login)response_model.dart';
@@ -22,6 +23,7 @@ class VideoViewService extends ApiManager {
   final getvideoListUrl = "api/movies";
   final categoryListUrl = 'api/lists';
   final addToWatchListUrl = 'api/user/addToWatchlist';
+  final deleteWatchListUrl = 'api/user/deleteFromWatchlist';
 
   VideoViewService(this.reader) : super(reader);
 
@@ -84,6 +86,24 @@ class VideoViewService extends ApiManager {
       return AddToWatchListModel.fromJson(response.data);
     } else {
       return AddToWatchListModel(message: 'Error');
+    }
+  }
+
+  // add to watchList
+  Future<DeleteWatchListModel?> deleteWatchList(
+      {required dynamic movieID}) async {
+    final body = {"movie_id": movieID};
+
+    final response = await deleteHttp(
+      deleteWatchListUrl + "/${box.read('userId')}",
+      data: body,
+      token: box.read('token'),
+    );
+
+    if (response.responseCodeError == null) {
+      return DeleteWatchListModel.fromJson(response.data);
+    } else {
+      return DeleteWatchListModel(message: 'Error');
     }
   }
 }

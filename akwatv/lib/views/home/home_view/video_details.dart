@@ -1,14 +1,19 @@
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/views/home/home_view/text.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/video_box_widget.dart';
 import 'package:better_player/better_player.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class VideoDetailsPage extends ConsumerStatefulWidget {
   Datum videoData;
@@ -21,6 +26,9 @@ class VideoDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
+  DioCacheManager? _dioCacheManager;
+  String? _myData;
+
   BetterPlayerController? _betterPlayerController;
   List<Datum> similarVideoData = [];
   String url = '';
@@ -217,7 +225,9 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                               width: 50,
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(() => TesterPage());
+                              },
                               child: Column(
                                 children: const [
                                   Icon(
@@ -237,7 +247,26 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                               width: 50,
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () async {
+                                _dioCacheManager =
+                                    DioCacheManager(CacheConfig());
+
+                                Options _cacheOptions =
+                                    buildCacheOptions(Duration(days: 7));
+                                Dio _dio = Dio();
+                                _dio.interceptors
+                                    .add(_dioCacheManager!.interceptor);
+                                var response =
+                                    await _dio.get(url, options: _cacheOptions);
+                                setState(() {
+                                  _myData = response.data.toString();
+                                });
+                                print(_myData);
+                                // await openFile(
+                                //     url: url,
+                                //     fileName:
+                                //         "${mtitle.replaceAll(RegExp(r"\s+\b|\b\s"), "")}.mp4");
+                              },
                               child: Column(
                                 children: const [
                                   Icon(
@@ -320,10 +349,55 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                               ),
                       ],
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    _myData ?? 'Hello guy',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.white),
+                  ),
                 ],
               ),
       ),
     );
+  }
+
+  Future openFile({required String url, required String fileName}) async {
+    final file = await downloadFile(url, fileName);
+    if (file == null) {
+    } else {
+      print('path: ${file.path}');
+    }
+  }
+
+  // Download file into private folder not visible to user
+
+  Future<File?> downloadFile(String url, String name) async {
+    // storage permission ask
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+    final appStorage = await getApplicationDocumentsDirectory();
+    final file = File('${appStorage.path}/$name');
+    try {
+      final response = await Dio().get(url,
+          options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            receiveTimeout: 0,
+          ));
+
+      final raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(response.data);
+      print(file);
+      await raf.close();
+
+      return file;
+    } catch (e) {
+      return null;
+    }
   }
 }

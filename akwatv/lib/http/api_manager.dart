@@ -89,13 +89,14 @@ abstract class ApiManager {
 
   //DELETE
   Future deleteHttp(String route,
-      {Map<String, dynamic>? params, dynamic token}) async {
+      {Map<String, dynamic>? params, dynamic data, dynamic token}) async {
     setHeader(token: token);
     params?.removeWhere((key, value) => value == null);
     final fullRoute = '$baseURL$route';
 
     return makeRequest(dio.delete(
       fullRoute,
+      data: data,
       queryParameters: params,
     ));
   }
