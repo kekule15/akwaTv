@@ -353,11 +353,11 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    _myData ?? 'Hello guy',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.white),
-                  ),
+                  // Text(
+                  //   _myData ?? 'Hello guy',
+                  //   textAlign: TextAlign.center,
+                  //   style: TextStyle(color: AppColors.white),
+                  // ),
                 ],
               ),
       ),

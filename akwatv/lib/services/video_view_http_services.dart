@@ -5,6 +5,7 @@ import 'package:akwatv/models/addto_watchlist_model.dart';
 import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
+import 'package:akwatv/models/get_watchList_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login)response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
@@ -24,6 +25,7 @@ class VideoViewService extends ApiManager {
   final categoryListUrl = 'api/lists';
   final addToWatchListUrl = 'api/user/addToWatchlist';
   final deleteWatchListUrl = 'api/user/deleteFromWatchlist';
+    final getWatchListUrl = 'api/user/getWatchlist/';
 
   VideoViewService(this.reader) : super(reader);
 
@@ -104,6 +106,30 @@ class VideoViewService extends ApiManager {
       return DeleteWatchListModel.fromJson(response.data);
     } else {
       return DeleteWatchListModel(message: 'Error');
+    }
+  }
+
+
+
+  // Get watch list
+   Future<GetWatchListModel?> getWatchList() async {
+    final response = await getHttp(getWatchListUrl + box.read('userId'), token: box.read('token'));
+
+    if (response.responseCodeError == null) {
+      // List data = response.data;
+      // final userDataList = data.map((e) => HomeVideoModel.fromJson(e)).toList();
+      // return userDataList;
+      return GetWatchListModel.fromJson(response.data);
+    } else if (response.statusCode == 401 ||
+        response.statusCode == 403 ||
+        response.statusCode == 404 ||
+        response.statusCode == 502 ||
+        response.statusCode == 500) {
+      // box.erase();
+      Get.to(() => const AuthScreen());
+      return GetWatchListModel(message: 'Request Not Succesful');
+    } else {
+      return GetWatchListModel(message: 'Request Not Succesful');
     }
   }
 }

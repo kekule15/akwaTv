@@ -67,55 +67,6 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             const SizedBox(
               height: ySpace1,
             ),
-            Column(
-              children: List.generate(
-                  PlayModel.movieList.length,
-                  (index) => Card(
-                        color: AppColors.termsTextColor,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    height: 80,
-                                    width: 100,
-                                    child: ImageWidget(
-                                      asset:
-                                          PlayModel.movieList[index].movieImage,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    PlayModel.movieList[index].movieName,
-                                    style: TextStyle(
-                                        color: AppColors.white,
-                                        fontSize: 12.sp),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                child: playButtonWidget(
-                                  icon: Icon(
-                                    Icons.play_arrow,
-                                    color: AppColors.white,
-                                    size: 15.w,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )),
-            ),
-            const SizedBox(
-              height: ySpace3,
-            ),
           ],
         ),
       ),

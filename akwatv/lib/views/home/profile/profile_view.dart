@@ -33,19 +33,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<Datum> watchListVideoData = [];
   @override
   void didChangeDependencies() {
-    final loginViewModel = ref.watch(viewModel);
+    getWatchList();
+    super.didChangeDependencies();
+  }
 
+  getWatchList() async {
     final videoProvider = ref.watch(videoViewModel);
     var videoData = videoProvider.listVideoData.data;
-    var watchList = loginViewModel.userProfileData.data;
+    var watchList = videoProvider.getWatchListData.data!.data;
 
     for (var data in videoData!.data!
-        .where((element) => watchList!.data!.watchList!.contains(element.id))) {
-      print('object yes');
+        .where((element) => watchList!.contains(element.id))) {
       watchListVideoData.add(data);
     }
-
-    super.didChangeDependencies();
   }
 
   List<String> userDetailIcon = [
@@ -93,6 +93,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final loginViewModel = ref.watch(viewModel);
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: const MyDrawerPage(),
@@ -538,6 +539,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             TextButton(
               onPressed: () async {
                 videoProvider.deleteWatchListservice(movieID: movieID);
+
+                Future.delayed(Duration(seconds: 2), () {
+                  videoProvider.getAllWatchList();
+                  getWatchList();
+                  Get.back();
+                });
               },
               child: const Text(
                 'Yes',

@@ -37,64 +37,70 @@ class _DownLoadsPageState extends ConsumerState<DownLoadsPage> {
           style: TextStyle(color: AppColors.white, fontSize: 16.sp),
         ),
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: ySpace1,
-            ),
-            Column(
-              children: List.generate(
-                  PlayModel.movieList.length,
-                  (index) => Card(
-                        color: AppColors.termsTextColor,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    height: 80,
-                                    width: 100,
-                                    child: ImageWidget(
-                                      asset:
-                                          PlayModel.movieList[index].movieImage,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    PlayModel.movieList[index].movieName,
-                                    style: TextStyle(
-                                        color: AppColors.white,
-                                        fontSize: 12.sp),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                child: playButtonWidget(
-                                  icon: Icon(
-                                    Icons.check,
-                                    color: AppColors.white,
-                                    size: 10.w,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )),
-            ),
-            const SizedBox(
-              height: ySpace3,
-            ),
-          ],
-        ),
+        shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
+        children: [
+          const SizedBox(
+            height: 100,
+          ),
+          Text(
+            'No Downloaded files yet',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: AppColors.white),
+          )
+
+          // Column(
+          //   children: List.generate(
+          //       PlayModel.movieList.length,
+          //       (index) => Card(
+          //             color: AppColors.termsTextColor,
+          //             child: Padding(
+          //               padding: const EdgeInsets.only(right: 10),
+          //               child: Row(
+          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                 children: [
+          //                   Row(
+          //                     children: [
+          //                       SizedBox(
+          //                         height: 80,
+          //                         width: 100,
+          //                         child: ImageWidget(
+          //                           asset:
+          //                               PlayModel.movieList[index].movieImage,
+          //                           fit: BoxFit.cover,
+          //                         ),
+          //                       ),
+          //                       SizedBox(
+          //                         width: 20,
+          //                       ),
+          //                       Text(
+          //                         PlayModel.movieList[index].movieName,
+          //                         style: TextStyle(
+          //                             color: AppColors.white,
+          //                             fontSize: 12.sp),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                   SizedBox(
+          //                     child: playButtonWidget(
+          //                       icon: Icon(
+          //                         Icons.check,
+          //                         color: AppColors.white,
+          //                         size: 10.w,
+          //                       ),
+          //                     ),
+          //                   )
+          //                 ],
+          //               ),
+          //             ),
+          //           )),
+          // ),
+          // const SizedBox(
+          //   height: ySpace3,
+          // ),
+        ],
       ),
     );
   }

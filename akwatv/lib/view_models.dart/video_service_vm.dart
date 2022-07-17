@@ -5,6 +5,7 @@ import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/future_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
+import 'package:akwatv/models/get_watchList_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login)response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
@@ -27,14 +28,17 @@ class VideoServiceViewModel extends BaseViewModel {
   FutureManager<HomeVideoModel> listVideoData = FutureManager();
   FutureManager<CategoryModel> categoryListData = FutureManager();
   FutureManager<AddToWatchListModel> addToWatchListData = FutureManager();
+  FutureManager<GetWatchListModel> getWatchListData = FutureManager();
   FutureManager<DeleteWatchListModel> deleteWatchListData = FutureManager();
   VideoServiceViewModel(this.read) : super(read) {
     getVideoList();
     getCategoryList();
+    getAllWatchList();
   }
   GetStorage box = GetStorage();
   bool addTOListBTN = false;
   bool deleteTOListBTN = false;
+  bool getWatchLoader = false;
 
   getVideoList() async {
     listVideoData.load();
@@ -75,6 +79,7 @@ class VideoServiceViewModel extends BaseViewModel {
     if (res != null) {
       addToWatchListData.onSuccess(res);
       NotifyMe.showAlert(res.message!);
+      getAllWatchList();
       await read(loginViewModel).getProfile(userId: box.read('userId'));
 
       addTOListBTN = false;
@@ -100,6 +105,7 @@ class VideoServiceViewModel extends BaseViewModel {
       deleteWatchListData.onSuccess(res);
       NotifyMe.showAlert(res.message!);
       await read(loginViewModel).getProfile(userId: box.read('userId'));
+      getAllWatchList();
       deleteTOListBTN = false;
       notifyListeners();
     } else {
@@ -109,5 +115,23 @@ class VideoServiceViewModel extends BaseViewModel {
       notifyListeners();
     }
     deleteTOListBTN = false;
+  }
+
+  getAllWatchList() async {
+    getWatchLoader = true;
+    getWatchListData.load();
+    notifyListeners();
+
+    final res = await read(videoServiceProvider).getWatchList();
+    if (res != null) {
+      getWatchListData.onSuccess(res);
+      getWatchLoader = false;
+      notifyListeners();
+    } else {
+      getWatchLoader = false;
+      getWatchListData.onError;
+      notifyListeners();
+    }
+    getWatchLoader = false;
   }
 }

@@ -125,30 +125,38 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                   const SizedBox(
                     height: ySpace1,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: List.generate(
-                          videoProvider.categoryListData.data!.data!.length,
-                          (index) => Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
-                            child: InkWell(
-                              onTap: () {
-                                Get.to(() => VideoCategoryPage(),
-                                    arguments: videoProvider
-                                        .categoryListData.data!.data![index]);
-                              },
-                              child: Text(
-                                videoProvider.categoryListData.data!
-                                    .data![index].genre!.capitalizeFirst!,
-                                style: TextStyle(
-                                    color: AppColors.white, fontSize: 13.sp),
-                              ),
-                            ),
-                          ),
-                        )),
-                  ),
+                  videoProvider.categoryListData.data == null
+                      ? SizedBox(
+                          height: 30,
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                videoProvider
+                                    .categoryListData.data!.data!.length,
+                                (index) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 20),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Get.to(() => VideoCategoryPage(),
+                                          arguments: videoProvider
+                                              .categoryListData
+                                              .data!
+                                              .data![index]);
+                                    },
+                                    child: Text(
+                                      videoProvider.categoryListData.data!
+                                          .data![index].genre!.capitalizeFirst!,
+                                      style: TextStyle(
+                                          color: AppColors.white,
+                                          fontSize: 13.sp),
+                                    ),
+                                  ),
+                                ),
+                              )),
+                        ),
                   const Divider(
                     color: AppColors.gray,
                   ),
@@ -284,7 +292,4 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
       },
     );
   }
-
-
-
 }
