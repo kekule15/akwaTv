@@ -147,7 +147,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
               color: AppColors.primary,
               onclick: () async {
                 setState(() {
-                  btnLoader = true;
+                  //btnLoader = true;
                 });
                 final form = _formKey.currentState;
                 if (form!.validate()) {

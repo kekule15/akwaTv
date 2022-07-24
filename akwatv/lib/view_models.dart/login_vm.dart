@@ -4,14 +4,18 @@ import 'package:akwatv/models/change_user_password_model.dart';
 import 'package:akwatv/models/forgot_password_model.dart';
 import 'package:akwatv/models/future_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
+import 'package:akwatv/models/otp_verification_model.dart';
+import 'package:akwatv/models/rest_password_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login)response_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
+import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/congratulation_page.dart';
 import 'package:akwatv/views/onboarding/forgot_password/otp_verification_page.dart';
+import 'package:akwatv/views/onboarding/forgot_password/reset_password_page.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -25,6 +29,8 @@ class LoginViewModel extends BaseViewModel {
   FutureManager<UploadPicModel?> uploadPicData = FutureManager();
 
   FutureManager<ForgotPassWordModel?> forgotPasswordData = FutureManager();
+  FutureManager<OtpVerificationModel?> otpVerificationData = FutureManager();
+  FutureManager<ResetPassWordModel?> resetPasswordData = FutureManager();
   FutureManager<GetProfileModel?> userProfileData = FutureManager();
   LoginViewModel(this.read) : super(read) {
     getProfile(userId: box.read('userId'));
@@ -35,6 +41,8 @@ class LoginViewModel extends BaseViewModel {
   bool changePasswordBTN = false;
   bool uploadPicBTN = false;
   bool forgotPasswordBTN = false;
+  bool otpLoader = false;
+  bool resetPassword = false;
 
   GetStorage box = GetStorage();
   login(String email, String password) async {
@@ -216,7 +224,7 @@ class LoginViewModel extends BaseViewModel {
     uploadPicBTN = false;
   }
 
-  // forgot password
+  // forgot password stage 1
   forgotPasswordService({required dynamic email}) async {
     forgotPasswordData.load();
     forgotPasswordBTN = true;
@@ -227,13 +235,65 @@ class LoginViewModel extends BaseViewModel {
     if (res.message == 'Verification token sent') {
       forgotPasswordData.onSuccess(res);
       forgotPasswordBTN = false;
+      NotifyMe.showAlert(res.message!);
       Get.to(() => const OTPVerificationPage());
       notifyListeners();
     } else {
+      NotifyMe.showAlert(res.message!);
       forgotPasswordData.onError;
       forgotPasswordBTN = false;
       notifyListeners();
     }
     forgotPasswordBTN = false;
+  }
+
+  // forgot password stage 2 OTP Verification
+  otpVerificationService(
+      {required dynamic email, required dynamic token}) async {
+    otpVerificationData.load();
+    otpLoader = true;
+    notifyListeners();
+
+    final res = await read(onboardingProvider)
+        .otpVerificationService(email: email, token: token);
+
+    if (res.message == 'Request successful') {
+      otpVerificationData.onSuccess(res);
+      otpLoader = false;
+      NotifyMe.showAlert(res.message!);
+      Get.to(() => const ResetPasswordPage());
+      notifyListeners();
+    } else {
+      otpVerificationData.onError;
+      NotifyMe.showAlert(res.message!);
+      otpLoader = false;
+      notifyListeners();
+    }
+    otpLoader = false;
+  }
+
+  // forgot password stage 3 Reset Password
+  resetPasswordService(
+      {required dynamic email, required dynamic password}) async {
+    resetPasswordData.load();
+    resetPassword = true;
+    notifyListeners();
+
+    final res = await read(onboardingProvider)
+        .resetPassword(email: email, password: password);
+
+    if (res.message == 'ACT-PASSWORD-RESET-SUCCESS') {
+      resetPasswordData.onSuccess(res);
+      resetPassword = false;
+      NotifyMe.showAlert(res.message!);
+      Get.to(() => const LoginPage());
+      notifyListeners();
+    } else {
+      resetPasswordData.onError;
+      NotifyMe.showAlert(res.message!);
+      resetPassword = false;
+      notifyListeners();
+    }
+    resetPassword = false;
   }
 }

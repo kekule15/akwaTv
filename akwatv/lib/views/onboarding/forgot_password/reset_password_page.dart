@@ -10,6 +10,7 @@ import 'package:akwatv/views/onboarding/forgot_password/otp_verification_page.da
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
+import 'package:akwatv/widgets/obscure_icon.dart';
 import 'package:akwatv/widgets/play_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,6 +37,8 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _loginViewModel = ref.watch(viewModel);
+    bool _obscure = ref.watch(obscurePasswordProvider);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -74,33 +77,19 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                 CustomField(
                   style: const TextStyle(color: AppColors.white),
                   headtext: 'Enter New Password',
-                  validator: () {},
-                  onChanged: (value) {},
+                  validate: true,
                   fillColor: AppColors.termsTextColor,
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   controller: newPasswordController,
-                  hint: '****************',
+                  hint: '****',
                   hintstyle:
                       const TextStyle(color: AppColors.gray, fontSize: 11),
                   fieldType: TextFieldType.name,
+                  sIcon: const IsObscure(),
                 ),
                 const SizedBox(
                   height: ySpace3,
-                ),
-                CustomField(
-                  style: const TextStyle(color: AppColors.white),
-                  headtext: 'Confirm New Password',
-                  validator: () {},
-                  onChanged: (value) {},
-                  fillColor: AppColors.termsTextColor,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  controller: confirmPasswordController,
-                  hint: '****************',
-                  hintstyle:
-                      const TextStyle(color: AppColors.gray, fontSize: 11),
-                  fieldType: TextFieldType.name,
                 ),
               ],
             ),
@@ -114,12 +103,26 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
           child: CustomButton(
             onclick: () {
-              Get.to(() => const LoginPage());
+              var form = _formKey.currentState;
+              if (form!.validate()) {
+                form.save();
+                _loginViewModel.resetPasswordService(
+                    email: box.read('email'),
+                    password: newPasswordController.text.toString());
+              } else {}
             },
-            title: Text(
-              'Submit',
-              style: TextStyle(color: AppColors.white, fontSize: 14.sp),
-            ),
+            title: _loginViewModel.resetPassword
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      color: AppColors.white,
+                    ),
+                  )
+                : Text(
+                    'Submit',
+                    style: TextStyle(color: AppColors.white, fontSize: 14.sp),
+                  ),
             borderColor: false,
             color: AppColors.primary,
           ),

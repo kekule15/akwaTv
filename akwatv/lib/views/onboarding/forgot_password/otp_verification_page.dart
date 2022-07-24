@@ -7,6 +7,7 @@ import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/forgot_password/reset_password_page.dart';
+import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
 import 'package:akwatv/widgets/play_button_widget.dart';
@@ -26,31 +27,22 @@ class OTPVerificationPage extends ConsumerStatefulWidget {
 }
 
 class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
-  FocusNode focus1 = FocusNode();
-  FocusNode focus2 = FocusNode();
-  FocusNode focus3 = FocusNode();
-  FocusNode focus4 = FocusNode();
-  TextEditingController otp1 = TextEditingController();
-  TextEditingController otp2 = TextEditingController();
-  TextEditingController otp3 = TextEditingController();
-  TextEditingController otp4 = TextEditingController();
-  var otpValue;
+  TextEditingController otpController = TextEditingController();
+
   @override
   void initState() {
-    focus1.requestFocus();
     super.initState();
   }
 
-  bool btnState = false;
   GetStorage box = GetStorage();
 
   bool autovalidate = false;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final _loginViewModel = ref.watch(viewModel);
     return Scaffold(
-      body: 
-      SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.fromLTRB(25.w, 70.h, 20.w, 20.h),
           child: Form(
@@ -82,165 +74,27 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
                       fontSize: 16.sp),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
-                  height: 60.h,
+                const SizedBox(
+                  height: 30,
                 ),
-                Row(
+                CustomField(
+                  style: const TextStyle(color: AppColors.white),
+                  validate: true,
+                  isWordField: false,
+                  showPinPrefilledWidget: true,
+                  pinPutFieldCount: 6,
+                  onChanged: (value) {},
+                  fillColor: AppColors.gray4,
+                  controller: otpController,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                        ],
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value!.isEmpty == true) {
-                            return;
-                          } else {}
-                        },
-                        controller: otp1,
-                        focusNode: focus1,
-                        onChanged: (value) {
-                          if (value.length > 0) {
-                            focus1.unfocus();
-                            FocusScope.of(context).requestFocus(focus2);
-                          } else {}
-                        },
-                        style: TextStyle(color: AppColors.white),
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(15.w),
-                          hintText: '',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.white)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                              borderSide: BorderSide(
-                                  width: 1, color: AppColors.primary)),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                        ],
-                        keyboardType: TextInputType.number,
-                        controller: otp2,
-                        focusNode: focus2,
-                        onChanged: (value) {
-                          if (value.length > 0) {
-                            focus2.unfocus();
-                            FocusScope.of(context).requestFocus(focus3);
-                          } else {}
-                        },
-                        style: TextStyle(color: AppColors.white),
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(15.w),
-                          hintText: '',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.white)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                              borderSide: BorderSide(
-                                  width: 1, color: AppColors.primary)),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                        ],
-                        keyboardType: TextInputType.number,
-                        controller: otp3,
-                        focusNode: focus3,
-                        onChanged: (value) {
-                          if (value.length > 0) {
-                            focus3.unfocus();
-                            FocusScope.of(context).requestFocus(focus4);
-                          } else {}
-                        },
-                        style: TextStyle(color: AppColors.white),
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(15.w),
-                          hintText: '',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.white)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                              borderSide: BorderSide(
-                                  width: 1, color: AppColors.primary)),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                        ],
-                        keyboardType: TextInputType.number,
-                        controller: otp4,
-                        focusNode: focus4,
-                        onChanged: (value) {
-                          if (value.length > 0) {
-                            focus4.unfocus();
-                            setState(() {
-                              otpValue = "${otp1.text}" +
-                                  "${otp2.text}" +
-                                  "${otp3.text}" +
-                                  "${otp4.text}";
-                            });
-                          } else {}
-                          print(otpValue);
-                        },
-                        style: TextStyle(color: AppColors.white),
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(15),
-                          hintText: '',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.white)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                              borderSide: BorderSide(
-                                  width: 1, color: AppColors.primary)),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 50.h,
+                  hintstyle:
+                      const TextStyle(color: AppColors.gray, fontSize: 11),
                 ),
               ],
             ),
           ),
         ),
       ),
-      
-      
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
         color: AppColors.black,
@@ -249,13 +103,17 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
           child: CustomButton(
             borderColor: false,
             color: AppColors.primary,
-            onclick: otpValue == null
-                ? () {}
-                : () {
-                    Get.to(() => const ResetPasswordPage());
-                    // confirmOTP();
-                  },
-            title: btnState
+            onclick: () {
+              //print(otpController.text);
+              var form = _formKey.currentState;
+              if (form!.validate()) {
+                form.save();
+                _loginViewModel.otpVerificationService(
+                    email: box.read('email'),
+                    token: otpController.text.toString());
+              } else {}
+            },
+            title: _loginViewModel.otpLoader
                 ? const SizedBox(
                     height: 20,
                     width: 20,
@@ -264,7 +122,7 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
                     ),
                   )
                 : Text(
-                    'Reset',
+                    'Confirm',
                     style: TextStyle(
                         color: AppColors.white,
                         fontWeight: FontWeight.bold,
@@ -276,42 +134,7 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
     );
   }
 
-  // confirmOTP() async {
-  //   print(otpValue);
-  //   setState(() {
-  //     btnState = true;
-  //   });
-  //   final FormState? form = _formKey.currentState;
-  //   if (!form!.validate()) {
-  //     setState(() {
-  //       autovalidate = true;
-  //       btnState = false;
-  //     });
-  //   } else {
-  //     Map<String, dynamic>? result = await UserSignIn()
-  //         .passwordToken(
-  //       otpValue!,
-  //     )
-  //         .catchError((error) {
-  //       setState(() {
-  //         btnState = false;
-  //       });
-  //     });
-  //     if (result!['error'] == false) {
-  //       setState(() {
-  //         btnState = false;
-  //       });
-  //       NotifyMe().showAlert(result['message']);
-  //       Get.offAll(() => ResetPassword(
-  //             email: result['data'],
-  //           ));
-  //     } else {
-  //       setState(() {
-  //         btnState = false;
-  //       });
-  //       NotifyMe().showAlert(result['message']);
-  //     }
-  //   }
-  // }
-
+ 
+ 
+ 
 }

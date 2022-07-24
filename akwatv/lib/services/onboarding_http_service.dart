@@ -4,6 +4,8 @@ import 'package:akwatv/http/api_manager.dart';
 import 'package:akwatv/models/change_user_password_model.dart';
 import 'package:akwatv/models/forgot_password_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
+import 'package:akwatv/models/otp_verification_model.dart';
+import 'package:akwatv/models/rest_password_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login)response_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
@@ -25,6 +27,8 @@ class OnBoardingService extends ApiManager {
   final changeUserPasswordUrl = 'api/auth/update/password';
   final uploadPicUrl = 'image/upload/';
   final forgotPasswordUrl = 'api/auth/forgot-password';
+  final otpVerificationUrl = 'api/auth/verify-token';
+  final resetPasswordUrl = 'api/auth/reset-password';
 
   OnBoardingService(this.reader) : super(reader);
 
@@ -152,6 +156,44 @@ class OnBoardingService extends ApiManager {
       return ForgotPassWordModel.fromJson(response.data);
     } else {
       return ForgotPassWordModel(message: 'Error');
+    }
+  }
+
+  //forgot password stage 2 OTP verification
+  Future<OtpVerificationModel> otpVerificationService({
+    required dynamic email,
+    required dynamic token,
+  }) async {
+    final body = {"email": email, "token": token, "stage": 2};
+
+    final response = await postHttp(
+      otpVerificationUrl,
+      body,
+    );
+
+    if (response.responseCodeError == null) {
+      return OtpVerificationModel.fromJson(response.data);
+    } else {
+      return OtpVerificationModel(message: 'Error');
+    }
+  }
+
+  //forgot password stage 3 Reset Password
+  Future<ResetPassWordModel> resetPassword({
+    required dynamic email,
+    required dynamic password,
+  }) async {
+    final body = {"email": email, "password": password, "stage": 3};
+
+    final response = await postHttp(
+      resetPasswordUrl,
+      body,
+    );
+
+    if (response.responseCodeError == null) {
+      return ResetPassWordModel.fromJson(response.data);
+    } else {
+      return ResetPassWordModel(message: 'Error');
     }
   }
 }

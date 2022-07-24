@@ -1,3 +1,5 @@
+import 'dart:io' as io;
+
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
@@ -14,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class VideoDetailsPage extends ConsumerStatefulWidget {
   Datum videoData;
@@ -121,6 +124,90 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
       });
     }
 
+    final Dio dio = Dio();
+    bool loading = false;
+    double progress = 0;
+    Future<bool> _requestPermission(Permission permission) async {
+      if (await permission.isGranted) {
+        return true;
+      } else {
+        var result = await permission.request();
+        if (result == PermissionStatus.granted) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    Future<bool> saveVideo(String url, String fileName) async {
+      Directory? directory;
+      try {
+        if (Platform.isAndroid) {
+          if (await _requestPermission(Permission.storage)) {
+            directory = await getApplicationDocumentsDirectory();
+            String newPath = "";
+            print(directory);
+            List<String> paths = directory.path.split("/");
+            for (int x = 1; x < paths.length; x++) {
+              String folder = paths[x];
+              if (folder != "Android") {
+                newPath += "/" + folder;
+              } else {
+                break;
+              }
+            }
+            newPath = newPath + "/Kekule";
+            directory = Directory(newPath);
+          } else {
+            return false;
+          }
+        } else {
+          if (await _requestPermission(Permission.photos)) {
+            directory = await getTemporaryDirectory();
+          } else {
+            return false;
+          }
+        }
+        File saveFile = File(directory.path + "/$fileName");
+        if (!await directory.exists()) {
+          await directory.create(recursive: true);
+        }
+        if (await directory.exists()) {
+          await dio.download(url, saveFile.path,
+              onReceiveProgress: (value1, value2) {
+            setState(() {
+              progress = value1 / value2;
+            });
+          });
+          if (Platform.isIOS) {
+            // await ImageGallerySaver.saveFile(saveFile.path,
+            //     isReturnPathOfIOS: true);
+          }
+          return true;
+        }
+        return false;
+      } catch (e) {
+        print(e);
+        return false;
+      }
+    }
+
+    downloadFile(String url) async {
+      setState(() {
+        loading = true;
+        progress = 0;
+      });
+      bool downloaded = await saveVideo(url, "video.mp4");
+      if (downloaded) {
+        print("File Downloaded");
+      } else {
+        print("Problem Downloading File");
+      }
+      setState(() {
+        loading = false;
+      });
+    }
+
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
@@ -225,8 +312,21 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                               width: 50,
                             ),
                             InkWell(
-                              onTap: () {
-                                Get.to(() => TesterPage());
+                              onTap: () async {
+                                // Get.to(() => TesterPage());
+                                List file = [];
+                                var directory =
+                                    (await getApplicationDocumentsDirectory())
+                                        .path;
+
+                                print(io.Directory("$directory/")
+                                    .listSync()
+                                    .where((element) =>
+                                        element.path ==
+                                        '/data/user/0/com.example.akwatv/app_flutter/Kekule'));
+
+                                print('$directory/$movieID.mp4');
+                                print(directory);
                               },
                               child: Column(
                                 children: const [
@@ -248,24 +348,30 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                             ),
                             InkWell(
                               onTap: () async {
-                                _dioCacheManager =
-                                    DioCacheManager(CacheConfig());
-
-                                Options _cacheOptions =
-                                    buildCacheOptions(Duration(days: 7));
-                                Dio _dio = Dio();
-                                _dio.interceptors
-                                    .add(_dioCacheManager!.interceptor);
-                                var response =
-                                    await _dio.get(url, options: _cacheOptions);
-                                setState(() {
-                                  _myData = response.data.toString();
-                                });
-                                print(_myData);
+                                // await DefaultCacheManager().downloadFile(url);
+                                // var file = await DefaultCacheManager()
+                                //     .getSingleFile(url);
+                                // print(" augustus $file");
                                 // await openFile(
                                 //     url: url,
                                 //     fileName:
                                 //         "${mtitle.replaceAll(RegExp(r"\s+\b|\b\s"), "")}.mp4");
+
+                                // var dir =
+                                //     await getApplicationDocumentsDirectory();
+                                // String filePath = "/$movieID.mp4";
+                                // String fullPath = dir.path + filePath;
+                                // var videoResponse =
+                                //     await Dio().download(url, fullPath);
+
+                                // if (videoResponse.statusCode == 200) {
+                                //   //videoPath = fullPath;
+                                //   print("Downloaded: $fullPath");
+                                // } else {
+                                //   print("Download error");
+                                // }
+
+                                downloadFile(url);
                               },
                               child: Column(
                                 children: const [
@@ -364,40 +470,41 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
     );
   }
 
-  Future openFile({required String url, required String fileName}) async {
-    final file = await downloadFile(url, fileName);
-    if (file == null) {
-    } else {
-      print('path: ${file.path}');
-    }
-  }
+  // Future openFile({required String url, required String fileName}) async {
+  //   final file = await downloadFile(url, fileName);
+  //   if (file == null) {
+  //   } else {
+  //     print('path: ${file.path}');
+  //   }
+  // }
 
-  // Download file into private folder not visible to user
+  // // Download file into private folder not visible to user
 
-  Future<File?> downloadFile(String url, String name) async {
-    // storage permission ask
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-    }
-    final appStorage = await getApplicationDocumentsDirectory();
-    final file = File('${appStorage.path}/$name');
-    try {
-      final response = await Dio().get(url,
-          options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: false,
-            receiveTimeout: 0,
-          ));
+  // Future<File?> downloadFile(String url, String name) async {
+  //   // storage permission ask
+  //   var status = await Permission.storage.status;
+  //   if (!status.isGranted) {
+  //     await Permission.storage.request();
+  //   }
+  //   final appStorage = await getApplicationDocumentsDirectory();
+  //   final file = File('${appStorage.path}/$name');
+  //   try {
+  //     final response = await Dio().get(url,
+  //         options: Options(
+  //           responseType: ResponseType.bytes,
+  //           followRedirects: false,
+  //           receiveTimeout: 0,
+  //         ));
 
-      final raf = file.openSync(mode: FileMode.write);
-      raf.writeFromSync(response.data);
-      print(file);
-      await raf.close();
+  //     final raf = file.openSync(mode: FileMode.write);
+  //     raf.writeFromSync(response.data);
+  //     print(file);
+  //     await raf.close();
 
-      return file;
-    } catch (e) {
-      return null;
-    }
-  }
+  //     return file;
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
+
 }
