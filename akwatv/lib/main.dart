@@ -1,4 +1,6 @@
+import 'package:akwatv/firebase_options.dart';
 import 'package:akwatv/styles/appColors.dart';
+import 'package:akwatv/utils/notification_fcm.dart';
 import 'package:akwatv/views/onboarding/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,19 +8,38 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
-  //
+  @override
+  void initState() {
+    setUpNotification();
+    super.initState();
+  }
+
+  setUpNotification() async {
+    await PushNotificationsManager(
+      context: context,
+    ).init();
+  }
 
   @override
   Widget build(BuildContext context) {

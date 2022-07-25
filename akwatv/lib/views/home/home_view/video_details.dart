@@ -4,12 +4,14 @@ import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/views/home/home_view/text.dart';
+import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/video_box_widget.dart';
 import 'package:better_player/better_player.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
@@ -28,9 +30,46 @@ class VideoDetailsPage extends ConsumerStatefulWidget {
       _VideoDetailsPageState();
 }
 
-class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
-  DioCacheManager? _dioCacheManager;
-  String? _myData;
+class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
+    with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("didChangeAppLifecycleState $state");
+    switch (state) {
+      case AppLifecycleState.inactive:
+        {
+          _betterPlayerController?.dispose();
+          _betterPlayerController = null;
+        }
+        break;
+
+      case AppLifecycleState.paused:
+        {
+          _betterPlayerController?.dispose();
+          _betterPlayerController = null;
+        }
+        break;
+
+      case AppLifecycleState.detached:
+        {
+          _betterPlayerController?.dispose();
+          _betterPlayerController = null;
+        }
+        break;
+
+      case AppLifecycleState.resumed:
+        {
+          initPlayer(link: url);
+        }
+        break;
+
+      default:
+        {
+          //statements;
+        }
+        break;
+    }
+  }
 
   BetterPlayerController? _betterPlayerController;
   List<Datum> similarVideoData = [];
@@ -38,6 +77,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
   String description = '';
   String mtitle = '';
   dynamic movieID = '';
+  bool enableFullScreen = false;
   @override
   void didChangeDependencies() {
     // var videoData = ModalRoute.of(context)?.settings.arguments as Datum;
@@ -51,22 +91,62 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
 
     sortSimilarVideos();
 
+    // if (_betterPlayerController!.isFullScreen) {
+    //   print('full screen enabled');
+    //   SystemChrome.setPreferredOrientations([
+    //     DeviceOrientation.landscapeLeft,
+    //   ]);
+    // } else {
+    //   print('fullscreen disabled');
+    //   SystemChrome.setPreferredOrientations([
+    //     DeviceOrientation.portraitUp,
+    //   ]);
+    // }
+
     super.didChangeDependencies();
   }
 
   void initPlayer({required dynamic link}) async {
-    BetterPlayerDataSource betterPlayerDataSource =
-        BetterPlayerDataSource(BetterPlayerDataSourceType.network, link);
+    WidgetsBinding.instance.addObserver(this);
+    BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
+      BetterPlayerDataSourceType.network,
+      link,
+      notificationConfiguration: BetterPlayerNotificationConfiguration(
+        showNotification: true,
+        title: mtitle,
+        author: description,
+        imageUrl:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/1200px-African_Bush_Elephant.jpg",
+        activityName: "MainActivity",
+      ),
+    );
+
     _betterPlayerController = BetterPlayerController(
-      const BetterPlayerConfiguration(
+      BetterPlayerConfiguration(
           autoPlay: true,
           //deviceOrientationsAfterFullScreen: const [DeviceOrientation.portraitUp],
           aspectRatio: 16 / 9,
+          fullScreenByDefault: false,
+          deviceOrientationsAfterFullScreen: [DeviceOrientation.portraitUp],
+          deviceOrientationsOnFullScreen: [DeviceOrientation.landscapeLeft],
+          autoDetectFullscreenDeviceOrientation: false,
+          allowedScreenSleep: false,
           controlsConfiguration: BetterPlayerControlsConfiguration(
-            enableSkips: true,
-            enableOverflowMenu: true,
-            progressBarPlayedColor: AppColors.primary,
-          )),
+              enableSkips: true,
+              enableFullscreen: true,
+              fullscreenEnableIcon: Icons.menu,
+              fullscreenDisableIcon: Icons.share,
+              enableOverflowMenu: true,
+              progressBarPlayedColor: AppColors.primary,
+              customControlsBuilder: (BetterPlayerController controller,
+                  Function(bool) onPlayerVisibilityChanged) {
+                return Row(
+                  children: const [
+                    Text('next'),
+                    Icon(Icons.arrow_forward_sharp),
+                  ],
+                );
+              })),
       betterPlayerDataSource: betterPlayerDataSource,
     );
 
@@ -74,7 +154,9 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
   }
 
   void disposePlayer() {
+    WidgetsBinding.instance.removeObserver(this);
     _betterPlayerController!.dispose();
+    _betterPlayerController!.pause();
 
     /// dispose player
   }
@@ -96,7 +178,9 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _betterPlayerController!.dispose();
+    _betterPlayerController!.pause();
     super.dispose();
   }
 
@@ -116,9 +200,12 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
     var videoList = _videoViewModel.listVideoData.data;
     var videoData = ModalRoute.of(context)?.settings.arguments as Datum;
     Future<bool> _onBackPressed() {
-      return Future.delayed(const Duration(seconds: 1), () {
+      WidgetsBinding.instance.removeObserver(this);
+      return Future.delayed(const Duration(milliseconds: 1000), () {
+        _betterPlayerController!.pause();
         _betterPlayerController!.dispose();
-        Get.back();
+
+        Navigator.pop(context);
 
         return false;
       });
@@ -223,7 +310,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.all(0),
                 children: [
-                  Container(
+                  SizedBox(
                     height: 300,
                     //color: AppColors.white,
                     child: BetterPlayer(
@@ -292,7 +379,9 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                               width: 50,
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                _betterPlayerController!.toggleFullScreen();
+                              },
                               child: Column(
                                 children: const [
                                   Icon(

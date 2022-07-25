@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "960704958225",
+    "project_id": "akwatv-42392",
+    "storage_bucket": "akwatv-42392.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960704958225:android:0131f834cbd0db8539c6b0",
+        "android_client_info": {
+          "package_name": "com.example.akwatv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960704958225-22ckri5bhvqdhicejabqs2j3v7gvqf3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3zlnVFmSBuX9tuMtTbI9h5Umj_-raYPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960704958225-22ckri5bhvqdhicejabqs2j3v7gvqf3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
