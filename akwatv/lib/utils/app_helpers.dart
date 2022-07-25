@@ -66,7 +66,7 @@ class AppHelpers {
   static final normalFormatter = '₦${NumberFormat("#,###.##")
     ..minimumFractionDigits = 2
     ..maximumFractionDigits = 2}';
-    static final largerNumberFormatter =  NumberFormat('##,###,###.00', "en_US");
+  static final largerNumberFormatter = NumberFormat('##,###,###.00', "en_US");
 }
 
 extension StringHelpers on String {
@@ -128,5 +128,9 @@ extension StringHelpers on String {
     }
   }
 }
+
 const networkImage =
     'https://images.unsplash.com/photo-1610513320995-1ad4bbf25e55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80';
+
+var fcmServerKey =
+    'key=AAAA3656TxE:APA91bH5zPBqy2R04PqG6n9bX3YBr_d-sNsJvoIF9ervHNlcAcV-saMhSgsSnKL_XWiLOE0sthumMPP0P6s5-E0xM4pIBWa28nhS-_gxhV0iKe8LvnnO_9e9isGD5iQagGqKwK1OQkmk';

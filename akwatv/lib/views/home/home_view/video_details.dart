@@ -3,6 +3,7 @@ import 'dart:io' as io;
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/views/home/home_view/text.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
@@ -70,6 +71,8 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
         break;
     }
   }
+
+  GetStorage box = GetStorage();
 
   BetterPlayerController? _betterPlayerController;
   List<Datum> similarVideoData = [];
@@ -380,7 +383,9 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
                             ),
                             InkWell(
                               onTap: () {
-                                _betterPlayerController!.toggleFullScreen();
+                                NotifyMe.sendNotification(
+                                    sender: box.read('username'),
+                                    content: description);
                               },
                               child: Column(
                                 children: const [
