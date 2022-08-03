@@ -31,6 +31,7 @@ class PushNotificationsManager {  final BuildContext context;
       FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
+    
     //print('setup notification');
 
     await FirebaseMessaging.instance.getToken().then((value) {

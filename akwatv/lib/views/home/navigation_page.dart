@@ -6,6 +6,7 @@ import 'package:akwatv/views/home/coming_soon/coming_soon.dart';
 import 'package:akwatv/views/home/downloads/downloads_view.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/home_view.dart';
+import 'package:akwatv/views/home/notifications/notification_screen.dart';
 import 'package:akwatv/views/home/profile/profile_view.dart';
 import 'package:akwatv/views/home/search_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
@@ -192,9 +193,9 @@ class _HomeNavigation extends ConsumerState<HomeNavigation> {
               BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: ref.watch(homeViewModel).selectedIndex == 2
-                    ? const Icon(Icons.download_for_offline)
-                    : const Icon(Icons.download_for_offline),
-                label: "Downloads",
+                    ? const Icon(Icons.notifications)
+                    : const Icon(Icons.notifications),
+                label: "Notifications",
               ),
               // BottomNavigationBarItem(
               //   backgroundColor: Colors.white,
@@ -220,7 +221,8 @@ class _HomeNavigation extends ConsumerState<HomeNavigation> {
   static const List<Widget> _pages = <Widget>[
     HomePage(),
     SearchPage(),
-    DownLoadsPage(),
+    ViewNotificationScreen(),
+    //DownLoadsPage(),
     // ComingSoonPage(),
     ProfilePage()
   ];

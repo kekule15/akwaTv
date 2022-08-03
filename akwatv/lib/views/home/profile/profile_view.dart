@@ -93,6 +93,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final loginViewModel = ref.watch(viewModel);
+    final _viewModel = ref.watch(homeViewModel);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -175,7 +176,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(() => const ViewNotificationScreen());
+                  _viewModel.changeIndex(2);
                 },
                 child: Icon(
                   Icons.notifications,

@@ -10,11 +10,13 @@ import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
 import 'package:akwatv/widgets/play_button_widget.dart';
 import 'package:better_player/better_player.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:video_player/video_player.dart';
 
 class DownLoadsPage extends ConsumerStatefulWidget {
   const DownLoadsPage({Key? key}) : super(key: key);
@@ -26,31 +28,43 @@ class DownLoadsPage extends ConsumerStatefulWidget {
 class _DownLoadsPageState extends ConsumerState<DownLoadsPage> {
   final searchController = TextEditingController();
   BetterPlayerController? _betterPlayerController;
-
-  void initPlayer() async {
-    BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
-        BetterPlayerDataSourceType.file,
-        '/data/user/0/com.example.akwatv/app_flutter/62c77b525932ca39e8294dc1.mp4');
-    _betterPlayerController = BetterPlayerController(
-      const BetterPlayerConfiguration(
-          autoPlay: true,
-          //deviceOrientationsAfterFullScreen: const [DeviceOrientation.portraitUp],
-          aspectRatio: 16 / 9,
-          controlsConfiguration: BetterPlayerControlsConfiguration(
-            enableSkips: true,
-            enableOverflowMenu: true,
-            progressBarPlayedColor: AppColors.primary,
-          )),
-      betterPlayerDataSource: betterPlayerDataSource,
-    );
-
-    /// initialise player
-  }
+  ChewieController? chewieController;
 
   @override
   void didChangeDependencies() {
-    initPlayer();
+    // initPlayer();
+    final videoPlayerController = VideoPlayerController.network(
+        'https://d31igjfr1qqzjn.cloudfront.net/HLS57/OGBANJE.m3u8');
+
+    videoPlayerController.initialize();
+
+    chewieController = ChewieController(
+        aspectRatio: 16 / 9,
+        videoPlayerController: videoPlayerController,
+        autoPlay: true,
+        looping: true,
+        allowPlaybackSpeedChanging: false);
     super.didChangeDependencies();
+  }
+
+  // @override
+  // void initState() {
+  //   controller = CachedVideoPlayerController.network(
+  //       "https://d31igjfr1qqzjn.cloudfront.net/HLS57/OGBANJE.m3u8",
+  //       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: false));
+  //   controller!.initialize().then((_) {
+  //     setState(() {});
+  //     controller!.pause();
+  //   });
+
+  //   super.initState();
+  // }
+
+  @override
+  void dispose() {
+    chewieController!.pause();
+    chewieController!.dispose();
+    super.dispose();
   }
 
   @override
@@ -66,67 +80,14 @@ class _DownLoadsPageState extends ConsumerState<DownLoadsPage> {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
         children: [
-          Container(
-            height: 300,
-            //color: AppColors.white,
-            child: BetterPlayer(
-              controller: _betterPlayerController!,
-            ),
-          ),
-
-          // Column(
-          //   children: List.generate(
-          //       PlayModel.movieList.length,
-          //       (index) => Card(
-          //             color: AppColors.termsTextColor,
-          //             child: Padding(
-          //               padding: const EdgeInsets.only(right: 10),
-          //               child: Row(
-          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //                 children: [
-          //                   Row(
-          //                     children: [
-          //                       SizedBox(
-          //                         height: 80,
-          //                         width: 100,
-          //                         child: ImageWidget(
-          //                           asset:
-          //                               PlayModel.movieList[index].movieImage,
-          //                           fit: BoxFit.cover,
-          //                         ),
-          //                       ),
-          //                       SizedBox(
-          //                         width: 20,
-          //                       ),
-          //                       Text(
-          //                         PlayModel.movieList[index].movieName,
-          //                         style: TextStyle(
-          //                             color: AppColors.white,
-          //                             fontSize: 12.sp),
-          //                       ),
-          //                     ],
-          //                   ),
-          //                   SizedBox(
-          //                     child: playButtonWidget(
-          //                       icon: Icon(
-          //                         Icons.check,
-          //                         color: AppColors.white,
-          //                         size: 10.w,
-          //                       ),
-          //                     ),
-          //                   )
-          //                 ],
-          //               ),
-          //             ),
-          //           )),
-          // ),
-          // const SizedBox(
-          //   height: ySpace3,
-          // ),
+          AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Chewie(
+                controller: chewieController!,
+              )),
         ],
       ),
     );

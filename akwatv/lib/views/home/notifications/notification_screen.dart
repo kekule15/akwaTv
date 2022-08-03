@@ -14,7 +14,11 @@ class _ViewNotificationScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      body: ListView(
+        shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
+        children: [],
+      ),
     );
   }
 }

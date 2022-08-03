@@ -28,3 +28,5 @@ const mediaList = [
   'filmhouse',
   'imax'
 ];
+
+const payStackAPIKey = 'sk_live_fdf0efdef9e396b8f34cbe96a49648301b5b3642';

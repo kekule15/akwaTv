@@ -1,25 +1,15 @@
-import 'dart:io' as io;
-
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/notify_me.dart';
-import 'package:akwatv/views/home/home_view/text.dart';
-import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/video_box_widget.dart';
 import 'package:better_player/better_player.dart';
-import 'package:dio/dio.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:get/get.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:video_player/video_player.dart';
 
 class VideoDetailsPage extends ConsumerStatefulWidget {
   Datum videoData;
@@ -31,50 +21,11 @@ class VideoDetailsPage extends ConsumerStatefulWidget {
       _VideoDetailsPageState();
 }
 
-class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
-    with WidgetsBindingObserver {
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("didChangeAppLifecycleState $state");
-    switch (state) {
-      case AppLifecycleState.inactive:
-        {
-          _betterPlayerController?.dispose();
-          _betterPlayerController = null;
-        }
-        break;
-
-      case AppLifecycleState.paused:
-        {
-          _betterPlayerController?.dispose();
-          _betterPlayerController = null;
-        }
-        break;
-
-      case AppLifecycleState.detached:
-        {
-          _betterPlayerController?.dispose();
-          _betterPlayerController = null;
-        }
-        break;
-
-      case AppLifecycleState.resumed:
-        {
-          initPlayer(link: url);
-        }
-        break;
-
-      default:
-        {
-          //statements;
-        }
-        break;
-    }
-  }
-
+class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
   GetStorage box = GetStorage();
+  // BetterPlayerController? _betterPlayerController;
+  ChewieController? chewieController;
 
-  BetterPlayerController? _betterPlayerController;
   List<Datum> similarVideoData = [];
   String url = '';
   String description = '';
@@ -94,72 +45,27 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
 
     sortSimilarVideos();
 
-    // if (_betterPlayerController!.isFullScreen) {
-    //   print('full screen enabled');
-    //   SystemChrome.setPreferredOrientations([
-    //     DeviceOrientation.landscapeLeft,
-    //   ]);
-    // } else {
-    //   print('fullscreen disabled');
-    //   SystemChrome.setPreferredOrientations([
-    //     DeviceOrientation.portraitUp,
-    //   ]);
-    // }
-
     super.didChangeDependencies();
   }
 
   void initPlayer({required dynamic link}) async {
-    WidgetsBinding.instance.addObserver(this);
-    BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
-      BetterPlayerDataSourceType.network,
-      link,
-      notificationConfiguration: BetterPlayerNotificationConfiguration(
-        showNotification: true,
-        title: mtitle,
-        author: description,
-        imageUrl:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/1200px-African_Bush_Elephant.jpg",
-        activityName: "MainActivity",
-      ),
-    );
+    print("my link $link");
+    final videoPlayerController = VideoPlayerController.network(link);
 
-    _betterPlayerController = BetterPlayerController(
-      BetterPlayerConfiguration(
-          autoPlay: true,
-          //deviceOrientationsAfterFullScreen: const [DeviceOrientation.portraitUp],
-          aspectRatio: 16 / 9,
-          fullScreenByDefault: false,
-          deviceOrientationsAfterFullScreen: [DeviceOrientation.portraitUp],
-          deviceOrientationsOnFullScreen: [DeviceOrientation.landscapeLeft],
-          autoDetectFullscreenDeviceOrientation: false,
-          allowedScreenSleep: false,
-          controlsConfiguration: BetterPlayerControlsConfiguration(
-              enableSkips: true,
-              enableFullscreen: true,
-              fullscreenEnableIcon: Icons.menu,
-              fullscreenDisableIcon: Icons.share,
-              enableOverflowMenu: true,
-              progressBarPlayedColor: AppColors.primary,
-              customControlsBuilder: (BetterPlayerController controller,
-                  Function(bool) onPlayerVisibilityChanged) {
-                return Row(
-                  children: const [
-                    Text('next'),
-                    Icon(Icons.arrow_forward_sharp),
-                  ],
-                );
-              })),
-      betterPlayerDataSource: betterPlayerDataSource,
-    );
+    videoPlayerController.initialize();
 
-    /// initialise player
+    chewieController = ChewieController(
+        aspectRatio: 16 / 9,
+        videoPlayerController: videoPlayerController,
+        autoPlay: true,
+        looping: true,
+        allowFullScreen: false,
+        allowPlaybackSpeedChanging: false);
   }
 
   void disposePlayer() {
-    WidgetsBinding.instance.removeObserver(this);
-    _betterPlayerController!.dispose();
-    _betterPlayerController!.pause();
+    chewieController!.dispose();
+    chewieController!.pause();
 
     /// dispose player
   }
@@ -181,12 +87,12 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _betterPlayerController!.dispose();
-    _betterPlayerController!.pause();
+    chewieController!.dispose();
+    chewieController!.pause();
     super.dispose();
   }
 
+  //sort video list to get similar videos
   sortSimilarVideos() async {
     final _videoViewModel = ref.watch(videoViewModel);
     var similarVideos = _videoViewModel.listVideoData.data;
@@ -203,98 +109,13 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
     var videoList = _videoViewModel.listVideoData.data;
     var videoData = ModalRoute.of(context)?.settings.arguments as Datum;
     Future<bool> _onBackPressed() {
-      WidgetsBinding.instance.removeObserver(this);
       return Future.delayed(const Duration(milliseconds: 1000), () {
-        _betterPlayerController!.pause();
-        _betterPlayerController!.dispose();
+        chewieController!.pause();
+        chewieController!.dispose();
 
         Navigator.pop(context);
 
         return false;
-      });
-    }
-
-    final Dio dio = Dio();
-    bool loading = false;
-    double progress = 0;
-    Future<bool> _requestPermission(Permission permission) async {
-      if (await permission.isGranted) {
-        return true;
-      } else {
-        var result = await permission.request();
-        if (result == PermissionStatus.granted) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    Future<bool> saveVideo(String url, String fileName) async {
-      Directory? directory;
-      try {
-        if (Platform.isAndroid) {
-          if (await _requestPermission(Permission.storage)) {
-            directory = await getApplicationDocumentsDirectory();
-            String newPath = "";
-            print(directory);
-            List<String> paths = directory.path.split("/");
-            for (int x = 1; x < paths.length; x++) {
-              String folder = paths[x];
-              if (folder != "Android") {
-                newPath += "/" + folder;
-              } else {
-                break;
-              }
-            }
-            newPath = newPath + "/Kekule";
-            directory = Directory(newPath);
-          } else {
-            return false;
-          }
-        } else {
-          if (await _requestPermission(Permission.photos)) {
-            directory = await getTemporaryDirectory();
-          } else {
-            return false;
-          }
-        }
-        File saveFile = File(directory.path + "/$fileName");
-        if (!await directory.exists()) {
-          await directory.create(recursive: true);
-        }
-        if (await directory.exists()) {
-          await dio.download(url, saveFile.path,
-              onReceiveProgress: (value1, value2) {
-            setState(() {
-              progress = value1 / value2;
-            });
-          });
-          if (Platform.isIOS) {
-            // await ImageGallerySaver.saveFile(saveFile.path,
-            //     isReturnPathOfIOS: true);
-          }
-          return true;
-        }
-        return false;
-      } catch (e) {
-        print(e);
-        return false;
-      }
-    }
-
-    downloadFile(String url) async {
-      setState(() {
-        loading = true;
-        progress = 0;
-      });
-      bool downloaded = await saveVideo(url, "video.mp4");
-      if (downloaded) {
-        print("File Downloaded");
-      } else {
-        print("Problem Downloading File");
-      }
-      setState(() {
-        loading = false;
       });
     }
 
@@ -310,22 +131,23 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
                 ),
               )
             : ListView(
+                shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.all(0),
                 children: [
-                  SizedBox(
-                    height: 300,
-                    //color: AppColors.white,
-                    child: BetterPlayer(
-                      controller: _betterPlayerController!,
-                    ),
-                  ),
+                  AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Chewie(
+                        controller: chewieController!,
+                      )),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: generalHorizontalPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Text(
                           mtitle,
                           style: TextStyle(
@@ -384,8 +206,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
                             InkWell(
                               onTap: () {
                                 NotifyMe.sendNotification(
-                                    sender: box.read('username'),
-                                    content: description);
+                                    sender: mtitle, content: description);
                               },
                               child: Column(
                                 children: const [
@@ -406,22 +227,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
                               width: 50,
                             ),
                             InkWell(
-                              onTap: () async {
-                                // Get.to(() => TesterPage());
-                                List file = [];
-                                var directory =
-                                    (await getApplicationDocumentsDirectory())
-                                        .path;
-
-                                print(io.Directory("$directory/")
-                                    .listSync()
-                                    .where((element) =>
-                                        element.path ==
-                                        '/data/user/0/com.example.akwatv/app_flutter/Kekule'));
-
-                                print('$directory/$movieID.mp4');
-                                print(directory);
-                              },
+                              onTap: () async {},
                               child: Column(
                                 children: const [
                                   Icon(
@@ -440,48 +246,23 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
                             const SizedBox(
                               width: 50,
                             ),
-                            InkWell(
-                              onTap: () async {
-                                // await DefaultCacheManager().downloadFile(url);
-                                // var file = await DefaultCacheManager()
-                                //     .getSingleFile(url);
-                                // print(" augustus $file");
-                                // await openFile(
-                                //     url: url,
-                                //     fileName:
-                                //         "${mtitle.replaceAll(RegExp(r"\s+\b|\b\s"), "")}.mp4");
-
-                                // var dir =
-                                //     await getApplicationDocumentsDirectory();
-                                // String filePath = "/$movieID.mp4";
-                                // String fullPath = dir.path + filePath;
-                                // var videoResponse =
-                                //     await Dio().download(url, fullPath);
-
-                                // if (videoResponse.statusCode == 200) {
-                                //   //videoPath = fullPath;
-                                //   print("Downloaded: $fullPath");
-                                // } else {
-                                //   print("Download error");
-                                // }
-
-                                downloadFile(url);
-                              },
-                              child: Column(
-                                children: const [
-                                  Icon(
-                                    Icons.file_download,
-                                    color: AppColors.white,
-                                    size: 20,
-                                  ),
-                                  Text(
-                                    'Download',
-                                    style: TextStyle(
-                                        color: AppColors.white, fontSize: 12),
-                                  )
-                                ],
-                              ),
-                            )
+                            // InkWell(
+                            //   onTap: () async {},
+                            //   child: Column(
+                            //     children: const [
+                            //       Icon(
+                            //         Icons.file_download,
+                            //         color: AppColors.white,
+                            //         size: 20,
+                            //       ),
+                            //       Text(
+                            //         'Download',
+                            //         style: TextStyle(
+                            //             color: AppColors.white, fontSize: 12),
+                            //       )
+                            //     ],
+                            //   ),
+                            // )
                           ],
                         )
                       ],
@@ -553,52 +334,9 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage>
                   SizedBox(
                     height: 10,
                   ),
-                  // Text(
-                  //   _myData ?? 'Hello guy',
-                  //   textAlign: TextAlign.center,
-                  //   style: TextStyle(color: AppColors.white),
-                  // ),
                 ],
               ),
       ),
     );
   }
-
-  // Future openFile({required String url, required String fileName}) async {
-  //   final file = await downloadFile(url, fileName);
-  //   if (file == null) {
-  //   } else {
-  //     print('path: ${file.path}');
-  //   }
-  // }
-
-  // // Download file into private folder not visible to user
-
-  // Future<File?> downloadFile(String url, String name) async {
-  //   // storage permission ask
-  //   var status = await Permission.storage.status;
-  //   if (!status.isGranted) {
-  //     await Permission.storage.request();
-  //   }
-  //   final appStorage = await getApplicationDocumentsDirectory();
-  //   final file = File('${appStorage.path}/$name');
-  //   try {
-  //     final response = await Dio().get(url,
-  //         options: Options(
-  //           responseType: ResponseType.bytes,
-  //           followRedirects: false,
-  //           receiveTimeout: 0,
-  //         ));
-
-  //     final raf = file.openSync(mode: FileMode.write);
-  //     raf.writeFromSync(response.data);
-  //     print(file);
-  //     await raf.close();
-
-  //     return file;
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
-
 }

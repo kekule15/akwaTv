@@ -54,7 +54,7 @@ class NotifyMe {
 
       if (response.statusCode == 200) {
         print(response.data);
-        Fluttertoast.showToast(msg: 'Request Sent To Driver');
+        // Fluttertoast.showToast(msg: 'Request Sent');
       } else {
         print('notification sending failed');
         // on failure do sth
