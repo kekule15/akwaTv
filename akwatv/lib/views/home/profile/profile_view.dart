@@ -395,6 +395,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                                   child: InkWell(
                                                     onTap: () {
                                                       deleteWatchList(
+                                                        data:
+                                                            watchListVideoData[
+                                                                index],
                                                         movieID:
                                                             watchListVideoData[
                                                                     index]
@@ -503,7 +506,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     );
   }
 
-  void deleteWatchList({required dynamic movieID}) {
+  void deleteWatchList({required dynamic movieID, required dynamic data}) {
     final videoProvider = ref.watch(videoViewModel);
     showDialog(
       context: context,
@@ -540,8 +543,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             TextButton(
               onPressed: () async {
                 videoProvider.deleteWatchListservice(movieID: movieID);
+                watchListVideoData.remove(data);
 
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(const Duration(seconds: 1), () {
                   videoProvider.getAllWatchList();
                   getWatchList();
                   Get.back();

@@ -29,4 +29,4 @@ const mediaList = [
   'imax'
 ];
 
-const payStackAPIKey = 'sk_live_fdf0efdef9e396b8f34cbe96a49648301b5b3642';
+const payStackAPIKey = 'pk_test_c5f8922d6cf460c8803d217b03710542a8cb9399';

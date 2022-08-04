@@ -3,6 +3,7 @@ import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/responsive.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/views/home/home_view/drawer_widget.dart';
 import 'package:akwatv/views/home/home_view/video_category_page.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/views/home/settings/settings_screen.dart';
@@ -23,25 +24,12 @@ class MyDrawerPage extends ConsumerStatefulWidget {
 }
 
 class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
-  List<String> movieTypes = [
-    'TV Shows',
-    'Action',
-    'Romance',
-    'Thrillers',
-    'Sci-Fi & Fantancy',
-    'Dramas',
-    'Comedies',
-    'Family',
-  ];
-  List<String> subs = [
-    'Settings',
-    'Account',
-    'Help',
-  ];
   GetStorage box = GetStorage();
   @override
   Widget build(BuildContext context) {
     final videoProvider = ref.watch(videoViewModel);
+    final viewModel = ref.watch(homeViewModel);
+    var data = viewModel.subDrawerList();
     return Drawer(
       elevation: 10,
       backgroundColor: AppColors.black,
@@ -126,7 +114,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                     height: ySpace1,
                   ),
                   videoProvider.categoryListData.data == null
-                      ? SizedBox(
+                      ? const SizedBox(
                           height: 30,
                         )
                       : Padding(
@@ -140,18 +128,34 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                                   padding: const EdgeInsets.only(bottom: 20),
                                   child: InkWell(
                                     onTap: () {
-                                      Get.to(() => VideoCategoryPage(),
+                                      Get.to(() => const VideoCategoryPage(),
                                           arguments: videoProvider
                                               .categoryListData
                                               .data!
                                               .data![index]);
                                     },
-                                    child: Text(
-                                      videoProvider.categoryListData.data!
-                                          .data![index].genre!.capitalizeFirst!,
-                                      style: TextStyle(
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.movie,
+                                          size: 20,
                                           color: AppColors.white,
-                                          fontSize: 13.sp),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          videoProvider
+                                              .categoryListData
+                                              .data!
+                                              .data![index]
+                                              .genre!
+                                              .capitalizeFirst!,
+                                          style: const TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 18),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -168,69 +172,27 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: List.generate(
-                          subs.length,
+                          data.length,
                           (index) => Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
-                            child: InkWell(
-                              onTap: () {
-                                switch (subs[index]) {
-                                  case 'Settings':
-                                    Get.to(() => const SettingsPage());
-
-                                    break;
-                                  case 'Account':
-                                    ref.watch(homeViewModel).selectedIndex = 3;
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomeNavigation()));
-
-                                    break;
-                                  case 'Help':
-                                    Get.to(() {
-                                      const SettingsPage();
-                                    });
-
-                                    break;
-
-                                  default:
-                                }
-                              },
-                              child: Text(
-                                subs[index],
-                                style: TextStyle(
-                                    color: AppColors.white, fontSize: 13.sp),
-                              ),
-                            ),
-                          ),
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: drawerWidget(
+                                  onTap: data[index]["onTap"],
+                                  title: data[index]['title'],
+                                  icon: data[index]['icon'],
+                                  iconColor: AppColors.white,
+                                  titleColor: AppColors.white)),
                         )),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20, left: 20),
-                    child: InkWell(
-                      onTap: () {
-                        showDialogWithFields();
-                      },
-                      child: Row(
-                        children: [
-                          Text(
-                            'Logout',
-                            style: TextStyle(
-                                color: AppColors.white, fontSize: 13.sp),
-                          ),
-                          const SizedBox(
-                            width: ySpace1,
-                          ),
-                          Icon(
-                            Icons.logout,
-                            size: 20.w,
-                            color: AppColors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                      padding: const EdgeInsets.only(bottom: 20, left: 20),
+                      child: drawerWidget(
+                          onTap: () {
+                            showDialogWithFields();
+                          },
+                          title: 'Logout',
+                          icon: Icons.logout,
+                          iconColor: AppColors.primary,
+                          titleColor: AppColors.primary)),
                   const SizedBox(
                     height: ySpace3 * 2,
                   ),

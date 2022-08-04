@@ -126,9 +126,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             TextStyle(color: AppColors.white, fontSize: 16.sp),
                       ),
               ),
+              
+              
               const SizedBox(
                 height: ySpace3,
               ),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

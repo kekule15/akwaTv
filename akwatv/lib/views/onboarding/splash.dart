@@ -2,6 +2,7 @@ import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/images.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
+import 'package:akwatv/views/home/subscription/choose_plan.dart';
 import 'package:akwatv/views/onboarding/onboarding_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:flutter/animation.dart';
@@ -39,7 +40,9 @@ class _SplashViewState extends ConsumerState<SplashView>
         if (status == AnimationStatus.completed) {
           Get.to(() => box.read('token') == null
               ? const OnboardingScreen()
-              : const HomeNavigation());
+              : box.read('token') != null && box.read('plan') != null
+                  ? const HomeNavigation()
+                  : const ChoosePlanPage());
         }
       }));
 
@@ -64,7 +67,7 @@ class _SplashViewState extends ConsumerState<SplashView>
 
   @override
   Widget build(BuildContext context) {
-      final _loginViewModel = ref.watch(viewModel);
+    final _loginViewModel = ref.watch(viewModel);
     //bool _visible = true;
 
     return Scaffold(
