@@ -1,7 +1,7 @@
 import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
-import 'package:akwatv/views/home/subscription/sub_box_widget.dart';
+import 'package:akwatv/views/home/subscription/widgets/sub_box_widget.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -79,6 +79,7 @@ class SubScriptionDetailsPage extends ConsumerWidget {
                   return Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: SubBoxWidget(
+                      onTap: data[index]['onTap'],
                       selected: index,
                       amount: data[index]['amount'],
                       desc: data[index]['description'],

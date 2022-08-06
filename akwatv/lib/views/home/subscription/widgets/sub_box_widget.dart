@@ -8,12 +8,14 @@ class SubBoxWidget extends ConsumerWidget {
   final String title;
   final String desc;
   final String amount;
+  final VoidCallback onTap;
 
   const SubBoxWidget(
       {Key? key,
       required this.selected,
       required this.amount,
       required this.desc,
+      required this.onTap,
       required this.title})
       : super(key: key);
 
@@ -22,7 +24,7 @@ class SubBoxWidget extends ConsumerWidget {
     var subViewModel = ref.watch(subScriptionProvider);
     return InkWell(
       onTap: () {
-        subViewModel.changeIndex(selected);
+        onTap();
       },
       child: Container(
         height: 200,

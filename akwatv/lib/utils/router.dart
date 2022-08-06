@@ -4,7 +4,7 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
-import 'package:akwatv/views/onboarding/congratulation_page.dart';
+import 'package:akwatv/views/home/subscription/congratulation_page.dart';
 import 'package:akwatv/views/onboarding/onboarding_screen.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 

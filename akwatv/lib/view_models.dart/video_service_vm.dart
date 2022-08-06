@@ -17,7 +17,7 @@ import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/router.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
-import 'package:akwatv/views/onboarding/congratulation_page.dart';
+import 'package:akwatv/views/home/subscription/congratulation_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';

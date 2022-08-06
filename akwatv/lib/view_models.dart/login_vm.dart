@@ -14,7 +14,7 @@ import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
 import 'package:akwatv/views/home/subscription/choose_plan.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
-import 'package:akwatv/views/onboarding/congratulation_page.dart';
+import 'package:akwatv/views/home/subscription/congratulation_page.dart';
 import 'package:akwatv/views/onboarding/forgot_password/otp_verification_page.dart';
 import 'package:akwatv/views/onboarding/forgot_password/reset_password_page.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
@@ -63,6 +63,7 @@ class LoginViewModel extends BaseViewModel {
       box.write('verified', res.data!.account!.verified);
       box.write('cloudId', res.data!.account!.cloudinaryId);
       box.write('userId', res.data!.account!.id);
+      await getProfile(userId: res.data!.account!.id);
       NotifyMe.showAlert(res.message!);
       loginBtn = false;
       Get.offAll(() => const ChoosePlanPage());

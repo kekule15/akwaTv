@@ -1,14 +1,17 @@
 import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
-import 'package:akwatv/views/home/subscription/sub_box_widget.dart';
-import 'package:akwatv/views/onboarding/congratulation_page.dart';
+import 'package:akwatv/views/home/subscription/widgets/sub_box_widget.dart';
+import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
+import 'package:akwatv/views/home/subscription/congratulation_page.dart';
+import 'package:akwatv/views/routes_args/congratulations_args.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_paystack_payment/flutter_paystack_payment.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class ChoosePlanPage extends ConsumerStatefulWidget {
   const ChoosePlanPage({Key? key}) : super(key: key);
@@ -29,53 +32,38 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
   void sendPaymentToPaystack(
     double amount,
   ) async {
-    // paystackPlugin.initialize(publicKey: AppKeys.paystackPublicKey);
-
     Charge charge = Charge()
       // Convert to kobo and round to the nearest whole number
       ..amount = (amount * 100).round()
-      ..email = 'rbsnation111@gmail.com'
+      ..email = box.read('email')
       ..card = _getCardFromUI()
       ..reference = _getReference();
     var checkout =
         plugin.checkout(context, charge: charge, method: CheckoutMethod.card);
     var response = await checkout;
-    print("checkout res $response");
-
+    print('Paystack response =========== ${response.toString()}');
     if (response.status == true) {
-      print('Paystack response =========== ${response.toString()}');
+      //Navigator.pop(context);
+      checkPaymentStatus(context, onTap: () {
+        Get.to(() => const CongratulationScreen(),
+            arguments: CongratulationsArgs(
+                payLater: false,
+                name: box.read('username'),
+                title: 'You have Subscribed to Akwa Amaka TV !',
+                subtitle: 'Your plan will be renewed on',
+                date: DateTime.now()));
+      });
     } else {}
   }
 
   PaymentCard _getCardFromUI() {
     // Using just the must-required parameters.
     return PaymentCard(
-      number: '43178349848491',
-      cvc: '344',
-      expiryMonth: '23',
-      expiryYear: '22',
+      number: '',
+      cvc: '',
+      expiryMonth: '',
+      expiryYear: '',
     );
-
-    // Using Cascade notation (similar to Java's builder pattern)
-//    return PaymentCard(
-//        number: cardNumber,
-//        cvc: cvv,
-//        expiryMonth: expiryMonth,
-//        expiryYear: expiryYear)
-//      ..name = 'Segun Chukwuma Adamu'
-//      ..country = 'Nigeria'
-//      ..addressLine1 = 'Ikeja, Lagos'
-//      ..addressPostalCode = '100001';
-
-    // Using optional parameters
-//    return PaymentCard(
-//        number: cardNumber,
-//        cvc: cvv,
-//        expiryMonth: expiryMonth,
-//        expiryYear: expiryYear,
-//        name: 'Ismail Adebola Emeka',
-//        addressCountry: 'Nigeria',
-//        addressLine1: '90, Nnebisi Road, Asaba, Deleta State');
   }
 
   String _getReference() {
@@ -92,6 +80,8 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
 
     return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
   }
+
+  GetStorage box = GetStorage();
 
   @override
   Widget build(
@@ -148,6 +138,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                     return Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: SubBoxWidget(
+                        onTap: data[index]['onTap'],
                         selected: index,
                         amount: data[index]['amount'],
                         desc: data[index]['description'],
@@ -213,7 +204,14 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                   borderColor: true,
                   color: AppColors.termsTextColor,
                   onclick: () async {
-                    Get.to(() => const CongratulationScreen());
+                    Get.to(() => const CongratulationScreen(),
+                        arguments: CongratulationsArgs(
+                            payLater: true,
+                            name: box.read('username'),
+                            title: 'Your free trial begins now !',
+                            subtitle:
+                                'You are required to Susbcribe for a plan to Enjoy Akwa Amaka TV Shows',
+                            date: DateTime.now()));
                   },
                   title: const Text(
                     'Pay Later',
@@ -227,21 +225,16 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                   borderColor: false,
                   color: AppColors.primary,
                   onclick: () async {
-                    sendPaymentToPaystack(500);
+                    confirmSubscriptionSheet(context,
+                        name: subViewModel.subName,
+                        amount: subViewModel.subAmount,
+                        onTap: () =>
+                            sendPaymentToPaystack(subViewModel.subAmount));
                   },
-                  title: 2 == 3
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            color: AppColors.white,
-                          ),
-                        )
-                      : const Text(
-                          'Subscribe',
-                          style:
-                              TextStyle(color: AppColors.white, fontSize: 16),
-                        ),
+                  title: const Text(
+                    'Subscribe',
+                    style: TextStyle(color: AppColors.white, fontSize: 16),
+                  ),
                 ),
               ],
             ),
