@@ -47,9 +47,6 @@ class CongratulationScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: ySpace3,
-            ),
             Text(
               data.name,
               textAlign: TextAlign.center,

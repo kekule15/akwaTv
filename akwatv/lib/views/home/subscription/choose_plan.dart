@@ -138,6 +138,8 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                     return Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: SubBoxWidget(
+                        upgrade: (){},
+                        isUpgrade: false,
                         onTap: data[index]['onTap'],
                         selected: index,
                         amount: data[index]['amount'],
@@ -192,6 +194,8 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                 ],
               ),
             ),
+          
+          
           ],
         ),
         bottomNavigationBar: Padding(

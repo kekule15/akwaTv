@@ -9,15 +9,19 @@ class SubBoxWidget extends ConsumerWidget {
   final String desc;
   final String amount;
   final VoidCallback onTap;
+  final bool isUpgrade;
+  final VoidCallback upgrade;
 
-  const SubBoxWidget(
-      {Key? key,
-      required this.selected,
-      required this.amount,
-      required this.desc,
-      required this.onTap,
-      required this.title})
-      : super(key: key);
+  const SubBoxWidget({
+    Key? key,
+    required this.selected,
+    required this.amount,
+    required this.desc,
+    required this.onTap,
+    required this.title,
+    required this.isUpgrade,
+    required this.upgrade,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +32,7 @@ class SubBoxWidget extends ConsumerWidget {
       },
       child: Container(
         height: 200,
-        width: 200,
+        width: 170,
         decoration: BoxDecoration(
             color: AppColors.black,
             borderRadius: BorderRadius.circular(10),
@@ -80,6 +84,41 @@ class SubBoxWidget extends ConsumerWidget {
                 ),
               ],
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            isUpgrade == false
+                ? const SizedBox()
+                : InkWell(
+                    onTap: () => upgrade(),
+                    child: Container(
+                      width: 130,
+                      decoration: BoxDecoration(
+                        color: AppColors.gray4,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text(
+                              "Upgrade",
+                              style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.white,
+                              size: 18,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
           ],
         ),
       ),
