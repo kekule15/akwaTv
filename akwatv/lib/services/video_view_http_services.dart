@@ -6,6 +6,7 @@ import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/get_watchList_model.dart';
+import 'package:akwatv/models/search_response_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
@@ -134,19 +135,18 @@ class VideoViewService extends ApiManager {
   }
 
   // search for movies by name
-  Future<AddToWatchListModel?> searchMovvies({required dynamic movieID}) async {
-    final body = {"user_id": box.read('userId'), "movie_id": movieID};
+  Future<HomeVideoModel?> searchMovvies({required dynamic title}) async {
+   
 
-    final response = await postHttp(
-      searchMovieUrl,
-      body,
+    final response = await getHttp(
+      searchMovieUrl + title,
       token: box.read('token'),
     );
 
     if (response.responseCodeError == null) {
-      return AddToWatchListModel.fromJson(response.data);
+      return HomeVideoModel.fromJson(response.data);
     } else {
-      return AddToWatchListModel(message: 'Error');
+      return HomeVideoModel(message: 'Error');
     }
   }
 }

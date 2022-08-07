@@ -8,6 +8,7 @@ import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
+import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
@@ -73,86 +74,21 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
               children: List.generate(
                   categoryVideoData.length,
                   (index) => Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: InkWell(
-                            onTap: () {
-                              Get.to(
-                                  () => VideoDetailsPage(
-                                        videoData: categoryVideoData[index],
-                                      ),
-                                  arguments: categoryVideoData[index]);
-                            },
-                            child: Card(
-                              color: AppColors.termsTextColor,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          height: 80,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      categoryVideoData[index]
-                                                          .img!),
-                                                  fit: BoxFit.cover)),
-                                        ),
-                                        const SizedBox(
-                                          width: 20,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              categoryVideoData[index].title!,
-                                              style: TextStyle(
-                                                  color: AppColors.white,
-                                                  fontSize: 12.sp),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            SizedBox(
-                                              width: 200,
-                                              child: Text(
-                                                categoryVideoData[index].desc!,
-                                                style: TextStyle(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    color: AppColors.white,
-                                                    fontSize: 12.sp),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: VideoLayoutWidget(
+                          title: categoryVideoData[index].title!,
+                          img: categoryVideoData[index].img!,
+                          subtitle: categoryVideoData[index].desc!,
+                          onTap: () {
+                            Get.to(
+                                () => VideoDetailsPage(
+                                      videoData: categoryVideoData[index],
                                     ),
-                                    SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: playButtonWidget(
-                                        icon: const Icon(
-                                          Icons.check,
-                                          color: AppColors.white,
-                                          size: 15,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )),
+                                arguments: categoryVideoData[index]);
+                          },
+                          icon: Icons.done,
+                          iconTap: () {},
+                          iconColor: AppColors.white))),
             ),
             const SizedBox(
               height: ySpace3,

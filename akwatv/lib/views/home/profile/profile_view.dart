@@ -5,6 +5,7 @@ import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
+import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
 import 'package:akwatv/views/home/notifications/notification_screen.dart';
 import 'package:akwatv/views/home/profile/edit_profile.dart';
 import 'package:akwatv/views/home/settings/settings_screen.dart';
@@ -291,120 +292,33 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                               children: List.generate(
                                   watchListVideoData.length,
                                   (index) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10),
-                                        child: SizedBox(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Get.to(
-                                                  () => VideoDetailsPage(
-                                                        videoData:
-                                                            watchListVideoData[
-                                                                index],
-                                                      ),
-                                                  arguments: watchListVideoData[
-                                                      index]);
-                                            },
-                                            child: Card(
-                                              color: AppColors.termsTextColor,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Container(
-                                                          height: 80,
-                                                          width: 100,
-                                                          decoration: BoxDecoration(
-                                                              image: DecorationImage(
-                                                                  image: NetworkImage(
-                                                                      watchListVideoData[
-                                                                              index]
-                                                                          .img!),
-                                                                  fit: BoxFit
-                                                                      .cover)),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 20,
-                                                        ),
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              watchListVideoData[
-                                                                      index]
-                                                                  .title!,
-                                                              style: TextStyle(
-                                                                  color:
-                                                                      AppColors
-                                                                          .white,
-                                                                  fontSize:
-                                                                      12.sp),
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                            SizedBox(
-                                                              width: 200,
-                                                              child: Text(
-                                                                watchListVideoData[
-                                                                        index]
-                                                                    .desc!,
-                                                                style: TextStyle(
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    color: AppColors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        12.sp),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
+                                      child: VideoLayoutWidget(
+                                          title:
+                                              watchListVideoData[index].title!,
+                                          img: watchListVideoData[index].img!,
+                                          subtitle:
+                                              watchListVideoData[index].desc!,
+                                          onTap: () {
+                                            Get.to(
+                                                () => VideoDetailsPage(
+                                                      videoData:
+                                                          watchListVideoData[
+                                                              index],
                                                     ),
-                                                    SizedBox(
-                                                      height: 30,
-                                                      width: 30,
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          deleteWatchList(
-                                                            data:
-                                                                watchListVideoData[
-                                                                    index],
-                                                            movieID:
-                                                                watchListVideoData[
-                                                                        index]
-                                                                    .id,
-                                                          );
-                                                        },
-                                                        child: playButtonWidget(
-                                                          icon: const Icon(
-                                                            Icons.close,
-                                                            color: AppColors
-                                                                .primary,
-                                                            size: 15,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )),
+                                                arguments:
+                                                    watchListVideoData[index]);
+                                          },
+                                          icon: Icons.close,
+                                          iconTap: () {
+                                            deleteWatchList(
+                                              data: watchListVideoData[index],
+                                              movieID:
+                                                  watchListVideoData[index].id,
+                                            );
+                                          },
+                                          iconColor: AppColors.primary))),
                             ),
                           ],
                         ),

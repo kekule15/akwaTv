@@ -8,7 +8,7 @@ import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/home_view.dart';
 import 'package:akwatv/views/home/notifications/notification_screen.dart';
 import 'package:akwatv/views/home/profile/profile_view.dart';
-import 'package:akwatv/views/home/search_screen.dart';
+import 'package:akwatv/views/home/search/search_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

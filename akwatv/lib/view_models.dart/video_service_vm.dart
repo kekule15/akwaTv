@@ -4,24 +4,16 @@ import 'package:akwatv/models/addto_watchlist_model.dart';
 import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/future_manager.dart';
-import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/get_watchList_model.dart';
-import 'package:akwatv/models/sign_up_model.dart';
-import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/providers/video_view_provider.dart';
-import 'package:akwatv/services/user_services.dart';
-import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/router.dart';
-import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
-import 'package:akwatv/views/home/subscription/congratulation_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hive/hive.dart';
 
 class VideoServiceViewModel extends BaseViewModel {
   final Reader read;
@@ -30,6 +22,8 @@ class VideoServiceViewModel extends BaseViewModel {
   FutureManager<AddToWatchListModel> addToWatchListData = FutureManager();
   FutureManager<GetWatchListModel> getWatchListData = FutureManager();
   FutureManager<DeleteWatchListModel> deleteWatchListData = FutureManager();
+  //FutureManager<SearchResponseModel> searchedVideoData = FutureManager();
+  List<Datum> searchMovieData = [];
   VideoServiceViewModel(this.read) : super(read) {
     getVideoList();
     getCategoryList();
@@ -39,6 +33,7 @@ class VideoServiceViewModel extends BaseViewModel {
   bool addTOListBTN = false;
   bool deleteTOListBTN = false;
   bool getWatchLoader = false;
+  bool isSearch = false;
 
   getVideoList() async {
     listVideoData.load();
@@ -117,6 +112,7 @@ class VideoServiceViewModel extends BaseViewModel {
     deleteTOListBTN = false;
   }
 
+// get user's watchlist
   getAllWatchList() async {
     getWatchLoader = true;
     getWatchListData.load();
@@ -133,5 +129,28 @@ class VideoServiceViewModel extends BaseViewModel {
       notifyListeners();
     }
     getWatchLoader = false;
+  }
+
+  // search for movies
+
+  searchMovieService({required dynamic title}) async {
+    isSearch = true;
+    //searchedVideoData.load();
+    notifyListeners();
+
+    final res = await read(videoServiceProvider).searchMovvies(title: title);
+    if (res != null) {
+      // searchedVideoData.onSuccess(res);
+      for (var data in res.data!) {
+        searchMovieData.add(data);
+      }
+      isSearch = false;
+      notifyListeners();
+    } else {
+      isSearch = false;
+      searchMovieData = [];
+      notifyListeners();
+    }
+    isSearch = false;
   }
 }

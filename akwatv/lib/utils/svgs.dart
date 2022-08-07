@@ -13,3 +13,4 @@ const settingsIcon = 'assets/svg/settings.svg';
 const logoutIcon = 'assets/svg/logout.svg';
 
 const successLogo = 'assets/svg/success_logo.svg';
+const emptyVid = 'assets/svg/empty_vid.svg';
