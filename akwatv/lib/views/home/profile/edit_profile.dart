@@ -53,6 +53,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final loginViewModel = ref.watch(viewModel);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.black,
@@ -64,117 +65,118 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       body: Padding(
         padding:
             const EdgeInsets.symmetric(horizontal: generalHorizontalPadding),
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: ySpace1,
-            ),
-            box.read('avatar') != null
-                ? CircleAvatar(
-                    radius: 40.r,
-                    backgroundColor: AppColors.primary,
-                    backgroundImage: NetworkImage(box.read('avatar')),
-                  )
-                : CircleAvatar(
-                    radius: 40.r,
-                    backgroundColor: AppColors.primary,
-                    child: const Icon(Icons.person),
-                  ),
-            const SizedBox(
-              height: ySpace1,
-            ),
-            Text(
-              'Tap to change your picture',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13.sp, color: AppColors.white),
-            ),
-            const SizedBox(
-              height: ySpace3,
-            ),
-            CustomField(
-              style: const TextStyle(color: AppColors.white),
-              validate: true,
-              fillColor: AppColors.termsTextColor,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              controller: nameController,
-              headtext: 'Name',
-              hint: 'Name',
-              hintstyle: const TextStyle(color: AppColors.white),
-              fieldType: TextFieldType.name,
-            ),
-            const SizedBox(
-              height: ySpace1,
-            ),
-            CustomField(
-              style: const TextStyle(color: AppColors.white),
-              textInputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp('[ ]')),
-              ],
-              headtext: 'Email address',
-              validate: true,
-              fillColor: AppColors.termsTextColor,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              controller: emailController,
-              hint: 'Email address',
-              hintstyle: const TextStyle(color: AppColors.white),
-              fieldType: TextFieldType.email,
-            ),
-            const SizedBox(
-              height: ySpace1,
-            ),
-            CustomField(
-              style: const TextStyle(color: AppColors.white),
-              textInputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp('[ ]')),
-              ],
-              headtext: 'Phone number',
-              validate: true,
-              fillColor: AppColors.termsTextColor,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              controller: phoneController,
-              hint: 'Phone number',
-              hintstyle: const TextStyle(color: AppColors.white),
-              fieldType: TextFieldType.phone,
-            ),
-            const SizedBox(
-              height: ySpace3,
-            ),
-            CustomButton(
-              borderColor: false,
-              color: AppColors.primary,
-              onclick: () async {
-                setState(() {
-                  //btnLoader = true;
-                });
-                final form = _formKey.currentState;
-                if (form!.validate()) {
-                  form.save();
-                } else {
-                  setState(() {
-                    btnLoader = false;
-                  });
-                }
-              },
-              title: btnLoader
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        color: AppColors.white,
-                      ),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: ySpace1,
+              ),
+              box.read('avatar') != null
+                  ? CircleAvatar(
+                      radius: 40.r,
+                      backgroundColor: AppColors.primary,
+                      backgroundImage: NetworkImage(box.read('avatar')),
                     )
-                  : Text(
-                      'Update',
-                      style: TextStyle(color: AppColors.white, fontSize: 16.sp),
+                  : CircleAvatar(
+                      radius: 40.r,
+                      backgroundColor: AppColors.primary,
+                      child: const Icon(Icons.person),
                     ),
-            ),
-            const SizedBox(
-              height: ySpace3,
-            ),
-          ],
+              const SizedBox(
+                height: ySpace1,
+              ),
+              Text(
+                'Tap to change your picture',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 13.sp, color: AppColors.white),
+              ),
+              const SizedBox(
+                height: ySpace3,
+              ),
+              CustomField(
+                style: const TextStyle(color: AppColors.white),
+                validate: true,
+                fillColor: AppColors.termsTextColor,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                controller: nameController,
+                headtext: 'Name',
+                hint: 'Name',
+                hintstyle: const TextStyle(color: AppColors.white),
+                fieldType: TextFieldType.name,
+              ),
+              const SizedBox(
+                height: ySpace1,
+              ),
+              CustomField(
+                style: const TextStyle(color: AppColors.white),
+                textInputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp('[ ]')),
+                ],
+                headtext: 'Email address',
+                validate: true,
+                fillColor: AppColors.termsTextColor,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                controller: emailController,
+                hint: 'Email address',
+                hintstyle: const TextStyle(color: AppColors.white),
+                fieldType: TextFieldType.email,
+              ),
+              const SizedBox(
+                height: ySpace1,
+              ),
+              CustomField(
+                style: const TextStyle(color: AppColors.white),
+                textInputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp('[ ]')),
+                ],
+                headtext: 'Phone number',
+                validate: true,
+                fillColor: AppColors.termsTextColor,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                controller: phoneController,
+                hint: 'Phone number',
+                hintstyle: const TextStyle(color: AppColors.white),
+                fieldType: TextFieldType.phone,
+              ),
+              const SizedBox(
+                height: ySpace3,
+              ),
+              CustomButton(
+                borderColor: false,
+                color: AppColors.primary,
+                onclick: () async {
+                  final form = _formKey.currentState;
+                  if (form!.validate()) {
+                    form.save();
+                    loginViewModel.updateUserProfile(
+                        email: emailController.text.toString(),
+                        phone: phoneController.text.toString(),
+                        username: nameController.text.toString());
+                  } else {}
+                },
+                title: loginViewModel.updateUser
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: AppColors.white,
+                        ),
+                      )
+                    : Text(
+                        'Update',
+                        style:
+                            TextStyle(color: AppColors.white, fontSize: 16.sp),
+                      ),
+              ),
+              const SizedBox(
+                height: ySpace3,
+              ),
+            ],
+          ),
         ),
       ),
     );

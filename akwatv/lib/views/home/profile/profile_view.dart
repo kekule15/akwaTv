@@ -4,6 +4,7 @@ import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
+import 'package:akwatv/views/home/home_view/drawer_widget.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
 import 'package:akwatv/views/home/notifications/notification_screen.dart';
@@ -96,6 +97,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   Widget build(BuildContext context) {
     final loginViewModel = ref.watch(viewModel);
     final _viewModel = ref.watch(homeViewModel);
+    var data = _viewModel.profileList();
 
     return Scaffold(
       key: _scaffoldKey,
@@ -231,29 +233,37 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TabBarView(children: [
                       //Account Tab
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: ListView(
-                          padding: const EdgeInsets.all(0),
-                          children: [
-                            mylistCard('Profile', Icons.person, ontap: () {
-                              Get.to(() => const EditProfilePage());
-                            }),
-                            mylistCard('Subscription', Icons.subscriptions,
-                                ontap: () {
-                              Get.to(() => const SubScriptionDetailsPage());
-                            }),
-                            mylistCard('Settings', Icons.settings, ontap: () {
-                              Get.to(() => const SettingsPage());
-                            }),
-                            mylistCard('Logout', Icons.logout, ontap: () {
-                              showDialogWithFields();
-                            }),
-                            const SizedBox(
-                              height: ySpace2,
-                            ),
-                          ],
-                        ),
+                      ListView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(
+                                  data.length,
+                                  (index) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 30),
+                                      child: drawerWidget(
+                                          onTap: data[index]["onTap"],
+                                          title: data[index]['title'],
+                                          icon: data[index]['icon'],
+                                          iconColor: AppColors.white,
+                                          titleColor: AppColors.white)),
+                                )),
+                          ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 20, left: 20),
+                              child: drawerWidget(
+                                  onTap: () {
+                                    showDialogWithFields();
+                                  },
+                                  title: 'Logout',
+                                  icon: Icons.logout,
+                                  iconColor: AppColors.primary,
+                                  titleColor: AppColors.primary)),
+                        ],
                       ),
 
                       //Favourite Tab
@@ -272,17 +282,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: const [
                                 Text(
                                   'Your Favourites',
                                   style: TextStyle(
-                                      fontSize: 10.sp, color: AppColors.white),
+                                      fontSize: 16, color: AppColors.white),
                                 ),
-                                Text(
-                                  'View All',
-                                  style: TextStyle(
-                                      fontSize: 10.sp, color: AppColors.white),
-                                ),
+                                // Text(
+                                //   'View All',
+                                //   style: TextStyle(
+                                //       fontSize: 10.sp, color: AppColors.white),
+                                // ),
                               ],
                             ),
                             const SizedBox(

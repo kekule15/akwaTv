@@ -1,6 +1,7 @@
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
 import 'package:akwatv/views/home/help/help_screen.dart';
+import 'package:akwatv/views/home/profile/edit_profile.dart';
 import 'package:akwatv/views/home/settings/settings_screen.dart';
 import 'package:akwatv/views/home/subscription/subscription_details.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
@@ -45,6 +46,32 @@ class HomeViewModel extends BaseViewModel {
           Get.to(() => const HelpCenterPage());
         }
       }
+    ];
+  }
+    List<Map<String, dynamic>> profileList() {
+    return [
+      {
+        'title': "Profile",
+        "icon": Icons.person,
+        "onTap": () {
+          Get.to(() => const EditProfilePage());
+        }
+      },
+      {
+        'title': "Subscription",
+        "icon": Icons.subscriptions,
+        "onTap": () {
+          Get.to(() => const SubScriptionDetailsPage());
+        }
+      },
+      {
+        'title': "Settings",
+        "icon": Icons.settings,
+        "onTap": () {
+          Get.to(() => const SettingsPage());
+        }
+      },
+      
     ];
   }
 

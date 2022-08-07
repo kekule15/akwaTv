@@ -8,6 +8,7 @@ import 'package:akwatv/models/otp_verification_model.dart';
 import 'package:akwatv/models/rest_password_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
+import 'package:akwatv/models/update_user_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/utils/providers.dart';
@@ -29,6 +30,7 @@ class OnBoardingService extends ApiManager {
   final forgotPasswordUrl = 'api/auth/forgot-password';
   final otpVerificationUrl = 'api/auth/verify-token';
   final resetPasswordUrl = 'api/auth/reset-password';
+  final updateUserUrl = 'api/user/update/';
 
   OnBoardingService(this.reader) : super(reader);
 
@@ -194,6 +196,24 @@ class OnBoardingService extends ApiManager {
       return ResetPassWordModel.fromJson(response.data);
     } else {
       return ResetPassWordModel(message: 'Error');
+    }
+  }
+
+  // update users details
+  Future<UpdateUserResponseModel> updateUserProfile({
+    required dynamic email,
+    required dynamic phone,
+    required dynamic username,
+  }) async {
+    final body = {"email": email, "phone": phone, "username": username};
+
+    final response = await patchHttp(updateUserUrl + box.read('userId'), body,
+        token: box.read('token'));
+
+    if (response.responseCodeError == null) {
+      return UpdateUserResponseModel.fromJson(response.data);
+    } else {
+      return UpdateUserResponseModel(message: 'Error');
     }
   }
 }

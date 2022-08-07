@@ -8,6 +8,7 @@ import 'package:akwatv/models/otp_verification_model.dart';
 import 'package:akwatv/models/rest_password_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
+import 'package:akwatv/models/update_user_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
@@ -32,6 +33,7 @@ class LoginViewModel extends BaseViewModel {
   FutureManager<ForgotPassWordModel?> forgotPasswordData = FutureManager();
   FutureManager<OtpVerificationModel?> otpVerificationData = FutureManager();
   FutureManager<ResetPassWordModel?> resetPasswordData = FutureManager();
+  FutureManager<UpdateUserResponseModel?> updateUserData = FutureManager();
   FutureManager<GetProfileModel?> userProfileData = FutureManager();
   LoginViewModel(this.read) : super(read) {
     getProfile(userId: box.read('userId'));
@@ -44,8 +46,11 @@ class LoginViewModel extends BaseViewModel {
   bool forgotPasswordBTN = false;
   bool otpLoader = false;
   bool resetPassword = false;
+  bool updateUser = false;
 
   GetStorage box = GetStorage();
+
+  // login service
   login(String email, String password) async {
     loginBtn = true;
     loginData.load();
@@ -100,6 +105,8 @@ class LoginViewModel extends BaseViewModel {
     loginBtn = false;
   }
 
+
+  // register service
   register(
     String name,
     String email,
@@ -132,7 +139,10 @@ class LoginViewModel extends BaseViewModel {
     }
     signupBtn = false;
   }
+  
 
+
+  // get user details or profile
   Future getProfile({required dynamic userId}) async {
     userProfileData.load();
     setContentError('');
@@ -298,4 +308,34 @@ class LoginViewModel extends BaseViewModel {
     }
     resetPassword = false;
   }
+
+
+  // update user profile details
+  updateUserProfile(
+      {required dynamic email, required dynamic phone, required dynamic username}) async {
+    updateUserData.load();
+    updateUser = true;
+    notifyListeners();
+
+    final res = await read(onboardingProvider)
+        .updateUserProfile(email: email, phone: phone, username: username);
+
+    if (res.message == 'Request successful') {
+      updateUserData.onSuccess(res);
+       box.write('phone', res.data!.phone);
+      box.write('email', res.data!.email);
+      box.write('username', res.data!.username);
+      updateUser = false;
+      NotifyMe.showAlert(res.message!);
+      Get.back();
+      notifyListeners();
+    } else {
+      updateUserData.onError;
+      NotifyMe.showAlert(res.message!);
+      updateUser = false;
+      notifyListeners();
+    }
+    updateUser = false;
+  }
+
 }

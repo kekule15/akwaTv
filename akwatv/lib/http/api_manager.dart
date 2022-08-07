@@ -87,6 +87,24 @@ abstract class ApiManager {
     ));
   }
 
+   //Patch
+  Future patchHttp(String route, body,
+      {Map<String, dynamic>? params, dynamic token}) async {
+    setHeader(token: token);
+    params?.removeWhere((key, value) => value == null);
+    //body?.removeWhere((key, value) => value == null);
+    final fullRoute = '$baseURL$route';
+    print(fullRoute);
+
+    return makeRequest(dio.patch(
+      fullRoute,
+      data: body,
+      onSendProgress: _networkutils.showLoadingProgress,
+      onReceiveProgress: _networkutils.showLoadingProgress,
+      queryParameters: params,
+    ));
+  }
+
   //DELETE
   Future deleteHttp(String route,
       {Map<String, dynamic>? params, dynamic data, dynamic token}) async {
