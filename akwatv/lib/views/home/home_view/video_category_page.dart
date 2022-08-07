@@ -72,81 +72,87 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
             Column(
               children: List.generate(
                   categoryVideoData.length,
-                  (index) => 
-                  InkWell(
-                        onTap: () {
-                          Get.to(
-                              () => VideoDetailsPage(
-                                    videoData: categoryVideoData[index],
-                                  ),
-                              arguments: categoryVideoData[index]);
-                        },
-                        child: Card(
-                          color: AppColors.termsTextColor,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
+                  (index) => Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(
+                                  () => VideoDetailsPage(
+                                        videoData: categoryVideoData[index],
+                                      ),
+                                  arguments: categoryVideoData[index]);
+                            },
+                            child: Card(
+                              color: AppColors.termsTextColor,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      height: 80,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                  categoryVideoData[index]
-                                                      .img!),
-                                              fit: BoxFit.cover)),
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    Row(
                                       children: [
-                                        Text(
-                                          categoryVideoData[index].title!,
-                                          style: TextStyle(
-                                              color: AppColors.white,
-                                              fontSize: 12.sp),
+                                        Container(
+                                          height: 80,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      categoryVideoData[index]
+                                                          .img!),
+                                                  fit: BoxFit.cover)),
                                         ),
                                         const SizedBox(
-                                          height: 5,
+                                          width: 20,
                                         ),
-                                        SizedBox(
-                                          width: 200,
-                                          child: Text(
-                                            categoryVideoData[index].desc!,
-                                            style: TextStyle(
-                                                overflow: TextOverflow.ellipsis,
-                                                color: AppColors.white,
-                                                fontSize: 12.sp),
-                                          ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              categoryVideoData[index].title!,
+                                              style: TextStyle(
+                                                  color: AppColors.white,
+                                                  fontSize: 12.sp),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            SizedBox(
+                                              width: 200,
+                                              child: Text(
+                                                categoryVideoData[index].desc!,
+                                                style: TextStyle(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    color: AppColors.white,
+                                                    fontSize: 12.sp),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
+                                    SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: playButtonWidget(
+                                        icon: const Icon(
+                                          Icons.check,
+                                          color: AppColors.white,
+                                          size: 15,
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
-                                SizedBox(
-                                  child: playButtonWidget(
-                                    icon: Icon(
-                                      Icons.check,
-                                      color: AppColors.white,
-                                      size: 10.w,
-                                    ),
-                                  ),
-                                )
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       )),
-           
-           
-           
             ),
             const SizedBox(
               height: ySpace3,

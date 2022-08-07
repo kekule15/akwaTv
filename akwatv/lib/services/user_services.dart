@@ -1,4 +1,4 @@
-import 'package:akwatv/models/login)response_model.dart';
+import 'package:akwatv/models/login__response_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class UserService {

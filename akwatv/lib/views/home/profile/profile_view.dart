@@ -8,6 +8,7 @@ import 'package:akwatv/views/home/home_view/video_details.dart';
 import 'package:akwatv/views/home/notifications/notification_screen.dart';
 import 'package:akwatv/views/home/profile/edit_profile.dart';
 import 'package:akwatv/views/home/settings/settings_screen.dart';
+import 'package:akwatv/views/home/subscription/subscription_details.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
@@ -169,11 +170,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   size: 25.w,
                 ),
               ),
-              Text(
-                box.read('username'),
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.white),
-              ),
               InkWell(
                 onTap: () {
                   _viewModel.changeIndex(2);
@@ -239,44 +235,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         child: ListView(
                           padding: const EdgeInsets.all(0),
                           children: [
-                            mylistCard(box.read('username'), userIcon),
-                            mylistCard(
-                                box.read('phone') ?? '+234...', callIcon),
-                            mylistCard(box.read('email'), emailIcon),
-                            mylistCard('Settings', settingsIcon, ontap: () {
+                            mylistCard('Profile', Icons.person, ontap: () {
+                              Get.to(() => const EditProfilePage());
+                            }),
+                            mylistCard('Subscription', Icons.subscriptions,
+                                ontap: () {
+                              Get.to(() => const SubScriptionDetailsPage());
+                            }),
+                            mylistCard('Settings', Icons.settings, ontap: () {
                               Get.to(() => const SettingsPage());
                             }),
-                            mylistCard('Logout', logoutIcon, ontap: () {
+                            mylistCard('Logout', Icons.logout, ontap: () {
                               showDialogWithFields();
                             }),
                             const SizedBox(
                               height: ySpace2,
                             ),
-                            // CustomButton(
-                            //     title: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.center,
-                            //       children: [
-                            //         Icon(
-                            //           Icons.edit,
-                            //           color: AppColors.white,
-                            //           size: 15.w,
-                            //         ),
-                            //         SizedBox(
-                            //           width: 10.w,
-                            //         ),
-                            //         Text(
-                            //           'Edit Profile',
-                            //           style: TextStyle(
-                            //               fontSize: 13.sp,
-                            //               color: AppColors.white),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //     onclick: () {
-                            //       Get.to(() => const EditProfilePage());
-                            //     },
-                            //     color: AppColors.primary,
-                            //     borderColor: false)
                           ],
                         ),
                       ),
@@ -316,105 +290,117 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             Column(
                               children: List.generate(
                                   watchListVideoData.length,
-                                  (index) => InkWell(
-                                        onTap: () {
-                                          Get.to(
-                                              () => VideoDetailsPage(
-                                                    videoData:
-                                                        watchListVideoData[
-                                                            index],
-                                                  ),
-                                              arguments:
-                                                  watchListVideoData[index]);
-                                        },
-                                        child: Card(
-                                          color: AppColors.termsTextColor,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
+                                  (index) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10),
+                                        child: SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Get.to(
+                                                  () => VideoDetailsPage(
+                                                        videoData:
+                                                            watchListVideoData[
+                                                                index],
+                                                      ),
+                                                  arguments: watchListVideoData[
+                                                      index]);
+                                            },
+                                            child: Card(
+                                              color: AppColors.termsTextColor,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
-                                                    Container(
-                                                      height: 80,
-                                                      width: 100,
-                                                      decoration: BoxDecoration(
-                                                          image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                  watchListVideoData[
-                                                                          index]
-                                                                      .img!),
-                                                              fit: BoxFit
-                                                                  .cover)),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 20,
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                    Row(
                                                       children: [
-                                                        Text(
-                                                          watchListVideoData[
-                                                                  index]
-                                                              .title!,
-                                                          style: TextStyle(
-                                                              color: AppColors
-                                                                  .white,
-                                                              fontSize: 12.sp),
+                                                        Container(
+                                                          height: 80,
+                                                          width: 100,
+                                                          decoration: BoxDecoration(
+                                                              image: DecorationImage(
+                                                                  image: NetworkImage(
+                                                                      watchListVideoData[
+                                                                              index]
+                                                                          .img!),
+                                                                  fit: BoxFit
+                                                                      .cover)),
                                                         ),
                                                         const SizedBox(
-                                                          height: 5,
+                                                          width: 20,
                                                         ),
-                                                        SizedBox(
-                                                          width: 200,
-                                                          child: Text(
-                                                            watchListVideoData[
-                                                                    index]
-                                                                .desc!,
-                                                            style: TextStyle(
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                color: AppColors
-                                                                    .white,
-                                                                fontSize:
-                                                                    12.sp),
-                                                          ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              watchListVideoData[
+                                                                      index]
+                                                                  .title!,
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
+                                                                  fontSize:
+                                                                      12.sp),
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 200,
+                                                              child: Text(
+                                                                watchListVideoData[
+                                                                        index]
+                                                                    .desc!,
+                                                                style: TextStyle(
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    color: AppColors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        12.sp),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ],
                                                     ),
+                                                    SizedBox(
+                                                      height: 30,
+                                                      width: 30,
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          deleteWatchList(
+                                                            data:
+                                                                watchListVideoData[
+                                                                    index],
+                                                            movieID:
+                                                                watchListVideoData[
+                                                                        index]
+                                                                    .id,
+                                                          );
+                                                        },
+                                                        child: playButtonWidget(
+                                                          icon: const Icon(
+                                                            Icons.close,
+                                                            color: AppColors
+                                                                .primary,
+                                                            size: 15,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
                                                   ],
                                                 ),
-                                                SizedBox(
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      deleteWatchList(
-                                                        data:
-                                                            watchListVideoData[
-                                                                index],
-                                                        movieID:
-                                                            watchListVideoData[
-                                                                    index]
-                                                                .id,
-                                                      );
-                                                    },
-                                                    child: playButtonWidget(
-                                                      icon: Icon(
-                                                        Icons.close,
-                                                        color:
-                                                            AppColors.primary,
-                                                        size: 10.w,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -434,17 +420,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     );
   }
 
-  Widget mylistCard(String title, String icon, {VoidCallback? ontap}) {
+  Widget mylistCard(String title, IconData icon, {VoidCallback? ontap}) {
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       horizontalTitleGap: 0,
       onTap: () {
         ontap!();
       },
-      leading: SizedBox(
-        height: 20,
-        width: 20,
-        child: SvgImage(asset: icon),
+      leading: Icon(
+        icon,
+        size: 20,
+        color: AppColors.white,
       ),
       title: Padding(
         padding: const EdgeInsets.only(bottom: 10),

@@ -7,7 +7,7 @@ import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/otp_verification_model.dart';
 import 'package:akwatv/models/rest_password_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
-import 'package:akwatv/models/login)response_model.dart';
+import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
@@ -63,7 +63,7 @@ class LoginViewModel extends BaseViewModel {
       box.write('verified', res.data!.account!.verified);
       box.write('cloudId', res.data!.account!.cloudinaryId);
       box.write('userId', res.data!.account!.id);
-      await getProfile(userId: res.data!.account!.id);
+      //await getProfile(userId: res.data!.account!.id);
       NotifyMe.showAlert(res.message!);
       loginBtn = false;
       Get.offAll(() => const ChoosePlanPage());

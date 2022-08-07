@@ -7,7 +7,7 @@ import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/get_watchList_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
-import 'package:akwatv/models/login)response_model.dart';
+import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/video_model.dart';
@@ -25,7 +25,8 @@ class VideoViewService extends ApiManager {
   final categoryListUrl = 'api/lists';
   final addToWatchListUrl = 'api/user/addToWatchlist';
   final deleteWatchListUrl = 'api/user/deleteFromWatchlist';
-    final getWatchListUrl = 'api/user/getWatchlist/';
+  final getWatchListUrl = 'api/user/getWatchlist/';
+  final searchMovieUrl = 'api/user/searchMovie?query=';
 
   VideoViewService(this.reader) : super(reader);
 
@@ -109,11 +110,10 @@ class VideoViewService extends ApiManager {
     }
   }
 
-
-
   // Get watch list
-   Future<GetWatchListModel?> getWatchList() async {
-    final response = await getHttp(getWatchListUrl + box.read('userId'), token: box.read('token'));
+  Future<GetWatchListModel?> getWatchList() async {
+    final response = await getHttp(getWatchListUrl + box.read('userId'),
+        token: box.read('token'));
 
     if (response.responseCodeError == null) {
       // List data = response.data;
@@ -130,6 +130,23 @@ class VideoViewService extends ApiManager {
       return GetWatchListModel(message: 'Request Not Succesful');
     } else {
       return GetWatchListModel(message: 'Request Not Succesful');
+    }
+  }
+
+  // search for movies by name
+  Future<AddToWatchListModel?> searchMovvies({required dynamic movieID}) async {
+    final body = {"user_id": box.read('userId'), "movie_id": movieID};
+
+    final response = await postHttp(
+      searchMovieUrl,
+      body,
+      token: box.read('token'),
+    );
+
+    if (response.responseCodeError == null) {
+      return AddToWatchListModel.fromJson(response.data);
+    } else {
+      return AddToWatchListModel(message: 'Error');
     }
   }
 }

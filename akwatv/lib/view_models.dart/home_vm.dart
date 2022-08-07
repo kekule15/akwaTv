@@ -29,7 +29,15 @@ class HomeViewModel extends BaseViewModel {
           Get.to(() => const SubScriptionDetailsPage());
         }
       },
-      {'title': "Account", "icon": Icons.person, "onTap": () => changeIndex(3)},
+      {
+        'title': "Account",
+        "icon": Icons.person,
+        "onTap": () {
+          Get.back();
+
+          changeIndex(3);
+        }
+      },
       {
         'title': "Help",
         "icon": Icons.live_help,
@@ -41,9 +49,9 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void changeIndex(int index) async {
-    if (index == 3) {
-      await read(videoViewModel).getAllWatchList();
-    }
+    // if (index == 3) {
+    //   await read(videoViewModel).getAllWatchList();
+    // }
     if (index == 0) {
       await read(videoViewModel).getCategoryList();
     }

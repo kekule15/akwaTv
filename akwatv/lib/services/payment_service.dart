@@ -7,7 +7,7 @@ import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/get_watchList_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
-import 'package:akwatv/models/login)response_model.dart';
+import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/video_model.dart';

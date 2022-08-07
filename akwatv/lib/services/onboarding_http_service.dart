@@ -7,7 +7,7 @@ import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/otp_verification_model.dart';
 import 'package:akwatv/models/rest_password_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
-import 'package:akwatv/models/login)response_model.dart';
+import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/utils/providers.dart';
