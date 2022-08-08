@@ -47,6 +47,7 @@ dependencies:
   # flutter_paystack: ^1.0.5+1
   flutter_paystack_payment: ^0.1.2
   better_player: ^0.0.83
+  device_information: ^0.0.4
   
 
 dev_dependencies:

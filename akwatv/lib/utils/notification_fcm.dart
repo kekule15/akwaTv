@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -21,7 +23,9 @@ FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
 GetStorage fcmStorage = GetStorage();
 
-class PushNotificationsManager {  final BuildContext context;
+class PushNotificationsManager extends ConsumerState {
+  @override
+  final BuildContext context;
   PushNotificationsManager({
     required this.context,
   });
@@ -31,12 +35,14 @@ class PushNotificationsManager {  final BuildContext context;
       FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
-    
     //print('setup notification');
 
-    await FirebaseMessaging.instance.getToken().then((value) {
+    await FirebaseMessaging.instance.getToken().then((value) async {
       fcmStorage.write('userToken', value);
+
       print('Augustus fcm token $value');
+      await ref.watch(viewModel).updateDeviceTokenService(deviceToken: value);
+      //print('printed it');
     });
 
     AndroidNotificationChannel channel = const AndroidNotificationChannel(
@@ -135,5 +141,11 @@ class PushNotificationsManager {  final BuildContext context;
     } else {
       //print('User declined or has not accepted permission');
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }

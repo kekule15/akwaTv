@@ -8,6 +8,7 @@ import 'package:akwatv/models/otp_verification_model.dart';
 import 'package:akwatv/models/rest_password_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
+import 'package:akwatv/models/update_device_token_model.dart';
 import 'package:akwatv/models/update_user_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
@@ -31,8 +32,10 @@ class OnBoardingService extends ApiManager {
   final otpVerificationUrl = 'api/auth/verify-token';
   final resetPasswordUrl = 'api/auth/reset-password';
   final updateUserUrl = 'api/user/update/';
+  final updateDeviceUrl = 'api/auth/update-device-token/';
 
   OnBoardingService(this.reader) : super(reader);
+  GetStorage devicePlatformInfo = GetStorage();
 
   //Login with email and password
   Future<LoginResponseModel> signIn(
@@ -42,6 +45,7 @@ class OnBoardingService extends ApiManager {
     final _signInBody = {
       "email": email,
       "password": password,
+      "userAgent": devicePlatformInfo.read('deviceId')
     };
 
     final response = await postHttp(loginRoute, _signInBody);
@@ -214,6 +218,22 @@ class OnBoardingService extends ApiManager {
       return UpdateUserResponseModel.fromJson(response.data);
     } else {
       return UpdateUserResponseModel(message: 'Error');
+    }
+  }
+
+  // update users device FCM token
+  Future<UpdateDeviceModel> updateDeviceToken({
+    required dynamic deviceToken,
+  }) async {
+    final body = {"deviceToken": deviceToken};
+
+    final response = await postHttp(updateDeviceUrl + box.read('userId'), body,
+        token: box.read('token'));
+    print(" my device response ${response.data}");
+    if (response.responseCodeError == null) {
+      return UpdateDeviceModel.fromJson(response.data);
+    } else {
+      return UpdateDeviceModel(message: 'Error');
     }
   }
 }

@@ -288,11 +288,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                   style: TextStyle(
                                       fontSize: 16, color: AppColors.white),
                                 ),
-                                // Text(
-                                //   'View All',
-                                //   style: TextStyle(
-                                //       fontSize: 10.sp, color: AppColors.white),
-                                // ),
+                                Text(
+                                  'View All',
+                                  style: TextStyle(
+                                      fontSize: 13, color: AppColors.white),
+                                ),
                               ],
                             ),
                             const SizedBox(

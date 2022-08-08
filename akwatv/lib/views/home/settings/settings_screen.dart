@@ -104,84 +104,86 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             const SizedBox(
               height: ySpace1,
             ),
-            CustomDropDown(
-              title: Row(
-                children: const [
-                  Icon(
-                    Icons.timeline,
-                    color: AppColors.primary,
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text('Data usage', style: TextStyle(color: AppColors.white)),
-                ],
-              ),
-              body: Column(
-                children: [
-                  Card(
-                    color: AppColors.gray,
-                    child: ListTile(
-                      horizontalTitleGap: 0,
-                      onTap: () {
-                        videoDownload(context);
-                      },
-                      leading: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Icon(
-                          Icons.subscriptions,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                      title: const Text('Video download',
-                          style: TextStyle(
-                              color: AppColors.white,
-                              fontWeight: FontWeight.bold)),
-                      subtitle: const Text('Over Wi-fi only',
-                          style: TextStyle(color: AppColors.white)),
-                      trailing: const Icon(
-                        Icons.arrow_drop_down,
-                        color: AppColors.gray,
-                        size: 12,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: ySpace1,
-                  ),
-                  Card(
-                    color: AppColors.gray,
-                    child: ListTile(
-                      horizontalTitleGap: 0,
-                      onTap: () {
-                        videoStream(context);
-                      },
-                      leading: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Icon(
-                          Icons.subscriptions,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                      title: const Text('Video streaming',
-                          style: TextStyle(
-                              color: AppColors.white,
-                              fontWeight: FontWeight.bold)),
-                      subtitle: const Text('Over Wi-fi only',
-                          style: TextStyle(color: AppColors.white)),
-                      trailing: const Icon(
-                        Icons.arrow_drop_down,
-                        color: AppColors.gray,
-                        size: 12,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: ySpace1,
-            ),
+            // CustomDropDown(
+            //   title: Row(
+            //     children: const [
+            //       Icon(
+            //         Icons.timeline,
+            //         color: AppColors.primary,
+            //       ),
+            //       SizedBox(
+            //         width: 15,
+            //       ),
+            //       Text('Data usage', style: TextStyle(color: AppColors.white)),
+            //     ],
+            //   ),
+            //   body: Column(
+            //     children: [
+            //       Card(
+            //         color: AppColors.gray,
+            //         child: ListTile(
+            //           horizontalTitleGap: 0,
+            //           onTap: () {
+            //             videoDownload(context);
+            //           },
+            //           leading: const Padding(
+            //             padding: EdgeInsets.symmetric(vertical: 8),
+            //             child: Icon(
+            //               Icons.subscriptions,
+            //               color: AppColors.primary,
+            //             ),
+            //           ),
+            //           title: const Text('Video download',
+            //               style: TextStyle(
+            //                   color: AppColors.white,
+            //                   fontWeight: FontWeight.bold)),
+            //           subtitle: const Text('Over Wi-fi only',
+            //               style: TextStyle(color: AppColors.white)),
+            //           trailing: const Icon(
+            //             Icons.arrow_drop_down,
+            //             color: AppColors.gray,
+            //             size: 12,
+            //           ),
+            //         ),
+            //       ),
+            //       const SizedBox(
+            //         height: ySpace1,
+            //       ),
+            //       Card(
+            //         color: AppColors.gray,
+            //         child: ListTile(
+            //           horizontalTitleGap: 0,
+            //           onTap: () {
+            //             videoStream(context);
+            //           },
+            //           leading: const Padding(
+            //             padding: EdgeInsets.symmetric(vertical: 8),
+            //             child: Icon(
+            //               Icons.subscriptions,
+            //               color: AppColors.primary,
+            //             ),
+            //           ),
+            //           title: const Text('Video streaming',
+            //               style: TextStyle(
+            //                   color: AppColors.white,
+            //                   fontWeight: FontWeight.bold)),
+            //           subtitle: const Text('Over Wi-fi only',
+            //               style: TextStyle(color: AppColors.white)),
+            //           trailing: const Icon(
+            //             Icons.arrow_drop_down,
+            //             color: AppColors.gray,
+            //             size: 12,
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: ySpace1,
+            // ),
+           
+           
             const Card(
               color: AppColors.termsTextColor,
               child: ListTile(

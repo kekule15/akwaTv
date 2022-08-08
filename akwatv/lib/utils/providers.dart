@@ -17,8 +17,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final navService =
     Provider.autoDispose<NavigationService>((ref) => NavigationService());
 
-final movieController = ChangeNotifierProvider<MovieControllerViewModel>(
-    (ref) => MovieControllerViewModel(ref.read));
+// final movieController = ChangeNotifierProvider<MovieControllerViewModel>(
+//     (ref) => MovieControllerViewModel(ref.read));
 final homeViewModel =
     ChangeNotifierProvider<HomeViewModel>((ref) => HomeViewModel(ref.read));
 

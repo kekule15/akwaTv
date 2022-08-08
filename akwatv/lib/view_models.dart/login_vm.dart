@@ -68,7 +68,7 @@ class LoginViewModel extends BaseViewModel {
       box.write('verified', res.data!.account!.verified);
       box.write('cloudId', res.data!.account!.cloudinaryId);
       box.write('userId', res.data!.account!.id);
-      //await getProfile(userId: res.data!.account!.id);
+      await getProfile(userId: res.data!.account!.id);
       NotifyMe.showAlert(res.message!);
       loginBtn = false;
       Get.offAll(() => const ChoosePlanPage());
@@ -105,7 +105,6 @@ class LoginViewModel extends BaseViewModel {
     loginBtn = false;
   }
 
-
   // register service
   register(
     String name,
@@ -139,8 +138,6 @@ class LoginViewModel extends BaseViewModel {
     }
     signupBtn = false;
   }
-  
-
 
   // get user details or profile
   Future getProfile({required dynamic userId}) async {
@@ -160,7 +157,7 @@ class LoginViewModel extends BaseViewModel {
       box.write('email', res.data!.email);
       box.write('username', res.data!.username);
       box.write('verified', res.data!.verified);
-      box.write('cloudId', res.data!.cloudinaryId);
+      // box.write('cloudId', res.data!.cloudinaryId);
       box.write('userId', res.data!.id);
       notifyListeners();
     } else {
@@ -309,10 +306,11 @@ class LoginViewModel extends BaseViewModel {
     resetPassword = false;
   }
 
-
   // update user profile details
   updateUserProfile(
-      {required dynamic email, required dynamic phone, required dynamic username}) async {
+      {required dynamic email,
+      required dynamic phone,
+      required dynamic username}) async {
     updateUserData.load();
     updateUser = true;
     notifyListeners();
@@ -322,7 +320,7 @@ class LoginViewModel extends BaseViewModel {
 
     if (res.message == 'Request successful') {
       updateUserData.onSuccess(res);
-       box.write('phone', res.data!.phone);
+      box.write('phone', res.data!.phone);
       box.write('email', res.data!.email);
       box.write('username', res.data!.username);
       updateUser = false;
@@ -338,4 +336,9 @@ class LoginViewModel extends BaseViewModel {
     updateUser = false;
   }
 
+  // update device token
+  updateDeviceTokenService({required dynamic deviceToken}) async {
+  final res =  await read(onboardingProvider).updateDeviceToken(deviceToken: deviceToken);
+    return res;
+  }
 }

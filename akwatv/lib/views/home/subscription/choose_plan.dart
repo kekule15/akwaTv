@@ -29,6 +29,8 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
     super.initState();
   }
 
+  GetStorage devicePlatformInfo = GetStorage();
+
   void sendPaymentToPaystack(
     double amount,
   ) async {
@@ -50,7 +52,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                 payLater: false,
                 name: box.read('username'),
                 title: 'You have Subscribed to Akwa Amaka TV !',
-                subtitle: 'Your plan will be renewed on',
+                subtitle: 'Your plan will expire on',
                 date: DateTime.now()));
       });
     } else {}
@@ -138,7 +140,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                     return Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: SubBoxWidget(
-                        upgrade: (){},
+                        upgrade: () {},
                         isUpgrade: false,
                         onTap: data[index]['onTap'],
                         selected: index,
@@ -194,8 +196,6 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                 ],
               ),
             ),
-          
-          
           ],
         ),
         bottomNavigationBar: Padding(
@@ -208,6 +208,8 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                   borderColor: true,
                   color: AppColors.termsTextColor,
                   onclick: () async {
+                    // print(devicePlatformInfo.read('deviceId'));
+
                     Get.to(() => const CongratulationScreen(),
                         arguments: CongratulationsArgs(
                             payLater: true,

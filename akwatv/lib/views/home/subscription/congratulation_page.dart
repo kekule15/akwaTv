@@ -21,7 +21,7 @@ class CongratulationScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _loginViewModel = ref.watch(viewModel);
     final _videoViewModel = ref.watch(videoViewModel);
-    final movieViewModel = ref.watch(movieController);
+   // final movieViewModel = ref.watch(movieController);
     var data =
         ModalRoute.of(context)?.settings.arguments as CongratulationsArgs;
     final DateFormat formatter = DateFormat('MMMM-dd-yyyy');
