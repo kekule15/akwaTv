@@ -1,6 +1,7 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/constvalues.dart';
+import 'package:akwatv/widgets/like_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -22,7 +23,10 @@ class VideoBoxWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       height: 290,
-      width: 180,
+      width: 200,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColors.gray4.withOpacity(0.3))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -33,57 +37,56 @@ class VideoBoxWidget extends ConsumerWidget {
               width: 1800,
               decoration: BoxDecoration(
                   color: AppColors.termsTextColor,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
                   image: DecorationImage(
                       image: NetworkImage(img), fit: BoxFit.cover)),
-              // image: DecorationImage(
-              //     image: NetworkImage(img), fit: BoxFit.cover)),
-
-              // child: CachedNetworkImage(
-              //   imageUrl: img,
-              //   placeholder: (context, url) => const Center(
-              //     heightFactor: 2,
-              //     widthFactor: 2,
-              //     child: SizedBox(
-              //       height: 16,
-              //       width: 16,
-              //       child: CircularProgressIndicator(
-              //         strokeWidth: 1.5,
-              //         valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-              //       ),
-              //     ),
-              //   ),
-              //   errorWidget: (context, url, error) =>
-              //       const Icon(Icons.error), // This is what you need
-              //   fit: BoxFit.cover,
-              // ),
             ),
           ),
           const SizedBox(
-            height: ySpaceMin,
+            height: 15,
           ),
-          Text(
-            title,
-            style: const TextStyle(
-                color: AppColors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            width: 300,
-            child: Text(
-              description,
-              style: const TextStyle(
-                  overflow: TextOverflow.ellipsis,
-                  color: AppColors.white,
-                  fontSize: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color: AppColors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    // const LikeButton()
+                  ],
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                SizedBox(
+                  width: 300,
+                  child: Text(
+                    description,
+                    style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: AppColors.white,
+                        fontSize: 13),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 10,
           ),
         ],
       ),

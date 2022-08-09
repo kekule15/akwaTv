@@ -62,12 +62,16 @@ class LoginViewModel extends BaseViewModel {
       loginData.onSuccess(res);
       box.write('token', res.data!.accessToken);
       box.write('phone', res.data!.account!.phone);
-      box.write('avatar', res.data!.account!.avatar);
+     // box.write('avatar', res.data!.account!.avatar);
       box.write('email', res.data!.account!.email);
       box.write('username', res.data!.account!.username);
       box.write('verified', res.data!.account!.verified);
-      box.write('cloudId', res.data!.account!.cloudinaryId);
+      //box.write('cloudId', res.data!.account!.cloudinaryId);
       box.write('userId', res.data!.account!.id);
+        box.write('subName', res.data!.account!.subscription!.name);
+      box.write('subAmount', res.data!.account!.subscription!.amount);
+      box.write('expiredAt', res.data!.account!.subscription!.expiredAt);
+      box.write('isSubActive', res.data!.account!.subscriptionIsActive);
       await getProfile(userId: res.data!.account!.id);
       NotifyMe.showAlert(res.message!);
       loginBtn = false;
@@ -159,6 +163,10 @@ class LoginViewModel extends BaseViewModel {
       box.write('verified', res.data!.verified);
       // box.write('cloudId', res.data!.cloudinaryId);
       box.write('userId', res.data!.id);
+        box.write('subName', res.data!.subscription!.name);
+      box.write('subAmount', res.data!.subscription!.amount);
+      box.write('expiredAt', res.data!.subscription!.expiredAt);
+      box.write('isSubActive', res.data!.subscriptionIsActive);
       notifyListeners();
     } else {
       userProfileData.onError;

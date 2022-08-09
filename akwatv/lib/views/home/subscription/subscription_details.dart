@@ -173,6 +173,7 @@ class SubScriptionDetailsPage extends ConsumerWidget {
                       selected: index,
                       amount: data[index]['amount'],
                       desc: data[index]['description'],
+                      desc2: data[index]['description2'],
                       title: data[index]['name'],
                     ),
                   );

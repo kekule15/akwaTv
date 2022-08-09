@@ -53,10 +53,12 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                 name: box.read('username'),
                 title: 'You have Subscribed to Akwa Amaka TV !',
                 subtitle: 'Your plan will expire on',
-                date: DateTime.now()));
+                date: box.read('expiredAt')));
       });
     } else {}
   }
+
+  
 
   PaymentCard _getCardFromUI() {
     // Using just the must-required parameters.
@@ -146,6 +148,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                         selected: index,
                         amount: data[index]['amount'],
                         desc: data[index]['description'],
+                        desc2: data[index]['description2'],
                         title: data[index]['name'],
                       ),
                     );
@@ -212,12 +215,12 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
 
                     Get.to(() => const CongratulationScreen(),
                         arguments: CongratulationsArgs(
-                            payLater: true,
+                            payLater: false,
                             name: box.read('username'),
                             title: 'Your free trial begins now !',
                             subtitle:
-                                'You are required to Susbcribe for a plan to Enjoy Akwa Amaka TV Shows',
-                            date: DateTime.now()));
+                                'Your plan will expire on',
+                            date: box.read('expiredAt')));
                   },
                   title: const Text(
                     'Pay Later',

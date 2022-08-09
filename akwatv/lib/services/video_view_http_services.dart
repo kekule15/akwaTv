@@ -6,6 +6,7 @@ import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/get_watchList_model.dart';
+import 'package:akwatv/models/like_video_model.dart';
 import 'package:akwatv/models/search_response_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
@@ -28,6 +29,8 @@ class VideoViewService extends ApiManager {
   final deleteWatchListUrl = 'api/user/deleteFromWatchlist';
   final getWatchListUrl = 'api/user/getWatchlist/';
   final searchMovieUrl = 'api/user/searchMovie?query=';
+
+  final likeVideoUrl = 'api/user/rateMovie';
 
   VideoViewService(this.reader) : super(reader);
 
@@ -136,8 +139,6 @@ class VideoViewService extends ApiManager {
 
   // search for movies by name
   Future<HomeVideoModel?> searchMovvies({required dynamic title}) async {
-   
-
     final response = await getHttp(
       searchMovieUrl + title,
       token: box.read('token'),
@@ -147,6 +148,24 @@ class VideoViewService extends ApiManager {
       return HomeVideoModel.fromJson(response.data);
     } else {
       return HomeVideoModel(message: 'Error');
+    }
+  }
+
+  // like video
+
+  Future<LikeVideoResponseModel?> likeVideo({required dynamic movieID}) async {
+    final body = {"user_id": box.read('userId'), "movie_id": movieID};
+
+    final response = await postHttp(
+      likeVideoUrl,
+      body,
+      token: box.read('token'),
+    );
+
+    if (response.responseCodeError == null) {
+      return LikeVideoResponseModel.fromJson(response.data);
+    } else {
+      return LikeVideoResponseModel(message: 'Error');
     }
   }
 }

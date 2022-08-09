@@ -41,6 +41,7 @@ class PushNotificationsManager extends ConsumerState {
       fcmStorage.write('userToken', value);
 
       print('Augustus fcm token $value');
+      // send and update device fcm token to backend
       await ref.watch(viewModel).updateDeviceTokenService(deviceToken: value);
       //print('printed it');
     });

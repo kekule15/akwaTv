@@ -3,6 +3,7 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
+import 'package:akwatv/widgets/like_button.dart';
 import 'package:akwatv/widgets/video_box_widget.dart';
 import 'package:better_player/better_player.dart';
 import 'package:chewie/chewie.dart';
@@ -44,6 +45,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
     initPlayer(link: url);
 
     sortSimilarVideos();
+    sortRatedVideos();
 
     super.didChangeDependencies();
   }
@@ -103,9 +105,36 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
     }
   }
 
+  List<String> ratedListVideos = [];
+  sortRatedVideos() async {
+    final loginViewModel = ref.watch(viewModel);
+    var ratedList = loginViewModel.userProfileData.data;
+
+    for (var element in ratedList!.data!.ratedList!) {
+      if (element == widget.videoData.id) {
+        ratedListVideos.add(element);
+        checkRatedVideo();
+      }
+    }
+  }
+
+  bool likeStatus = false;
+  checkRatedVideo() async {
+    if (ratedListVideos.contains(movieID)) {
+      setState(() {
+        likeStatus = true;
+      });
+    } else {
+      setState(() {
+        likeStatus = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _videoViewModel = ref.watch(videoViewModel);
+    // final loginViewModel = ref.watch(viewModel);
     var videoList = _videoViewModel.listVideoData.data;
     var videoData = ModalRoute.of(context)?.settings.arguments as Datum;
     Future<bool> _onBackPressed() {
@@ -203,25 +232,24 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                             const SizedBox(
                               width: 50,
                             ),
-                            InkWell(
-                              onTap: () {
-                                NotifyMe.sendNotification(
-                                    sender: mtitle, content: description);
-                              },
-                              child: Column(
-                                children: const [
-                                  Icon(
-                                    Icons.thumb_up,
-                                    color: AppColors.white,
-                                    size: 20,
-                                  ),
-                                  Text(
-                                    'Rate',
-                                    style: TextStyle(
-                                        color: AppColors.white, fontSize: 12),
-                                  )
-                                ],
-                              ),
+                            Column(
+                              children: [
+                                LikeButton(
+                                  onTap: () {
+                                    _videoViewModel.likeVideoButton(
+                                        movieID: movieID);
+                                    setState(() {
+                                      likeStatus = !likeStatus;
+                                    });
+                                  },
+                                  isLiked: likeStatus,
+                                ),
+                                const Text(
+                                  'Like',
+                                  style: TextStyle(
+                                      color: AppColors.white, fontSize: 12),
+                                )
+                              ],
                             ),
                             const SizedBox(
                               width: 50,

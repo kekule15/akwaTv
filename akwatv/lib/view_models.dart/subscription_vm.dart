@@ -14,13 +14,15 @@ class SubScriptionViewModel extends BaseViewModel {
     return [
       {
         "name": "Regular",
-        "description": "Sream limited videos",
+        "description": "Unlimited video Streaming.",
+        "description2": "Limited to one Device.",
         "amount": "500.00",
         "onTap": () => changeIndex(index: 0, name: 'Regular', amount: 500.00)
       },
       {
         "name": "Premium",
-        "description": "Unlimited video Streaming",
+        "description": "Unlimited video Streaming.",
+        "description2": "Multiple Devices allowed.",
         "amount": "1,500.00",
         "onTap": () => changeIndex(index: 1, name: 'Premium', amount: 1500.00)
       }

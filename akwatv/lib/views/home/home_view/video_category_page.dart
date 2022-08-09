@@ -57,10 +57,10 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.black,
-        automaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,
         title: Text(
           categoryData.genre!.capitalizeFirst!,
-          style: TextStyle(color: AppColors.white, fontSize: 16.sp),
+          style: TextStyle(color: AppColors.white, fontSize: 22),
         ),
       ),
       body: Padding(

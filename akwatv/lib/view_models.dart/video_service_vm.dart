@@ -34,6 +34,7 @@ class VideoServiceViewModel extends BaseViewModel {
   bool deleteTOListBTN = false;
   bool getWatchLoader = false;
   bool isSearch = false;
+  bool likedVideo = false;
 
   getVideoList() async {
     listVideoData.load();
@@ -152,5 +153,23 @@ class VideoServiceViewModel extends BaseViewModel {
       notifyListeners();
     }
     isSearch = false;
+  }
+
+  //like video
+
+  likeVideoButton({required dynamic movieID}) async {
+    //likedVideo = true;
+    notifyListeners();
+    final res = await read(videoServiceProvider).likeVideo(movieID: movieID);
+    if (res != null) {
+      likedVideo = true;
+      await read(loginViewModel).getProfile(userId: box.read('userId'));
+      NotifyMe.showAlert(res.message!);
+      notifyListeners();
+    } else {
+      isSearch = false;
+      NotifyMe.showAlert(res!.message!);
+      notifyListeners();
+    }
   }
 }

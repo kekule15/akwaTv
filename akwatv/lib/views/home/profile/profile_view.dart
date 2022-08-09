@@ -6,15 +6,10 @@ import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/drawer_widget.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
+import 'package:akwatv/views/home/home_view/watchlist_page.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
-import 'package:akwatv/views/home/notifications/notification_screen.dart';
-import 'package:akwatv/views/home/profile/edit_profile.dart';
-import 'package:akwatv/views/home/settings/settings_screen.dart';
-import 'package:akwatv/views/home/subscription/subscription_details.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
-import 'package:akwatv/widgets/custom_button.dart';
-import 'package:akwatv/widgets/play_button_widget.dart';
 import 'package:dio/dio.dart' as DIO;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,34 +60,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   GetStorage box = GetStorage();
 
-  XFile? image;
-  final ImagePicker _picker = ImagePicker();
-
-  takePhoto(ImageSource source, cxt) async {
-    final loginViewModel = ref.watch(viewModel);
-    setState(() {
-      loginViewModel.uploadPicBTN = true;
-    });
-    final pickedFile = await _picker.pickImage(
-        source: source, imageQuality: 50, maxHeight: 500.0, maxWidth: 500.0);
-    if (pickedFile != null) {
-      setState(() {
-        image = pickedFile;
-      });
-      String fileName = image!.path.split('/').last;
-      loginViewModel.uploadProfilePic(
-        image: await DIO.MultipartFile.fromFile(image!.path,
-            filename: fileName, contentType: MediaType('image', 'jpg')),
-      );
-
-      setState(() {
-        loginViewModel.uploadPicBTN = false;
-      });
-    }
-
-    // Navigator.pop(cxt);
-  }
-
   @override
   Widget build(BuildContext context) {
     final loginViewModel = ref.watch(viewModel);
@@ -113,45 +80,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               SizedBox(
                 height: 100.h,
               ),
-              InkWell(
-                  onTap: () {
-                    takePhoto(ImageSource.gallery, context);
-                  },
-                  child: box.read('avatar') == null
-                      ? CircleAvatar(
-                          radius: 50,
-                          backgroundColor: AppColors.primary,
-                          child: loginViewModel.uploadPicBTN
-                              ? const Center(
-                                  child: SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      color: AppColors.white,
-                                    ),
-                                  ),
-                                )
-                              : const Icon(Icons.person))
-                      : CircleAvatar(
-                          radius: 50,
-                          backgroundColor: AppColors.primary,
-                          backgroundImage: NetworkImage(box.read('avatar')),
-                          child: loginViewModel.uploadPicBTN
-                              ? const Center(
-                                  child: SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      color: AppColors.white,
-                                    ),
-                                  ),
-                                )
-                              : null)),
+              box.read('avatar') != null
+                  ? CircleAvatar(
+                      radius: 50,
+                      backgroundColor: AppColors.primary,
+                      backgroundImage: NetworkImage(box.read('avatar')),
+                    )
+                  : const CircleAvatar(
+                      radius: 50,
+                      backgroundColor: AppColors.primary,
+                      child: Icon(Icons.person),
+                    ),
               SizedBox(
                 height: 10.h,
               ),
-              const Text(
-                'Tap to Change profile picture',
+              Text(
+                box.read('username'),
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: AppColors.white),
               )
@@ -282,16 +226,26 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text(
+                              children: [
+                                const Text(
                                   'Your Favourites',
                                   style: TextStyle(
-                                      fontSize: 16, color: AppColors.white),
+                                      color: AppColors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
                                 ),
-                                Text(
-                                  'View All',
-                                  style: TextStyle(
-                                      fontSize: 13, color: AppColors.white),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => const ViewAllWatchList(),
+                                        arguments: watchListVideoData);
+                                  },
+                                  child: const Text(
+                                    'View All',
+                                    style: TextStyle(
+                                        color: AppColors.primary,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
                               ],
                             ),

@@ -9,6 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as DIO;
+import 'package:http_parser/http_parser.dart';
 
 class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -51,6 +54,38 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     }
   }
 
+  XFile? image;
+  final ImagePicker _picker = ImagePicker();
+
+  takePhoto(ImageSource source, cxt) async {
+    final loginViewModel = ref.watch(viewModel);
+    setState(() {
+      loginViewModel.uploadPicBTN = true;
+    });
+    final pickedFile = await _picker.pickImage(
+        source: source, imageQuality: 50, maxHeight: 500.0, maxWidth: 500.0);
+    if (pickedFile != null) {
+      setState(() {
+        image = pickedFile;
+      });
+      String fileName = image!.path.split('/').last;
+      loginViewModel.uploadProfilePic(
+        image: await DIO.MultipartFile.fromFile(image!.path,
+            filename: fileName, contentType: MediaType('image', 'jpg')),
+      );
+
+      setState(() {
+        loginViewModel.uploadPicBTN = false;
+      });
+    } else {
+      setState(() {
+        loginViewModel.uploadPicBTN = false;
+      });
+    }
+
+    // Navigator.pop(cxt);
+  }
+
   @override
   Widget build(BuildContext context) {
     final loginViewModel = ref.watch(viewModel);
@@ -72,17 +107,40 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
               const SizedBox(
                 height: ySpace1,
               ),
-              box.read('avatar') != null
-                  ? CircleAvatar(
-                      radius: 40.r,
-                      backgroundColor: AppColors.primary,
-                      backgroundImage: NetworkImage(box.read('avatar')),
-                    )
-                  : CircleAvatar(
-                      radius: 40.r,
-                      backgroundColor: AppColors.primary,
-                      child: const Icon(Icons.person),
-                    ),
+              InkWell(
+                  onTap: () {
+                    takePhoto(ImageSource.gallery, context);
+                  },
+                  child: box.read('avatar') == null
+                      ? CircleAvatar(
+                          radius: 50,
+                          backgroundColor: AppColors.primary,
+                          child: loginViewModel.uploadPicBTN
+                              ? const Center(
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                )
+                              : const Icon(Icons.person))
+                      : CircleAvatar(
+                          radius: 50,
+                          backgroundColor: AppColors.primary,
+                          backgroundImage: NetworkImage(box.read('avatar')),
+                          child: loginViewModel.uploadPicBTN
+                              ? const Center(
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox())),
               const SizedBox(
                 height: ySpace1,
               ),

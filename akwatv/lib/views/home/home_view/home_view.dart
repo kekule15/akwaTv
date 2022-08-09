@@ -5,6 +5,7 @@ import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
+import 'package:akwatv/widgets/like_button.dart';
 import 'package:akwatv/widgets/play_button_widget.dart';
 import 'package:akwatv/widgets/video_box_widget.dart';
 import 'package:chewie/chewie.dart';
@@ -226,14 +227,32 @@ class _HomePageState extends ConsumerState<HomePage> {
                     physics: const BouncingScrollPhysics(),
                     padding: const EdgeInsets.all(0),
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          'Akwa Amaka Originals',
-                          style: TextStyle(
-                              color: AppColors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Akwa Amaka Originals',
+                              style: TextStyle(
+                                  color: AppColors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // Get.to(() => const ViewAllWatchList(),
+                                //     arguments: watchListVideoData);
+                              },
+                              child: const Text(
+                                'View All',
+                                style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(

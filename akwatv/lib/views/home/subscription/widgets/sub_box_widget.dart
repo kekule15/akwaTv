@@ -7,6 +7,7 @@ class SubBoxWidget extends ConsumerWidget {
   final int selected;
   final String title;
   final String desc;
+  final String desc2;
   final String amount;
   final VoidCallback onTap;
   final bool isUpgrade;
@@ -17,6 +18,7 @@ class SubBoxWidget extends ConsumerWidget {
     required this.selected,
     required this.amount,
     required this.desc,
+     required this.desc2,
     required this.onTap,
     required this.title,
     required this.isUpgrade,
@@ -57,6 +59,11 @@ class SubBoxWidget extends ConsumerWidget {
             ),
             Text(
               desc,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: AppColors.white, fontSize: 13),
+            ),
+            Text(
+              desc2,
               textAlign: TextAlign.center,
               style: const TextStyle(color: AppColors.white, fontSize: 13),
             ),
