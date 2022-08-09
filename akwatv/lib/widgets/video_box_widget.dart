@@ -98,44 +98,78 @@ class HorizontalVideoBoxWidget extends ConsumerWidget {
   final VoidCallback ontap;
   final String img;
   final String title;
-  const HorizontalVideoBoxWidget({
-    Key? key,
-    required this.ontap,
-    required this.img,
-    required this.title,
-  }) : super(key: key);
+  final String decs;
+  const HorizontalVideoBoxWidget(
+      {Key? key,
+      required this.ontap,
+      required this.img,
+      required this.title,
+      required this.decs})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        InkWell(
-          onTap: ontap,
-          child: Container(
-            height: 180,
-            width: 120,
-            decoration: BoxDecoration(
-                color: AppColors.termsTextColor,
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                    image: NetworkImage(img), fit: BoxFit.cover)),
+    return Container(
+      height: 200,
+      width: 150,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColors.gray4.withOpacity(0.3))),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: ontap,
+            child: Container(
+              height: 180,
+              width: 150,
+              decoration: BoxDecoration(
+                  color: AppColors.termsTextColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  image: DecorationImage(
+                      image: NetworkImage(img), fit: BoxFit.cover)),
+            ),
           ),
-        ),
-        const SizedBox(
-          height: ySpaceMin,
-        ),
-        SizedBox(
-          width: 150,
-          child: Text(
-            title,
-            style: const TextStyle(
-                overflow: TextOverflow.ellipsis,
-                color: AppColors.white,
-                fontSize: 12),
+          const SizedBox(
+            height: ySpaceMin,
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 150,
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: AppColors.white,
+                        fontSize: 12),
+                  ),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                SizedBox(
+                  width: 300,
+                  child: Text(
+                    decs,
+                    style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: AppColors.white,
+                        fontSize: 13),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

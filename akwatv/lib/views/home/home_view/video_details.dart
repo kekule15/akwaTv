@@ -106,15 +106,14 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
   }
 
   List<String> ratedListVideos = [];
+  // sort rated videos
   sortRatedVideos() async {
     final loginViewModel = ref.watch(viewModel);
     var ratedList = loginViewModel.userProfileData.data;
 
     for (var element in ratedList!.data!.ratedList!) {
-      if (element == widget.videoData.id) {
-        ratedListVideos.add(element);
-        checkRatedVideo();
-      }
+      ratedListVideos.add(element);
+      checkRatedVideo();
     }
   }
 
@@ -236,11 +235,19 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                               children: [
                                 LikeButton(
                                   onTap: () {
+                                    if (ratedListVideos.contains(movieID)) {
+                                      ratedListVideos.remove(movieID);
+                                      setState(() {
+                                        likeStatus = false;
+                                      });
+                                    } else {
+                                      ratedListVideos.add(movieID);
+                                      setState(() {
+                                        likeStatus = true;
+                                      });
+                                    }
                                     _videoViewModel.likeVideoButton(
                                         movieID: movieID);
-                                    setState(() {
-                                      likeStatus = !likeStatus;
-                                    });
                                   },
                                   isLiked: likeStatus,
                                 ),
@@ -335,7 +342,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                                     itemBuilder: (context, index) {
                                       return Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 0, right: 0),
+                                              left: 0, right: 20),
                                           child: HorizontalVideoBoxWidget(
                                               ontap: () {
                                                 resetPlayer(
@@ -350,7 +357,25 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
                                                             .desc!,
                                                     id: similarVideoData[index]
                                                         .id!);
+                                                if (ratedListVideos
+                                                    .contains(movieID)) {
+                                                  setState(() {
+                                                    likeStatus = true;
+                                                    movieID =
+                                                        similarVideoData[index]
+                                                            .id!;
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    likeStatus = false;
+                                                    movieID =
+                                                        similarVideoData[index]
+                                                            .id!;
+                                                  });
+                                                }
                                               },
+                                              decs:
+                                                  similarVideoData[index].desc!,
                                               img: similarVideoData[index].img!,
                                               title: similarVideoData[index]
                                                   .title!));

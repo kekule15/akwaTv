@@ -1,4 +1,5 @@
 import 'package:akwatv/styles/appColors.dart';
+import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/providers.dart';
@@ -24,7 +25,7 @@ class CongratulationScreen extends ConsumerWidget {
    // final movieViewModel = ref.watch(movieController);
     var data =
         ModalRoute.of(context)?.settings.arguments as CongratulationsArgs;
-    final DateFormat formatter = DateFormat('MMMM-dd-yyyy');
+   
 
     return Scaffold(
       appBar: AppBar(

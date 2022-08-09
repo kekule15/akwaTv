@@ -134,3 +134,5 @@ const networkImage =
 
 var fcmServerKey =
     'key=AAAA3656TxE:APA91bH5zPBqy2R04PqG6n9bX3YBr_d-sNsJvoIF9ervHNlcAcV-saMhSgsSnKL_XWiLOE0sthumMPP0P6s5-E0xM4pIBWa28nhS-_gxhV0iKe8LvnnO_9e9isGD5iQagGqKwK1OQkmk';
+
+ final DateFormat formatter = DateFormat('MMMM-dd-yyyy');

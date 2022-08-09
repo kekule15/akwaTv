@@ -18,7 +18,7 @@ class SubBoxWidget extends ConsumerWidget {
     required this.selected,
     required this.amount,
     required this.desc,
-     required this.desc2,
+    required this.desc2,
     required this.onTap,
     required this.title,
     required this.isUpgrade,
@@ -112,7 +112,7 @@ class SubBoxWidget extends ConsumerWidget {
                             Text(
                               "Upgrade",
                               style: TextStyle(
-                                  color: AppColors.primary,
+                                  color: AppColors.white,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500),
                             ),

@@ -85,6 +85,8 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
     return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
   }
 
+ 
+ 
   GetStorage box = GetStorage();
 
   @override
@@ -199,6 +201,8 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                 ],
               ),
             ),
+         
+         
           ],
         ),
         bottomNavigationBar: Padding(
