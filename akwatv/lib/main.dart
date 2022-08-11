@@ -47,7 +47,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   GetStorage devicePlatformInfo = GetStorage();
 
   setUpNotification() async {
-   // final _loginViewModel = ref.watch(viewModel);
     await PushNotificationsManager(
       context: context,
     ).init();

@@ -236,8 +236,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(() => const ViewAllWatchList(),
-                                        arguments: watchListVideoData);
+                                    if (watchListVideoData.isEmpty != true) {
+                                      Get.to(() => const ViewAllWatchList(),
+                                          arguments: watchListVideoData);
+                                    } else {}
                                   },
                                   child: const Text(
                                     'View All',
@@ -252,38 +254,64 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             const SizedBox(
                               height: 20,
                             ),
-                            Column(
-                              children: List.generate(
-                                  watchListVideoData.length,
-                                  (index) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      child: VideoLayoutWidget(
-                                          title:
-                                              watchListVideoData[index].title!,
-                                          img: watchListVideoData[index].img!,
-                                          subtitle:
-                                              watchListVideoData[index].desc!,
-                                          onTap: () {
-                                            Get.to(
-                                                () => VideoDetailsPage(
-                                                      videoData:
+                            watchListVideoData.isEmpty == true
+                                ? Center(
+                                    child: Column(
+                                      children: const [
+                                        SvgImage(
+                                          asset: emptyVid,
+                                          height: 200,
+                                          width: 200,
+                                        ),
+                                        SizedBox(
+                                          height: 40,
+                                        ),
+                                        Text(
+                                          'No Movie Fetched',
+                                          style: TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 17),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : Column(
+                                    children: List.generate(
+                                        watchListVideoData.length,
+                                        (index) => Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: VideoLayoutWidget(
+                                                title: watchListVideoData[index]
+                                                    .title!,
+                                                img: watchListVideoData[index]
+                                                    .img!,
+                                                subtitle:
+                                                    watchListVideoData[index]
+                                                        .desc!,
+                                                onTap: () {
+                                                  Get.to(
+                                                      () => VideoDetailsPage(
+                                                            videoData:
+                                                                watchListVideoData[
+                                                                    index],
+                                                          ),
+                                                      arguments:
                                                           watchListVideoData[
-                                                              index],
-                                                    ),
-                                                arguments:
-                                                    watchListVideoData[index]);
-                                          },
-                                          icon: Icons.close,
-                                          iconTap: () {
-                                            deleteWatchList(
-                                              data: watchListVideoData[index],
-                                              movieID:
-                                                  watchListVideoData[index].id,
-                                            );
-                                          },
-                                          iconColor: AppColors.primary))),
-                            ),
+                                                              index]);
+                                                },
+                                                icon: Icons.close,
+                                                iconTap: () {
+                                                  deleteWatchList(
+                                                    data: watchListVideoData[
+                                                        index],
+                                                    movieID: watchListVideoData[
+                                                            index]
+                                                        .id,
+                                                  );
+                                                },
+                                                iconColor: AppColors.primary))),
+                                  ),
                           ],
                         ),
                       ),

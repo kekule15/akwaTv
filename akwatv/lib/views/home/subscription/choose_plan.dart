@@ -21,72 +21,11 @@ class ChoosePlanPage extends ConsumerStatefulWidget {
 }
 
 class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
-  final plugin = PaystackPayment();
-
   @override
   void initState() {
-    plugin.initialize(publicKey: payStackAPIKey);
     super.initState();
   }
 
-  GetStorage devicePlatformInfo = GetStorage();
-
-  void sendPaymentToPaystack(
-    double amount,
-  ) async {
-    Charge charge = Charge()
-      // Convert to kobo and round to the nearest whole number
-      ..amount = (amount * 100).round()
-      ..email = box.read('email')
-      ..card = _getCardFromUI()
-      ..reference = _getReference();
-    var checkout =
-        plugin.checkout(context, charge: charge, method: CheckoutMethod.card);
-    var response = await checkout;
-    print('Paystack response =========== ${response.toString()}');
-    if (response.status == true) {
-      //Navigator.pop(context);
-      checkPaymentStatus(context, onTap: () {
-        Get.to(() => const CongratulationScreen(),
-            arguments: CongratulationsArgs(
-                payLater: false,
-                name: box.read('username'),
-                title: 'You have Subscribed to Akwa Amaka TV !',
-                subtitle: 'Your plan will expire on',
-                date: box.read('expiredAt')));
-      });
-    } else {}
-  }
-
-  
-
-  PaymentCard _getCardFromUI() {
-    // Using just the must-required parameters.
-    return PaymentCard(
-      number: '',
-      cvc: '',
-      expiryMonth: '',
-      expiryYear: '',
-    );
-  }
-
-  String _getReference() {
-    String platform;
-    if (!kIsWeb) {
-      if (Platform.isIOS) {
-        platform = 'iOS';
-      } else {
-        platform = 'Android';
-      }
-    } else {
-      platform = "WEB";
-    }
-
-    return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
-  }
-
- 
- 
   GetStorage box = GetStorage();
 
   @override
@@ -201,8 +140,6 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                 ],
               ),
             ),
-         
-         
           ],
         ),
         bottomNavigationBar: Padding(
@@ -222,8 +159,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                             payLater: false,
                             name: box.read('username'),
                             title: 'Your free trial begins now !',
-                            subtitle:
-                                'Your plan will expire on',
+                            subtitle: 'Your plan will expire on',
                             date: box.read('expiredAt')));
                   },
                   title: const Text(
@@ -241,8 +177,8 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                     confirmSubscriptionSheet(context,
                         name: subViewModel.subName,
                         amount: subViewModel.subAmount,
-                        onTap: () =>
-                            sendPaymentToPaystack(subViewModel.subAmount));
+                        onTap: () => subViewModel.sendPaymentToPaystack(
+                            context: context, amount: subViewModel.subAmount));
                   },
                   title: const Text(
                     'Subscribe',

@@ -24,63 +24,7 @@ class SubScriptionDetailsPage extends ConsumerStatefulWidget {
 
 class _SubScriptionDetailsPageState
     extends ConsumerState<SubScriptionDetailsPage> {
-  final plugin = PaystackPayment();
   GetStorage box = GetStorage();
-
-  @override
-  void initState() {
-    plugin.initialize(publicKey: payStackAPIKey);
-    super.initState();
-  }
-
-  void sendPaymentToPaystack(
-    double amount,
-  ) async {
-    Charge charge = Charge()
-      // Convert to kobo and round to the nearest whole number
-      ..amount = (amount * 100).round()
-      ..email = box.read('email')
-      ..card = _getCardFromUI()
-      ..reference = _getReference();
-    var checkout =
-        plugin.checkout(context, charge: charge, method: CheckoutMethod.card);
-    var response = await checkout;
-    print('Paystack response =========== ${response.toString()}');
-    if (response.status == true) {
-      //Navigator.pop(context);
-      checkPaymentStatus(context, onTap: () {
-        Get.to(() => const CongratulationScreen(),
-            arguments: CongratulationsArgs(
-                payLater: false,
-                name: box.read('username'),
-                title: 'You have Subscribed to Akwa Amaka TV !',
-                subtitle: 'Your plan will expire on',
-                date: box.read('expiredAt')));
-      });
-    } else {}
-  }
-
-  PaymentCard _getCardFromUI() {
-    // Using just the must-required parameters.
-    return PaymentCard(
-      number: '',
-      cvc: '',
-      expiryMonth: '',
-      expiryYear: '',
-    );
-  }
-
-  String _getReference() {
-    String platform;
-
-    if (Platform.isIOS) {
-      platform = 'iOS';
-    } else {
-      platform = 'Android';
-    }
-
-    return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,8 +190,9 @@ class _SubScriptionDetailsPageState
                         confirmSubscriptionSheet(context,
                             name: subViewModel.subName,
                             amount: subViewModel.subAmount,
-                            onTap: () =>
-                                sendPaymentToPaystack(subViewModel.subAmount));
+                            onTap: () => subViewModel.sendPaymentToPaystack(
+                                context: context,
+                                amount: subViewModel.subAmount));
                       },
                       isUpgrade: data[index]['name'] == box.read('subName') &&
                               box.read('subName') == 'Free'

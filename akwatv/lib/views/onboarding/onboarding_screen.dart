@@ -33,10 +33,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     onBoardingIcon2,
     onBoardingIcon3,
   ];
+  GetStorage box = GetStorage();
   @override
   void initState() {
-    GetStorage box = GetStorage();
-    box.write('onboarding', 'value');
     super.initState();
   }
 
@@ -45,27 +44,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.black,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 30),
+            child: InkWell(
+              onTap: () {
+                box.write('onboarding', 'value');
+                Get.to(() => const AuthScreen());
+              },
+              child: Text(
+                'Skip',
+                style: TextStyle(color: AppColors.white, fontSize: 20.sp),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0),
-        child: Column(
+        child: ListView(
           children: [
             const SizedBox(
               height: ySpace3 * 2,
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: InkWell(
-                  onTap: () {
-                    Get.to(() => const AuthScreen());
-                  },
-                  child: Text(
-                    'Skip',
-                    style: TextStyle(color: AppColors.white, fontSize: 20.sp),
-                  ),
-                ),
-              ),
             ),
             GestureDetector(
               onPanUpdate: (details) {
@@ -197,6 +201,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     splashColor: AppColors.black,
                     onTap: () {
                       if (indexData == 2) {
+                        box.write('onboarding', 'value');
                         Get.to(() => const AuthScreen());
                       } else {
                         setState(() {

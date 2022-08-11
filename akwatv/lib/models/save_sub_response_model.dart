@@ -1,38 +1,34 @@
 // To parse this JSON data, do
 //
-//     final getProfileModel = getProfileModelFromJson(jsonString);
+//     final saveSubResponseModel = saveSubResponseModelFromJson(jsonString);
 
 import 'dart:convert';
 
-GetProfileModel getProfileModelFromJson(String str) => GetProfileModel.fromJson(json.decode(str));
+SaveSubResponseModel saveSubResponseModelFromJson(String str) => SaveSubResponseModel.fromJson(json.decode(str));
 
-String getProfileModelToJson(GetProfileModel data) => json.encode(data.toJson());
+String saveSubResponseModelToJson(SaveSubResponseModel data) => json.encode(data.toJson());
 
-class GetProfileModel {
-    GetProfileModel({
+class SaveSubResponseModel {
+    SaveSubResponseModel({
         this.data,
         this.errors,
         this.message,
-        this.level,
     });
 
     final Data? data;
     final Errors? errors;
     final String? message;
-    final String? level;
 
-    factory GetProfileModel.fromJson(Map<String, dynamic> json) => GetProfileModel(
+    factory SaveSubResponseModel.fromJson(Map<String, dynamic> json) => SaveSubResponseModel(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         errors: json["errors"] == null ? null : Errors.fromJson(json["errors"]),
         message: json["message"] == null ? null : json["message"],
-        level: json["level"] == null ? null : json["level"],
     );
 
     Map<String, dynamic> toJson() => {
         "data": data == null ? null : data!.toJson(),
         "errors": errors == null ? null : errors!.toJson(),
         "message": message == null ? null : message,
-        "level": level == null ? null : level,
     };
 }
 
@@ -114,7 +110,6 @@ class Data {
 
 class Subscription {
     Subscription({
-        this.name,
         this.email,
         this.username,
         this.amount,
@@ -124,7 +119,6 @@ class Subscription {
         this.id,
     });
 
-    final String? name;
     final String? email;
     final String? username;
     final String? amount;
@@ -134,7 +128,6 @@ class Subscription {
     final String? id;
 
     factory Subscription.fromJson(Map<String, dynamic> json) => Subscription(
-        name: json["name"] == null ? null : json["name"],
         email: json["email"] == null ? null : json["email"],
         username: json["username"] == null ? null : json["username"],
         amount: json["amount"] == null ? null : json["amount"],
@@ -145,7 +138,6 @@ class Subscription {
     );
 
     Map<String, dynamic> toJson() => {
-        "name": name == null ? null : name,
         "email": email == null ? null : email,
         "username": username == null ? null : username,
         "amount": amount == null ? null : amount,

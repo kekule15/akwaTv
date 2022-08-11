@@ -12,6 +12,7 @@ import 'package:akwatv/models/update_device_token_model.dart';
 import 'package:akwatv/models/update_user_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
+import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
@@ -48,11 +49,22 @@ class OnBoardingService extends ApiManager {
       "userAgent": devicePlatformInfo.read('deviceId')
     };
 
-    final response = await postHttp(loginRoute, _signInBody);
-    if (response.responseCodeError == null) {
-      return LoginResponseModel.fromJson(response.data);
+    final response =
+        await postHttp(loginRoute, _signInBody).catchError((error) {
+      return NotifyMe.showAlert('Error Occured... Please try again later.');
+    });
+   // print(response.data);
+    if (response.statusCode == 502 || response.statusCode == 500) {
+      NotifyMe.showAlert('Error Occured... Please try again later.');
+      return LoginResponseModel(
+          message: 'Error Occured... Please try again later.');
     } else {
-      return LoginResponseModel.fromJson(response.data);
+      if (response.responseCodeError == null) {
+        return LoginResponseModel.fromJson(response.data);
+      } else {
+        return LoginResponseModel(
+            message: 'Error Occured... Please try again later.');
+      }
     }
   }
 
@@ -155,7 +167,7 @@ class OnBoardingService extends ApiManager {
     final response = await postHttp(
       forgotPasswordUrl,
       body,
-      token: box.read('token'),
+      //token: box.read('token'),
     );
 
     if (response.responseCodeError == null) {

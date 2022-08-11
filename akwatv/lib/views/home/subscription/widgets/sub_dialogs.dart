@@ -98,24 +98,31 @@ confirmSubscriptionSheet(BuildContext context,
           borderColor: false,
           color: AppColors.primary,
           onclick: () async {
-            Navigator.pop(context);
+            //Navigator.pop(context);
             onTap();
           },
-          title: const Text(
-            'Continue',
-            style: TextStyle(color: AppColors.white, fontSize: 16),
-          ),
+          title: subViewModel.saveData
+              ? const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    color: AppColors.white,
+                  ),
+                )
+              : const Text(
+                  'Continue',
+                  style: TextStyle(color: AppColors.white, fontSize: 16),
+                ),
         ),
       ],
     );
   });
-  return DialogWidgets.modalBottomSheetMenu(context, data, height: 600);
+  return DialogWidgets.modalBottomSheetMenu(context, data,
+      height: 600, dismiss: false);
 }
 
 checkPaymentStatus(BuildContext context, {required VoidCallback onTap}) async {
   Widget data = Consumer(builder: (context, ref, child) {
-   
-
     return Column(
       children: [
         const Text(

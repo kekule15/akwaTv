@@ -239,19 +239,19 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500),
                             ),
-                            InkWell(
-                              onTap: () {
-                                // Get.to(() => const ViewAllWatchList(),
-                                //     arguments: watchListVideoData);
-                              },
-                              child: const Text(
-                                'View All',
-                                style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     // Get.to(() => const ViewAllWatchList(),
+                            //     //     arguments: watchListVideoData);
+                            //   },
+                            //   child: const Text(
+                            //     'View All',
+                            //     style: TextStyle(
+                            //         color: AppColors.primary,
+                            //         fontSize: 16,
+                            //         fontWeight: FontWeight.w500),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),

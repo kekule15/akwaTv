@@ -6,6 +6,7 @@ import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/get_watchList_model.dart';
+import 'package:akwatv/models/save_sub_response_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
@@ -21,30 +22,39 @@ class PaymentService extends ApiManager {
   final Reader reader;
   GetStorage box = GetStorage();
 
-  final getvideoListUrl = "api/movies";
-  final categoryListUrl = 'api/lists';
-  final addToWatchListUrl = 'api/user/addToWatchlist';
-  final deleteWatchListUrl = 'api/user/deleteFromWatchlist';
-  final getWatchListUrl = 'api/user/getWatchlist/';
+  final saveSubResponseUrl = 'api/subscription/save-response/';
 
   PaymentService(this.reader) : super(reader);
 
   // // add to watchList
-  // Future<AddToWatchListModel?> addToWatchList(
-  //     {required dynamic movieID}) async {
-  //   final body = {"user_id": box.read('userId'), "movie_id": movieID};
+  Future<SaveSubResponseModel> savePaymentResponse(
+      {required String planName,
+      required String email,
+      required String username,
+      required dynamic amount,
+      required String createdAt,
+      required String expiredAt,
+      required String paystackResponse}) async {
+    final body = {
+      "sub_plan": planName,
+      "email": email,
+      "username": username,
+      "amount": amount,
+      "createdAt": createdAt,
+      "expiredAt": expiredAt,
+      "paystackResponse": paystackResponse
+    };
 
-  //   final response = await postHttp(
-  //     addToWatchListUrl,
-  //     body,
-  //     token: box.read('token'),
-  //   );
+    final response = await putHttp(
+      saveSubResponseUrl + box.read('userId'),
+      body,
+      token: box.read('token'),
+    );
 
-  //   if (response.responseCodeError == null) {
-  //     return AddToWatchListModel.fromJson(response.data);
-  //   } else {
-  //     return AddToWatchListModel(message: 'Error');
-  //   }
-  // }
-
+    if (response.responseCodeError == null) {
+      return SaveSubResponseModel.fromJson(response.data);
+    } else {
+      return SaveSubResponseModel(message: 'Error');
+    }
+  }
 }

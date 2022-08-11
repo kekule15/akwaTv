@@ -70,7 +70,7 @@ abstract class ApiManager {
   }
 
   //PUT
-  Future putHttp(String route, body,
+  Future<FormattedResponse> putHttp(String route, body,
       {Map<String, dynamic>? params, dynamic token}) async {
     setHeader(token: token);
     params?.removeWhere((key, value) => value == null);

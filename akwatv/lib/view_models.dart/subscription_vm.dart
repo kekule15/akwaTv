@@ -1,14 +1,29 @@
+import 'package:akwatv/providers/subscription_provider.dart';
+import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
+import 'package:akwatv/views/home/subscription/congratulation_page.dart';
+import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
+import 'package:akwatv/views/routes_args/congratulations_args.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_paystack_payment/flutter_paystack_payment.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:get/get.dart';
 
 class SubScriptionViewModel extends BaseViewModel {
   int selectedIndex = 0;
   String subName = 'Regular';
   double subAmount = 500.00;
+  final plugin = PaystackPayment();
+  bool saveData = false;
+  DateTime today = DateTime.now();
+  String expiredAt = DateTime.now().add(const Duration(days: 30)).toString();
   SubScriptionViewModel(Reader read) : super(read) {
     subPlans();
+    plugin.initialize(publicKey: payStackAPIKey);
   }
+  GetStorage box = GetStorage();
 
   List<Map<String, dynamic>> subPlans() {
     return [
@@ -27,6 +42,96 @@ class SubScriptionViewModel extends BaseViewModel {
         "onTap": () => changeIndex(index: 1, name: 'Premium', amount: 1500.00)
       }
     ];
+  }
+
+  GetStorage devicePlatformInfo = GetStorage();
+
+  void sendPaymentToPaystack({
+    required BuildContext context,
+    required double amount,
+  }) async {
+    Charge charge = Charge()
+      // Convert to kobo and round to the nearest whole number
+      ..amount = (amount * 100).round()
+      ..email = box.read('email')
+      ..card = _getCardFromUI()
+      ..reference = _getReference();
+    var checkout =
+        plugin.checkout(context, charge: charge, method: CheckoutMethod.card);
+    var response = await checkout;
+    print('Paystack response =========== ${response.toString()}');
+    if (response.status == true) {
+      //Navigator.pop(context);
+      //save and send payment and subscription details to admin.
+      savePaymentSubResponse(
+          context: context,
+          amount: amount,
+          paystackResponse: response.toString());
+    } else {}
+  }
+
+  PaymentCard _getCardFromUI() {
+    // Using just the must-required parameters.
+    return PaymentCard(
+      number: '',
+      cvc: '',
+      expiryMonth: '',
+      expiryYear: '',
+    );
+  }
+
+  String _getReference() {
+    String platform;
+    if (!kIsWeb) {
+      if (Platform.isIOS) {
+        platform = 'iOS';
+      } else {
+        platform = 'Android';
+      }
+    } else {
+      platform = "WEB";
+    }
+
+    return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
+  }
+
+  savePaymentSubResponse(
+      {required BuildContext context,
+      required dynamic amount,
+      required String paystackResponse}) async {
+    saveData = true;
+    notifyListeners();
+
+    final res = await read(subScriptionServices).savePaymentResponse(
+        planName: subName,
+        email: box.read('email'),
+        username: box.read('username'),
+        amount: amount,
+        createdAt: today.toString(),
+        expiredAt: expiredAt,
+        paystackResponse: paystackResponse);
+
+    if (res.message == 'Request successful') {
+      box.write('subName', subName);
+      box.write('subAmount', res.data!.subscription!.amount);
+      box.write('expiredAt', res.data!.subscription!.expiredAt);
+      box.write('isSubActive', res.data!.subscriptionIsActive);
+      saveData = false;
+      checkPaymentStatus(context, onTap: () {
+        Get.to(() => const CongratulationScreen(),
+            arguments: CongratulationsArgs(
+                payLater: false,
+                name: box.read('username'),
+                title: 'You have Subscribed to Akwa Amaka TV !',
+                subtitle: 'Your plan will expire on',
+                date: res.data!.subscription!.expiredAt));
+      });
+      notifyListeners();
+    } else {
+      saveData = false;
+      notifyListeners();
+    }
+    saveData = false;
   }
 
   void changeIndex(
