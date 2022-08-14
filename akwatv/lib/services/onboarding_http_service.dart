@@ -43,8 +43,8 @@ class OnBoardingService extends ApiManager {
   // logout service
   Future<LogoutResponseModel> logoutService() async {
     final response = await getHttp(
-        logoutUrl + LocalStorageManager.box.read('userId'),
-        token: LocalStorageManager.box.read('token'));
+        logoutUrl + PreferenceUtils.getString(key: 'userId'),
+        token: PreferenceUtils.getString(key: 'token'));
     if (response.responseCodeError == null) {
       return LogoutResponseModel.fromJson(response.data);
     } else if (response.statusCode == 401 ||
@@ -70,7 +70,8 @@ class OnBoardingService extends ApiManager {
     final _signInBody = {
       "email": email,
       "password": password,
-      "userAgent": LocalStorageManager.devicePlatformInfo.read('deviceId')
+      "userAgent":
+      PreferenceUtils.getString(key: 'deviceId')
     };
 
     final response =
@@ -117,10 +118,11 @@ class OnBoardingService extends ApiManager {
 
   // get profile details
   Future<GetProfileModel> getProfileService() async {
-    print('my user ID ${LocalStorageManager.box.read('userId')}');
+    print('my user ID ${ PreferenceUtils.getString(key: 'userId')
+     }');
     final response = await getHttp(
-        getProfileUrl + LocalStorageManager.box.read('userId'),
-        token: LocalStorageManager.box.read('token'));
+        getProfileUrl +  PreferenceUtils.getString(key: 'userId') ,
+        token: PreferenceUtils.getString(key: 'token'));
     if (response.responseCodeError == null) {
       return GetProfileModel.fromJson(response.data);
     } else if (response.statusCode == 401 ||
@@ -152,7 +154,7 @@ class OnBoardingService extends ApiManager {
     };
 
     final response = await postHttp(changeUserPasswordUrl, body,
-        token: LocalStorageManager.box.read('token'));
+        token: PreferenceUtils.getString(key: 'token') );
 
     if (response.responseCodeError == null) {
       return ChangeUserPassword.fromJson(response.data);
@@ -170,10 +172,10 @@ class OnBoardingService extends ApiManager {
     };
 
     final response = await postHttp(
-      uploadPicUrl + LocalStorageManager.box.read('userId'),
+      uploadPicUrl +  PreferenceUtils.getString(key: 'userId'),
       body,
       formdata: true,
-      token: LocalStorageManager.box.read('token'),
+      token: PreferenceUtils.getString(key: 'token') ,
     );
     print('body sent $image');
 
@@ -250,8 +252,8 @@ class OnBoardingService extends ApiManager {
     final body = {"email": email, "phone": phone, "username": username};
 
     final response = await patchHttp(
-        updateUserUrl + LocalStorageManager.box.read('userId'), body,
-        token: LocalStorageManager.box.read('token'));
+        updateUserUrl +  PreferenceUtils.getString(key: 'userId'), body,
+        token: PreferenceUtils.getString(key: 'token') );
 
     if (response.responseCodeError == null) {
       return UpdateUserResponseModel.fromJson(response.data);
@@ -265,11 +267,11 @@ class OnBoardingService extends ApiManager {
     required dynamic deviceToken,
     required dynamic userId,
   }) async {
-    print('my device token ${LocalStorageManager.box.read('token')}');
+    print('my device token ${ PreferenceUtils.getString(key: 'token')}');
     final body = {"deviceToken": deviceToken};
 
     final response = await postHttp(updateDeviceUrl + userId, body,
-        token: LocalStorageManager.box.read('token'));
+        token: PreferenceUtils.getString(key: 'token') );
     print(" my device response ${response.data}");
     if (response.responseCodeError == null) {
       return UpdateDeviceModel.fromJson(response.data);

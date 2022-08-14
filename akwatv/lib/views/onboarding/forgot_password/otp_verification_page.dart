@@ -110,7 +110,7 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
               if (form!.validate()) {
                 form.save();
                 _loginViewModel.otpVerificationService(
-                    email:  LocalStorageManager.box.read('email'),
+                    email:  PreferenceUtils.getString(key: 'email'),
                     token: otpController.text.toString());
               } else {}
             },

@@ -19,6 +19,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+ await PreferenceUtils.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -38,9 +39,9 @@ class _MyAppState extends ConsumerState<MyApp> {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   @override
   void initState() {
-    LocalStorageManager.box;
-    LocalStorageManager.devicePlatformInfo;
-    LocalStorageManager.fcmStorage;
+    // LocalStorageManager.box;
+    // LocalStorageManager.devicePlatformInfo;
+    // LocalStorageManager.fcmStorage;
     setUpNotification();
 
     getDeviceId();
@@ -57,13 +58,16 @@ class _MyAppState extends ConsumerState<MyApp> {
   getDeviceId() async {
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      LocalStorageManager.devicePlatformInfo.write('deviceId', androidInfo.id);
+      
+       PreferenceUtils.setString(key: 'deviceId', value: androidInfo.id!);
+     
 
       // print('Running on ${androidInfo.id}'); // e.g. "Moto G (4)"
     } else {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      LocalStorageManager.devicePlatformInfo
-          .write('deviceId', iosInfo.identifierForVendor);
+      
+       PreferenceUtils.setString(key: 'deviceId', value: iosInfo.identifierForVendor!);
+    
       // print('Running on ${iosInfo.identifierForVendor}'); // e.g. "iPod7,1"
 
     }

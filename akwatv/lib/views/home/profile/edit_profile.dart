@@ -43,14 +43,14 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   updateData(BuildContext context) {
-    if ( LocalStorageManager.box.read('username') != '') {
-      nameController.text =  LocalStorageManager.box.read('username');
+    if ( PreferenceUtils.getString(key: 'username') != '') {
+      nameController.text =   PreferenceUtils.getString(key: 'username');
     }
-    if ( LocalStorageManager.box.read('email') != '') {
-      emailController.text =  LocalStorageManager.box.read('email');
+    if ( PreferenceUtils.getString(key: 'email') != '') {
+      emailController.text =  PreferenceUtils.getString(key: 'email');
     }
-    if ( LocalStorageManager.box.read('phone') != '') {
-      phoneController.text =  LocalStorageManager.box.read('phone');
+    if (  PreferenceUtils.getString(key: 'phone') != '') {
+      phoneController.text =  PreferenceUtils.getString(key: 'phone');
     }
   }
 
@@ -111,7 +111,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   onTap: () {
                     takePhoto(ImageSource.gallery, context);
                   },
-                  child:  LocalStorageManager.box.read('avatar') == null
+                  child:  PreferenceUtils.getString(key: 'avatar') == null
                       ? CircleAvatar(
                           radius: 50,
                           backgroundColor: AppColors.primary,
@@ -129,7 +129,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                       : CircleAvatar(
                           radius: 50,
                           backgroundColor: AppColors.primary,
-                          backgroundImage: NetworkImage( LocalStorageManager.box.read('avatar')),
+                          backgroundImage: NetworkImage( PreferenceUtils.getString(key: 'avatar')),
                           child: loginViewModel.uploadPicBTN
                               ? const Center(
                                   child: SizedBox(

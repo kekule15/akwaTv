@@ -38,7 +38,7 @@ class VideoViewService extends ApiManager {
   // get list of videos
 
   Future<HomeVideoModel?> getListOfVideos() async {
-    final response = await getHttp(getvideoListUrl, token:  LocalStorageManager.box.read('token'));
+    final response = await getHttp(getvideoListUrl, token:  PreferenceUtils.getString(key: 'token'));
 
     if (response.responseCodeError == null) {
       // List data = response.data;
@@ -61,7 +61,7 @@ class VideoViewService extends ApiManager {
   }
 
   Future<CategoryModel?> getCategoryList() async {
-    final response = await getHttp(categoryListUrl, token:  LocalStorageManager.box.read('token'));
+    final response = await getHttp(categoryListUrl, token:  PreferenceUtils.getString(key: 'token'));
 
     if (response.responseCodeError == null) {
       // List data = response.data;
@@ -86,12 +86,12 @@ class VideoViewService extends ApiManager {
   // add to watchList
   Future<AddToWatchListModel?> addToWatchList(
       {required dynamic movieID}) async {
-    final body = {"user_id":  LocalStorageManager.box.read('userId'), "movie_id": movieID};
+    final body = {"user_id":  PreferenceUtils.getString(key: 'userId'), "movie_id": movieID};
 
     final response = await postHttp(
       addToWatchListUrl,
       body,
-      token:  LocalStorageManager.box.read('token'),
+      token: PreferenceUtils.getString(key: 'token'),
     );
 
     if (response.responseCodeError == null) {
@@ -107,9 +107,9 @@ class VideoViewService extends ApiManager {
     final body = {"movie_id": movieID};
 
     final response = await deleteHttp(
-      deleteWatchListUrl + "/${ LocalStorageManager.box.read('userId')}",
+      deleteWatchListUrl + "/${PreferenceUtils.getString(key: 'userId')}",
       data: body,
-      token:  LocalStorageManager.box.read('token'),
+      token:  PreferenceUtils.getString(key: 'token'),
     );
 
     if (response.responseCodeError == null) {
@@ -122,7 +122,7 @@ class VideoViewService extends ApiManager {
   // Get watch list
   Future<GetWatchListModel?> getWatchList({required dynamic userID}) async {
     final response = await getHttp(getWatchListUrl + userID,
-        token:  LocalStorageManager.box.read('token'));
+        token:  PreferenceUtils.getString(key: 'token'));
 
     if (response.responseCodeError == null) {
       // List data = response.data;
@@ -149,7 +149,7 @@ class VideoViewService extends ApiManager {
   Future<HomeVideoModel?> searchMovvies({required dynamic title}) async {
     final response = await getHttp(
       searchMovieUrl + title,
-      token:  LocalStorageManager.box.read('token'),
+      token: PreferenceUtils.getString(key: 'token'),
     );
 
     if (response.responseCodeError == null) {
@@ -162,12 +162,12 @@ class VideoViewService extends ApiManager {
   // like video
 
   Future<LikeVideoResponseModel?> likeVideo({required dynamic movieID}) async {
-    final body = {"user_id":  LocalStorageManager.box.read('userId'), "movie_id": movieID};
+    final body = {"user_id": PreferenceUtils.getString(key: 'userId'), "movie_id": movieID};
 
     final response = await postHttp(
       likeVideoUrl,
       body,
-      token:  LocalStorageManager.box.read('token'),
+      token: PreferenceUtils.getString(key: 'token'),
     );
 
     if (response.responseCodeError == null) {

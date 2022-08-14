@@ -54,11 +54,11 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                     LocalStorageManager.box.read('avatar') != null
+                      PreferenceUtils.getString(key: 'avatar') != null
                         ? CircleAvatar(
                             radius: 30,
                             backgroundColor: AppColors.primary,
-                            backgroundImage: NetworkImage( LocalStorageManager.box.read('avatar')),
+                            backgroundImage: NetworkImage(  PreferenceUtils.getString(key: 'avatar')),
                           )
                         : const CircleAvatar(
                             radius: 30,
@@ -72,7 +72,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                           LocalStorageManager.box.read('username'),
+                           PreferenceUtils.getString(key: 'username'),
                           textAlign: TextAlign.start,
                           style: const TextStyle(color: AppColors.white),
                         ),
@@ -88,7 +88,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                         SizedBox(
                           width: 120.w,
                           child: Text(
-                             LocalStorageManager.box.read('email'),
+                              PreferenceUtils.getString(key: 'email'),
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(color: AppColors.white),

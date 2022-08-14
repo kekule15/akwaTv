@@ -121,7 +121,7 @@ class VideoServiceViewModel extends BaseViewModel {
     notifyListeners();
 
     final res = await read(videoServiceProvider)
-        .getWatchList(userID:  LocalStorageManager.box.read('userId'));
+        .getWatchList(userID: PreferenceUtils.getString(key: 'userId'));
     if (res != null) {
       getWatchListData.onSuccess(res);
       getWatchLoader = false;

@@ -47,9 +47,9 @@ class PaymentService extends ApiManager {
     };
 
     final response = await putHttp(
-      saveSubResponseUrl +  LocalStorageManager.box.read('userId'),
+      saveSubResponseUrl + PreferenceUtils.getString(key: 'userId'),
       body,
-      token:  LocalStorageManager.box.read('token'),
+      token:  PreferenceUtils.getString(key: 'token'),
     );
 
     if (response.responseCodeError == null) {

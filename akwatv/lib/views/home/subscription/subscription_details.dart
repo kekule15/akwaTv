@@ -74,10 +74,10 @@ class _SubScriptionDetailsPageState
                             fontWeight: FontWeight.w500,
                             fontSize: 14),
                       ),
-                      Text(
-                         LocalStorageManager.box.read('isSubActive') == true ? 'Active' : 'Expired',
+                      Text(PreferenceUtils.getBool(key: 'isSubActive')
+                         == true ? 'Active' : 'Expired',
                         style: TextStyle(
-                            color:  LocalStorageManager.box.read('isSubActive') == true
+                            color:  PreferenceUtils.getBool(key: 'isSubActive') == true
                                 ? AppColors.green
                                 : AppColors.primary,
                             fontWeight: FontWeight.w500,
@@ -89,7 +89,7 @@ class _SubScriptionDetailsPageState
                     height: 10,
                   ),
                   Text(
-                     LocalStorageManager.box.read('subName'),
+                     PreferenceUtils.getString(key: 'subName'),
                     style: const TextStyle(
                         color: AppColors.white,
                         fontWeight: FontWeight.bold,
@@ -130,7 +130,7 @@ class _SubScriptionDetailsPageState
                                 fontSize: 12),
                           ),
                           Text(
-                            'NGN ${ LocalStorageManager.box.read('subAmount')}',
+                            'NGN ${  PreferenceUtils.getString(key: 'subAmount')}',
                             style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w500,
@@ -149,7 +149,7 @@ class _SubScriptionDetailsPageState
                                 fontSize: 12),
                           ),
                           Text(
-                            formatter.format( LocalStorageManager.box.read('expiredAt')),
+                           formatter.parse(PreferenceUtils.getString(key: 'expiredAt')).toString(),
                             style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w500,
@@ -195,11 +195,11 @@ class _SubScriptionDetailsPageState
                                 context: context,
                                 amount: subViewModel.subAmount));
                       },
-                      isUpgrade: data[index]['name'] ==  LocalStorageManager.box.read('subName') &&
-                               LocalStorageManager.box.read('subName') == 'Free'
+                      isUpgrade: data[index]['name'] ==   PreferenceUtils.getString(key: 'subName') &&
+                                PreferenceUtils.getString(key: 'subName') == 'Free'
                           ? false
-                          : data[index]['name'] ==  LocalStorageManager.box.read('subName') &&
-                                   LocalStorageManager.box.read('subName') != 'Free'
+                          : data[index]['name'] ==   PreferenceUtils.getString(key: 'subName') &&
+                                   PreferenceUtils.getString(key: 'subName') != 'Free'
                               ? false
                               : true,
                       onTap: data[index]['onTap'],

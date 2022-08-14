@@ -25,7 +25,7 @@ class NotifyMe {
 
   static Future<void> sendNotification(
       {required String sender, required String content}) async {
-    var token = LocalStorageManager.fcmStorage.read('userToken');
+    var token = PreferenceUtils.getString(key: 'userToken') ;
 
     final data = {
       "to": token,

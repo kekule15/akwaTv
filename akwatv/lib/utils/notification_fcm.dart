@@ -39,7 +39,8 @@ class PushNotificationsManager extends ConsumerState {
     //print('setup notification');
 
     await FirebaseMessaging.instance.getToken().then((value) async {
-      LocalStorageManager.fcmStorage.write('userToken', value);
+      
+      PreferenceUtils.setString(key: 'userToken', value: value!);
 
       print('Augustus fcm token $value');
       // send and update device fcm token to backend

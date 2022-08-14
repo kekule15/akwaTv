@@ -108,7 +108,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
               if (form!.validate()) {
                 form.save();
                 _loginViewModel.resetPasswordService(
-                    email:  LocalStorageManager.box.read('email'),
+                    email:  PreferenceUtils.getString(key: 'email'),
                     password: newPasswordController.text.toString());
               } else {}
             },

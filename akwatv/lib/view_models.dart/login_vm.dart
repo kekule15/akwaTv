@@ -49,37 +49,13 @@ class LoginViewModel extends BaseViewModel {
   bool resetPassword = false;
   bool updateUser = false;
 
-
   //logout service
   logoutNow() async {
     logoutBTN = true;
     notifyListeners();
     final res = await read(onboardingProvider).logoutService();
     if (res.message == 'ACT-LOGED-OUT-SUCCESS') {
-       LocalStorageManager.box.remove('token');
-       LocalStorageManager.box.remove(
-        'phone',
-      );
-       LocalStorageManager.box.remove(
-        'avatar',
-      );
-       LocalStorageManager.box.remove(
-        'email',
-      );
-       LocalStorageManager.box.remove(
-        'username',
-      );
-       LocalStorageManager.box.remove(
-        'verified',
-      );
-       LocalStorageManager.box.remove(
-        'cloudId',
-      );
-       LocalStorageManager.box.remove(
-        'userId',
-      );
-
-       LocalStorageManager.box.erase();
+      await PreferenceUtils.eraseAllData();
       logoutBTN = false;
       Get.offAll(() => const AuthScreen());
       NotifyMe.showAlert(res.message!);
@@ -96,18 +72,20 @@ class LoginViewModel extends BaseViewModel {
 
     if (res.message == 'ACT-LOGIN-SUCCESS') {
       loginData.onSuccess(res);
-       LocalStorageManager.box.write('token', res.data!.accessToken);
-       LocalStorageManager.box.write('phone', res.data!.account!.phone);
+      //PreferenceUtils.getString(key: 'token')
+      PreferenceUtils.setString(key: 'token', value: res.data!.accessToken);
+      PreferenceUtils.setString(key: 'phone', value: res.data!.account!.phone);
+     PreferenceUtils.setString(key: 'email', value: res.data!.account!.email);
       //  LocalStorageManager.box.write('avatar', res.data!.account!.avatar);
-       LocalStorageManager.box.write('email', res.data!.account!.email);
-       LocalStorageManager.box.write('username', res.data!.account!.username);
-       LocalStorageManager.box.write('verified', res.data!.account!.verified);
+       PreferenceUtils.setString(key: 'username', value: res.data!.account!.username);
+       PreferenceUtils.setBool(key: 'verified', value: res.data!.account!.verified);
+      PreferenceUtils.setString(key: 'userId', value: res.data!.account!.id);
       // LocalStorageManager.box.write('cloudId', res.data!.account!.cloudinaryId);
-       LocalStorageManager.box.write('userId', res.data!.account!.id);
-       LocalStorageManager.box.write('subName', res.data!.account!.subscription!.name);
-       LocalStorageManager.box.write('subAmount', res.data!.account!.subscription!.amount);
-       LocalStorageManager.box.write('expiredAt', res.data!.account!.subscription!.expiredAt);
-       LocalStorageManager.box.write('isSubActive', res.data!.account!.subscriptionIsActive);
+      PreferenceUtils.setString(key: 'subName', value: res.data!.account!.subscription!.name);
+      PreferenceUtils.setString(key: 'subAmount', value: res.data!.account!.subscription!.amount);
+      PreferenceUtils.setString(key: 'expiredAt', value: res.data!.account!.subscription!.expiredAt);
+       PreferenceUtils.setBool(key: 'isSubActive', value: res.data!.account!.subscriptionIsActive);
+     
       await getProfile();
       NotifyMe.showAlert(res.message!);
       loginBtn = false;
@@ -186,24 +164,25 @@ class LoginViewModel extends BaseViewModel {
     setErrorMessage('');
     setBusy(true);
 
-    final res =
-        await read(onboardingProvider).getProfileService();
+    final res = await read(onboardingProvider).getProfileService();
 
     if (res.message != 'Error') {
       //await getVideoList();
       userProfileData.onSuccess(res);
+      
+      PreferenceUtils.setString(key: 'phone', value: res.data!.phone);
+     PreferenceUtils.setString(key: 'email', value: res.data!.email);
+      //  LocalStorageManager.box.write('avatar', res.data!.account!.avatar);
+       PreferenceUtils.setString(key: 'username', value: res.data!.username);
+       PreferenceUtils.setBool(key: 'verified', value: res.data!.verified);
+      PreferenceUtils.setString(key: 'userId', value: res.data!.id);
+      // LocalStorageManager.box.write('cloudId', res.data!.account!.cloudinaryId);
+      PreferenceUtils.setString(key: 'subName', value: res.data!.subscription!.name);
+      PreferenceUtils.setString(key: 'subAmount', value: res.data!.subscription!.amount);
+      PreferenceUtils.setString(key: 'expiredAt', value: res.data!.subscription!.expiredAt);
+       PreferenceUtils.setBool(key: 'isSubActive', value: res.data!.subscriptionIsActive);
 
-       LocalStorageManager.box.write('phone', res.data!.phone);
-       LocalStorageManager.box.write('email', res.data!.email);
-       LocalStorageManager.box.write('username', res.data!.username);
-       LocalStorageManager.box.write('verified', res.data!.verified);
-      // LocalStorageManager.box.write('avatar', res.data!);
-      //  LocalStorageManager.box.write('cloudId', res.data!.cloudinaryId);
-       LocalStorageManager.box.write('userId', res.data!.id);
-       LocalStorageManager.box.write('subName', res.data!.subscription!.name);
-       LocalStorageManager.box.write('subAmount', res.data!.subscription!.amount);
-       LocalStorageManager.box.write('expiredAt', res.data!.subscription!.expiredAt);
-       LocalStorageManager.box.write('isSubActive', res.data!.subscriptionIsActive);
+     
       notifyListeners();
     } else {
       userProfileData.onError;
@@ -266,8 +245,10 @@ class LoginViewModel extends BaseViewModel {
 
     if (res.message == 'Request successful') {
       uploadPicData.onSuccess(res);
+       PreferenceUtils.setString(key: 'avatar', value: res.data!.user!.avatar);
+    
 
-       LocalStorageManager.box.write('avatar', res.data!.user!.avatar);
+     
       uploadPicBTN = false;
       notifyListeners();
     } else {
@@ -365,9 +346,10 @@ class LoginViewModel extends BaseViewModel {
 
     if (res.message == 'Request successful') {
       updateUserData.onSuccess(res);
-       LocalStorageManager.box.write('phone', res.data!.phone);
-       LocalStorageManager.box.write('email', res.data!.email);
-       LocalStorageManager.box.write('username', res.data!.username);
+      PreferenceUtils.setString(key: 'phone', value: res.data!.phone);
+     PreferenceUtils.setString(key: 'email', value: res.data!.email);
+       PreferenceUtils.setString(key: 'username', value: res.data!.username);
+     
       updateUser = false;
       NotifyMe.showAlert(res.message!);
       Get.back();
@@ -383,8 +365,9 @@ class LoginViewModel extends BaseViewModel {
 
   // update device token
   updateDeviceTokenService({required dynamic deviceToken}) async {
-    final res = await read(onboardingProvider)
-        .updateDeviceToken(deviceToken: deviceToken, userId:  LocalStorageManager.box.read('userId'));
+    final res = await read(onboardingProvider).updateDeviceToken(
+        deviceToken: deviceToken,
+        userId: PreferenceUtils.getString(key: 'userId'));
     return res;
   }
 }

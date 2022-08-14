@@ -34,7 +34,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     onBoardingIcon2,
     onBoardingIcon3,
   ];
- 
+
   @override
   void initState() {
     super.initState();
@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             padding: const EdgeInsets.only(right: 30),
             child: InkWell(
               onTap: () {
-                 LocalStorageManager.box.write('onboarding', 'value');
+                PreferenceUtils.setString(key: 'onboarding', value: 'value');
                 Get.to(() => const AuthScreen());
               },
               child: Text(
@@ -202,7 +202,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     splashColor: AppColors.black,
                     onTap: () {
                       if (indexData == 2) {
-                         LocalStorageManager.box.write('onboarding', 'value');
+                        PreferenceUtils.setString(
+                            key: 'onboarding', value: 'value');
+
                         Get.to(() => const AuthScreen());
                       } else {
                         setState(() {

@@ -22,10 +22,9 @@ class CongratulationScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _loginViewModel = ref.watch(viewModel);
     final _videoViewModel = ref.watch(videoViewModel);
-   // final movieViewModel = ref.watch(movieController);
+    // final movieViewModel = ref.watch(movieController);
     var data =
         ModalRoute.of(context)?.settings.arguments as CongratulationsArgs;
-   
 
     return Scaffold(
       appBar: AppBar(
@@ -75,9 +74,7 @@ class CongratulationScreen extends ConsumerWidget {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: data.payLater == true
-                        ? ''
-                        : formatter.format(data.date!),
+                    text: data.payLater == true ? '' : data.date.toString(),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,

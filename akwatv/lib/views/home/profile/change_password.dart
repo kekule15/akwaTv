@@ -138,7 +138,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
               if (form!.validate()) {
                 form.save();
                 loginViewModel.changeUserPassword(
-                    email:  LocalStorageManager.box.read('email'),
+                    email:   PreferenceUtils.getString(key: 'email'),
                     password: currentPasswordController.text.toString(),
                     newPassword: newPasswordController.text.toString(),
                     confirmPassword: confirmPasswordController.text.toString());

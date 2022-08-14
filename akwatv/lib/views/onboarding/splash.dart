@@ -29,7 +29,6 @@ class _SplashViewState extends ConsumerState<SplashView>
 
   Animation? _time;
 
-
   @override
   void initState() {
     _controller =
@@ -39,9 +38,10 @@ class _SplashViewState extends ConsumerState<SplashView>
         curve: const Interval(0.0, 1.0, curve: Curves.easeOut))
       ..addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
-          Get.to(() =>  LocalStorageManager.box.read('userId') == null
+          Get.to(() => PreferenceUtils.getString(key: 'userId') == ''
               ? const OnboardingScreen()
-              :  LocalStorageManager.box.read('userId') != null &&  LocalStorageManager.box.read('plan') != null
+              : PreferenceUtils.getString(key: 'userId') != '' &&
+                      PreferenceUtils.getString(key: 'plan') != ''
                   ? const HomeNavigation()
                   : const ChoosePlanPage());
         }

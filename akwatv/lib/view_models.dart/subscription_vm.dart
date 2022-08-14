@@ -54,7 +54,7 @@ class SubScriptionViewModel extends BaseViewModel {
     Charge charge = Charge()
       // Convert to kobo and round to the nearest whole number
       ..amount = (amount * 100).round()
-      ..email =  LocalStorageManager.box.read('email')
+      ..email =  PreferenceUtils.getString(key: 'email')
       ..card = _getCardFromUI()
       ..reference = _getReference();
     var checkout =
@@ -105,24 +105,26 @@ class SubScriptionViewModel extends BaseViewModel {
 
     final res = await read(subScriptionServices).savePaymentResponse(
         planName: subName,
-        email:  LocalStorageManager.box.read('email'),
-        username:  LocalStorageManager.box.read('username'),
+        email:  PreferenceUtils.getString(key: 'email'),
+        username: PreferenceUtils.getString(key: 'username'),
         amount: amount,
         createdAt: today.toString(),
         expiredAt: expiredAt,
         paystackResponse: paystackResponse);
 
     if (res.message == 'Request successful') {
-       LocalStorageManager.box.write('subName', subName);
-       LocalStorageManager.box.write('subAmount', res.data!.subscription!.amount);
-       LocalStorageManager.box.write('expiredAt', res.data!.subscription!.expiredAt);
-       LocalStorageManager.box.write('isSubActive', res.data!.subscriptionIsActive);
+      
+      PreferenceUtils.setString(key: 'subName', value: subName);
+      PreferenceUtils.setString(key: 'subAmount', value: res.data!.subscription!.amount);
+      PreferenceUtils.setString(key: 'expiredAt', value: res.data!.subscription!.expiredAt);
+       PreferenceUtils.setBool(key: 'isSubActive', value: res.data!.subscriptionIsActive);
+      
       saveData = false;
       checkPaymentStatus(context, onTap: () {
         Get.to(() => const CongratulationScreen(),
             arguments: CongratulationsArgs(
                 payLater: false,
-                name:  LocalStorageManager.box.read('username'),
+                name: PreferenceUtils.getString(key: 'username'),
                 title: 'You have Subscribed to Akwa Amaka TV !',
                 subtitle: 'Your plan will expire on',
                 date: res.data!.subscription!.expiredAt));

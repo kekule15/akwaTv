@@ -81,11 +81,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               SizedBox(
                 height: 100.h,
               ),
-               LocalStorageManager.box.read('avatar') != null
+                PreferenceUtils.getString(key: 'avatar') != null
                   ? CircleAvatar(
                       radius: 50,
                       backgroundColor: AppColors.primary,
-                      backgroundImage: NetworkImage( LocalStorageManager.box.read('avatar')),
+                      backgroundImage: NetworkImage(  PreferenceUtils.getString(key: 'avatar')),
                     )
                   : const CircleAvatar(
                       radius: 50,
@@ -96,7 +96,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 height: 10.h,
               ),
               Text(
-                 LocalStorageManager.box.read('username'),
+                 PreferenceUtils.getString(key: 'username'),
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: AppColors.white),
               )
