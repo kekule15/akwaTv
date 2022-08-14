@@ -97,7 +97,10 @@ class SubBoxWidget extends ConsumerWidget {
             isUpgrade == false
                 ? const SizedBox()
                 : InkWell(
-                    onTap: () => upgrade(),
+                    onTap: () {
+                      onTap();
+                      upgrade();
+                    },
                     child: Container(
                       width: 130,
                       decoration: BoxDecoration(

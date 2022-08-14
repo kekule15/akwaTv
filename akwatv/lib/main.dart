@@ -2,6 +2,7 @@ import 'package:akwatv/firebase_options.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/notification_fcm.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/views/onboarding/splash.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -37,32 +38,32 @@ class _MyAppState extends ConsumerState<MyApp> {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   @override
   void initState() {
+    LocalStorageManager.box;
+    LocalStorageManager.devicePlatformInfo;
+    LocalStorageManager.fcmStorage;
     setUpNotification();
 
     getDeviceId();
     super.initState();
   }
 
-  GetStorage fcmStorage = GetStorage();
-  GetStorage devicePlatformInfo = GetStorage();
-
   setUpNotification() async {
     await PushNotificationsManager(
       context: context,
     ).init();
-   
   }
 
 //QP1A.190711.020
   getDeviceId() async {
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      devicePlatformInfo.write('deviceId', androidInfo.id);
+      LocalStorageManager.devicePlatformInfo.write('deviceId', androidInfo.id);
 
       // print('Running on ${androidInfo.id}'); // e.g. "Moto G (4)"
     } else {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      devicePlatformInfo.write('deviceId', iosInfo.identifierForVendor);
+      LocalStorageManager.devicePlatformInfo
+          .write('deviceId', iosInfo.identifierForVendor);
       // print('Running on ${iosInfo.identifierForVendor}'); // e.g. "iPod7,1"
 
     }

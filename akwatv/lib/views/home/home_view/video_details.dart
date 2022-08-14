@@ -23,7 +23,7 @@ class VideoDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
-  GetStorage box = GetStorage();
+ 
   // BetterPlayerController? _betterPlayerController;
   ChewieController? chewieController;
 

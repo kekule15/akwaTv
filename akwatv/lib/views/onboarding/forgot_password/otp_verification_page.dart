@@ -3,6 +3,7 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/images.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
@@ -34,7 +35,7 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
     super.initState();
   }
 
-  GetStorage box = GetStorage();
+ 
 
   bool autovalidate = false;
   final _formKey = GlobalKey<FormState>();
@@ -109,7 +110,7 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
               if (form!.validate()) {
                 form.save();
                 _loginViewModel.otpVerificationService(
-                    email: box.read('email'),
+                    email:  LocalStorageManager.box.read('email'),
                     token: otpController.text.toString());
               } else {}
             },

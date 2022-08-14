@@ -12,6 +12,7 @@ import 'package:akwatv/models/update_user_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
 import 'package:akwatv/views/home/subscription/choose_plan.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
@@ -36,9 +37,9 @@ class LoginViewModel extends BaseViewModel {
   FutureManager<UpdateUserResponseModel?> updateUserData = FutureManager();
   FutureManager<GetProfileModel?> userProfileData = FutureManager();
   LoginViewModel(this.read) : super(read) {
-    getProfile(userId: box.read('userId'));
+    getProfile();
   }
-
+  bool logoutBTN = false;
   bool loginBtn = false;
   bool signupBtn = false;
   bool changePasswordBTN = false;
@@ -48,7 +49,42 @@ class LoginViewModel extends BaseViewModel {
   bool resetPassword = false;
   bool updateUser = false;
 
-  GetStorage box = GetStorage();
+
+  //logout service
+  logoutNow() async {
+    logoutBTN = true;
+    notifyListeners();
+    final res = await read(onboardingProvider).logoutService();
+    if (res.message == 'ACT-LOGED-OUT-SUCCESS') {
+       LocalStorageManager.box.remove('token');
+       LocalStorageManager.box.remove(
+        'phone',
+      );
+       LocalStorageManager.box.remove(
+        'avatar',
+      );
+       LocalStorageManager.box.remove(
+        'email',
+      );
+       LocalStorageManager.box.remove(
+        'username',
+      );
+       LocalStorageManager.box.remove(
+        'verified',
+      );
+       LocalStorageManager.box.remove(
+        'cloudId',
+      );
+       LocalStorageManager.box.remove(
+        'userId',
+      );
+
+       LocalStorageManager.box.erase();
+      logoutBTN = false;
+      Get.offAll(() => const AuthScreen());
+      NotifyMe.showAlert(res.message!);
+    }
+  }
 
   // login service
   login(String email, String password) async {
@@ -60,19 +96,19 @@ class LoginViewModel extends BaseViewModel {
 
     if (res.message == 'ACT-LOGIN-SUCCESS') {
       loginData.onSuccess(res);
-      box.write('token', res.data!.accessToken);
-      box.write('phone', res.data!.account!.phone);
-     // box.write('avatar', res.data!.account!.avatar);
-      box.write('email', res.data!.account!.email);
-      box.write('username', res.data!.account!.username);
-      box.write('verified', res.data!.account!.verified);
-      //box.write('cloudId', res.data!.account!.cloudinaryId);
-      box.write('userId', res.data!.account!.id);
-        box.write('subName', res.data!.account!.subscription!.name);
-      box.write('subAmount', res.data!.account!.subscription!.amount);
-      box.write('expiredAt', res.data!.account!.subscription!.expiredAt);
-      box.write('isSubActive', res.data!.account!.subscriptionIsActive);
-      await getProfile(userId: res.data!.account!.id);
+       LocalStorageManager.box.write('token', res.data!.accessToken);
+       LocalStorageManager.box.write('phone', res.data!.account!.phone);
+      //  LocalStorageManager.box.write('avatar', res.data!.account!.avatar);
+       LocalStorageManager.box.write('email', res.data!.account!.email);
+       LocalStorageManager.box.write('username', res.data!.account!.username);
+       LocalStorageManager.box.write('verified', res.data!.account!.verified);
+      // LocalStorageManager.box.write('cloudId', res.data!.account!.cloudinaryId);
+       LocalStorageManager.box.write('userId', res.data!.account!.id);
+       LocalStorageManager.box.write('subName', res.data!.account!.subscription!.name);
+       LocalStorageManager.box.write('subAmount', res.data!.account!.subscription!.amount);
+       LocalStorageManager.box.write('expiredAt', res.data!.account!.subscription!.expiredAt);
+       LocalStorageManager.box.write('isSubActive', res.data!.account!.subscriptionIsActive);
+      await getProfile();
       NotifyMe.showAlert(res.message!);
       loginBtn = false;
       Get.offAll(() => const ChoosePlanPage());
@@ -144,29 +180,30 @@ class LoginViewModel extends BaseViewModel {
   }
 
   // get user details or profile
-  Future getProfile({required dynamic userId}) async {
+  Future getProfile() async {
     userProfileData.load();
     setContentError('');
     setErrorMessage('');
     setBusy(true);
 
     final res =
-        await read(onboardingProvider).getProfileService(userId: userId);
+        await read(onboardingProvider).getProfileService();
 
     if (res.message != 'Error') {
       //await getVideoList();
       userProfileData.onSuccess(res);
 
-      box.write('phone', res.data!.phone);
-      box.write('email', res.data!.email);
-      box.write('username', res.data!.username);
-      box.write('verified', res.data!.verified);
-      // box.write('cloudId', res.data!.cloudinaryId);
-      box.write('userId', res.data!.id);
-        box.write('subName', res.data!.subscription!.name);
-      box.write('subAmount', res.data!.subscription!.amount);
-      box.write('expiredAt', res.data!.subscription!.expiredAt);
-      box.write('isSubActive', res.data!.subscriptionIsActive);
+       LocalStorageManager.box.write('phone', res.data!.phone);
+       LocalStorageManager.box.write('email', res.data!.email);
+       LocalStorageManager.box.write('username', res.data!.username);
+       LocalStorageManager.box.write('verified', res.data!.verified);
+      // LocalStorageManager.box.write('avatar', res.data!);
+      //  LocalStorageManager.box.write('cloudId', res.data!.cloudinaryId);
+       LocalStorageManager.box.write('userId', res.data!.id);
+       LocalStorageManager.box.write('subName', res.data!.subscription!.name);
+       LocalStorageManager.box.write('subAmount', res.data!.subscription!.amount);
+       LocalStorageManager.box.write('expiredAt', res.data!.subscription!.expiredAt);
+       LocalStorageManager.box.write('isSubActive', res.data!.subscriptionIsActive);
       notifyListeners();
     } else {
       userProfileData.onError;
@@ -230,7 +267,7 @@ class LoginViewModel extends BaseViewModel {
     if (res.message == 'Request successful') {
       uploadPicData.onSuccess(res);
 
-      box.write('avatar', res.data!.user!.avatar);
+       LocalStorageManager.box.write('avatar', res.data!.user!.avatar);
       uploadPicBTN = false;
       notifyListeners();
     } else {
@@ -328,9 +365,9 @@ class LoginViewModel extends BaseViewModel {
 
     if (res.message == 'Request successful') {
       updateUserData.onSuccess(res);
-      box.write('phone', res.data!.phone);
-      box.write('email', res.data!.email);
-      box.write('username', res.data!.username);
+       LocalStorageManager.box.write('phone', res.data!.phone);
+       LocalStorageManager.box.write('email', res.data!.email);
+       LocalStorageManager.box.write('username', res.data!.username);
       updateUser = false;
       NotifyMe.showAlert(res.message!);
       Get.back();
@@ -346,7 +383,8 @@ class LoginViewModel extends BaseViewModel {
 
   // update device token
   updateDeviceTokenService({required dynamic deviceToken}) async {
-  final res =  await read(onboardingProvider).updateDeviceToken(deviceToken: deviceToken);
+    final res = await read(onboardingProvider)
+        .updateDeviceToken(deviceToken: deviceToken, userId:  LocalStorageManager.box.read('userId'));
     return res;
   }
 }

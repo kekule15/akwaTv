@@ -3,6 +3,7 @@ import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/responsive.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/home/home_view/drawer_widget.dart';
 import 'package:akwatv/views/home/home_view/video_category_page.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
@@ -24,7 +25,7 @@ class MyDrawerPage extends ConsumerStatefulWidget {
 }
 
 class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
-  GetStorage box = GetStorage();
+ 
   @override
   Widget build(BuildContext context) {
     final videoProvider = ref.watch(videoViewModel);
@@ -53,11 +54,11 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    box.read('avatar') != null
+                     LocalStorageManager.box.read('avatar') != null
                         ? CircleAvatar(
                             radius: 30,
                             backgroundColor: AppColors.primary,
-                            backgroundImage: NetworkImage(box.read('avatar')),
+                            backgroundImage: NetworkImage( LocalStorageManager.box.read('avatar')),
                           )
                         : const CircleAvatar(
                             radius: 30,
@@ -71,7 +72,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          box.read('username'),
+                           LocalStorageManager.box.read('username'),
                           textAlign: TextAlign.start,
                           style: const TextStyle(color: AppColors.white),
                         ),
@@ -87,7 +88,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                         SizedBox(
                           width: 120.w,
                           child: Text(
-                            box.read('email'),
+                             LocalStorageManager.box.read('email'),
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(color: AppColors.white),
@@ -206,7 +207,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
   }
 
   void showDialogWithFields() {
-    final _viewModel = ref.watch(homeViewModel);
+    final viewModel = ref.watch(loginViewModel);
     showDialog(
       context: context,
       builder: (_) {
@@ -220,32 +221,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
             ),
             TextButton(
               onPressed: () async {
-                box.remove('token');
-                box.remove(
-                  'phone',
-                );
-                box.remove(
-                  'avatar',
-                );
-                box.remove(
-                  'email',
-                );
-                box.remove(
-                  'username',
-                );
-                box.remove(
-                  'verified',
-                );
-                box.remove(
-                  'cloudId',
-                );
-                box.remove(
-                  'userId',
-                );
-
-                _viewModel.changeIndex(0);
-                box.erase();
-                Get.offAll(() => const AuthScreen());
+                viewModel.logoutNow();
               },
               child: Text('Yes', style: TextStyle(color: AppColors.primary)),
             ),

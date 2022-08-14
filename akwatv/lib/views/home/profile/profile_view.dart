@@ -3,6 +3,7 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/drawer_widget.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
@@ -58,7 +59,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     _scaffoldKey.currentState!.openDrawer();
   }
 
-  GetStorage box = GetStorage();
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +81,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               SizedBox(
                 height: 100.h,
               ),
-              box.read('avatar') != null
+               LocalStorageManager.box.read('avatar') != null
                   ? CircleAvatar(
                       radius: 50,
                       backgroundColor: AppColors.primary,
-                      backgroundImage: NetworkImage(box.read('avatar')),
+                      backgroundImage: NetworkImage( LocalStorageManager.box.read('avatar')),
                     )
                   : const CircleAvatar(
                       radius: 50,
@@ -95,7 +96,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 height: 10.h,
               ),
               Text(
-                box.read('username'),
+                 LocalStorageManager.box.read('username'),
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: AppColors.white),
               )
@@ -349,7 +350,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   void showDialogWithFields() {
-    final _viewModel = ref.watch(homeViewModel);
+    final viewModel = ref.watch(loginViewModel);
     showDialog(
       context: context,
       builder: (_) {
@@ -363,32 +364,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
             TextButton(
               onPressed: () async {
-                box.remove('token');
-                box.remove(
-                  'phone',
-                );
-                box.remove(
-                  'avatar',
-                );
-                box.remove(
-                  'email',
-                );
-                box.remove(
-                  'username',
-                );
-                box.remove(
-                  'verified',
-                );
-                box.remove(
-                  'cloudId',
-                );
-                box.remove(
-                  'userId',
-                );
-
-                _viewModel.changeIndex(0);
-                box.erase();
-                Get.offAll(() => const AuthScreen());
+                viewModel.logoutNow();
               },
               child: Text('Yes', style: TextStyle(color: AppColors.primary)),
             ),

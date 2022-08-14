@@ -2,6 +2,7 @@ import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/home/subscription/congratulation_page.dart';
 import 'package:akwatv/views/home/subscription/subscription_history.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_box_widget.dart';
@@ -24,13 +25,13 @@ class SubScriptionDetailsPage extends ConsumerStatefulWidget {
 
 class _SubScriptionDetailsPageState
     extends ConsumerState<SubScriptionDetailsPage> {
-  GetStorage box = GetStorage();
+ 
 
   @override
   Widget build(BuildContext context) {
     var subViewModel = ref.watch(subScriptionProvider);
     var data = subViewModel.subPlans();
-    GetStorage box = GetStorage();
+   
 
     return Scaffold(
       appBar: AppBar(
@@ -74,9 +75,9 @@ class _SubScriptionDetailsPageState
                             fontSize: 14),
                       ),
                       Text(
-                        box.read('isSubActive') == true ? 'Active' : 'Expired',
+                         LocalStorageManager.box.read('isSubActive') == true ? 'Active' : 'Expired',
                         style: TextStyle(
-                            color: box.read('isSubActive') == true
+                            color:  LocalStorageManager.box.read('isSubActive') == true
                                 ? AppColors.green
                                 : AppColors.primary,
                             fontWeight: FontWeight.w500,
@@ -88,7 +89,7 @@ class _SubScriptionDetailsPageState
                     height: 10,
                   ),
                   Text(
-                    box.read('subName'),
+                     LocalStorageManager.box.read('subName'),
                     style: const TextStyle(
                         color: AppColors.white,
                         fontWeight: FontWeight.bold,
@@ -129,7 +130,7 @@ class _SubScriptionDetailsPageState
                                 fontSize: 12),
                           ),
                           Text(
-                            'NGN ${box.read('subAmount')}',
+                            'NGN ${ LocalStorageManager.box.read('subAmount')}',
                             style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w500,
@@ -148,7 +149,7 @@ class _SubScriptionDetailsPageState
                                 fontSize: 12),
                           ),
                           Text(
-                            formatter.format(box.read('expiredAt')),
+                            formatter.format( LocalStorageManager.box.read('expiredAt')),
                             style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w500,
@@ -194,11 +195,11 @@ class _SubScriptionDetailsPageState
                                 context: context,
                                 amount: subViewModel.subAmount));
                       },
-                      isUpgrade: data[index]['name'] == box.read('subName') &&
-                              box.read('subName') == 'Free'
+                      isUpgrade: data[index]['name'] ==  LocalStorageManager.box.read('subName') &&
+                               LocalStorageManager.box.read('subName') == 'Free'
                           ? false
-                          : data[index]['name'] == box.read('subName') &&
-                                  box.read('subName') != 'Free'
+                          : data[index]['name'] ==  LocalStorageManager.box.read('subName') &&
+                                   LocalStorageManager.box.read('subName') != 'Free'
                               ? false
                               : true,
                       onTap: data[index]['onTap'],

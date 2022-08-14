@@ -1,6 +1,7 @@
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/images.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
 import 'package:akwatv/views/home/subscription/choose_plan.dart';
 import 'package:akwatv/views/onboarding/onboarding_screen.dart';
@@ -27,7 +28,7 @@ class _SplashViewState extends ConsumerState<SplashView>
   late AnimationController _controller;
 
   Animation? _time;
-  GetStorage box = GetStorage();
+
 
   @override
   void initState() {
@@ -38,9 +39,9 @@ class _SplashViewState extends ConsumerState<SplashView>
         curve: const Interval(0.0, 1.0, curve: Curves.easeOut))
       ..addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
-          Get.to(() => box.read('token') == null
+          Get.to(() =>  LocalStorageManager.box.read('userId') == null
               ? const OnboardingScreen()
-              : box.read('token') != null && box.read('plan') != null
+              :  LocalStorageManager.box.read('userId') != null &&  LocalStorageManager.box.read('plan') != null
                   ? const HomeNavigation()
                   : const ChoosePlanPage());
         }

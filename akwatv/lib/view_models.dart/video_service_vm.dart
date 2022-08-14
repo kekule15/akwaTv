@@ -10,6 +10,7 @@ import 'package:akwatv/providers/video_view_provider.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/router.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,7 @@ class VideoServiceViewModel extends BaseViewModel {
     getCategoryList();
     getAllWatchList();
   }
-  GetStorage box = GetStorage();
+  
   bool addTOListBTN = false;
   bool deleteTOListBTN = false;
   bool getWatchLoader = false;
@@ -76,7 +77,7 @@ class VideoServiceViewModel extends BaseViewModel {
       addToWatchListData.onSuccess(res);
       NotifyMe.showAlert(res.message!);
       getAllWatchList();
-      await read(loginViewModel).getProfile(userId: box.read('userId'));
+      await read(loginViewModel).getProfile();
 
       addTOListBTN = false;
       notifyListeners();
@@ -100,7 +101,7 @@ class VideoServiceViewModel extends BaseViewModel {
     if (res != null) {
       deleteWatchListData.onSuccess(res);
       NotifyMe.showAlert(res.message!);
-      await read(loginViewModel).getProfile(userId: box.read('userId'));
+      await read(loginViewModel).getProfile();
       getAllWatchList();
       deleteTOListBTN = false;
       notifyListeners();
@@ -119,7 +120,8 @@ class VideoServiceViewModel extends BaseViewModel {
     getWatchListData.load();
     notifyListeners();
 
-    final res = await read(videoServiceProvider).getWatchList();
+    final res = await read(videoServiceProvider)
+        .getWatchList(userID:  LocalStorageManager.box.read('userId'));
     if (res != null) {
       getWatchListData.onSuccess(res);
       getWatchLoader = false;
@@ -163,7 +165,7 @@ class VideoServiceViewModel extends BaseViewModel {
     final res = await read(videoServiceProvider).likeVideo(movieID: movieID);
     if (res != null) {
       likedVideo = true;
-      await read(loginViewModel).getProfile(userId: box.read('userId'));
+      await read(loginViewModel).getProfile();
       NotifyMe.showAlert(res.message!);
       notifyListeners();
     } else {

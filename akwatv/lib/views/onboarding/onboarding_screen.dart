@@ -1,6 +1,7 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     onBoardingIcon2,
     onBoardingIcon3,
   ];
-  GetStorage box = GetStorage();
+ 
   @override
   void initState() {
     super.initState();
@@ -53,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             padding: const EdgeInsets.only(right: 30),
             child: InkWell(
               onTap: () {
-                box.write('onboarding', 'value');
+                 LocalStorageManager.box.write('onboarding', 'value');
                 Get.to(() => const AuthScreen());
               },
               child: Text(
@@ -201,7 +202,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     splashColor: AppColors.black,
                     onTap: () {
                       if (indexData == 2) {
-                        box.write('onboarding', 'value');
+                         LocalStorageManager.box.write('onboarding', 'value');
                         Get.to(() => const AuthScreen());
                       } else {
                         setState(() {

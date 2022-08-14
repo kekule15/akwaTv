@@ -11,6 +11,7 @@ import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/utils/providers.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:dio/dio.dart';
@@ -20,7 +21,7 @@ import 'package:get/get.dart';
 
 class PaymentService extends ApiManager {
   final Reader reader;
-  GetStorage box = GetStorage();
+  
 
   final saveSubResponseUrl = 'api/subscription/save-response/';
 
@@ -46,9 +47,9 @@ class PaymentService extends ApiManager {
     };
 
     final response = await putHttp(
-      saveSubResponseUrl + box.read('userId'),
+      saveSubResponseUrl +  LocalStorageManager.box.read('userId'),
       body,
-      token: box.read('token'),
+      token:  LocalStorageManager.box.read('token'),
     );
 
     if (response.responseCodeError == null) {

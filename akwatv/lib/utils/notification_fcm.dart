@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
-GetStorage fcmStorage = GetStorage();
+
 
 class PushNotificationsManager extends ConsumerState {
   @override
@@ -38,7 +39,7 @@ class PushNotificationsManager extends ConsumerState {
     //print('setup notification');
 
     await FirebaseMessaging.instance.getToken().then((value) async {
-      fcmStorage.write('userToken', value);
+      LocalStorageManager.fcmStorage.write('userToken', value);
 
       print('Augustus fcm token $value');
       // send and update device fcm token to backend

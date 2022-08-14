@@ -1,5 +1,6 @@
 import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
 import 'package:akwatv/views/home/subscription/congratulation_page.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
@@ -23,7 +24,7 @@ class SubScriptionViewModel extends BaseViewModel {
     subPlans();
     plugin.initialize(publicKey: payStackAPIKey);
   }
-  GetStorage box = GetStorage();
+ 
 
   List<Map<String, dynamic>> subPlans() {
     return [
@@ -44,7 +45,7 @@ class SubScriptionViewModel extends BaseViewModel {
     ];
   }
 
-  GetStorage devicePlatformInfo = GetStorage();
+
 
   void sendPaymentToPaystack({
     required BuildContext context,
@@ -53,7 +54,7 @@ class SubScriptionViewModel extends BaseViewModel {
     Charge charge = Charge()
       // Convert to kobo and round to the nearest whole number
       ..amount = (amount * 100).round()
-      ..email = box.read('email')
+      ..email =  LocalStorageManager.box.read('email')
       ..card = _getCardFromUI()
       ..reference = _getReference();
     var checkout =
@@ -104,24 +105,24 @@ class SubScriptionViewModel extends BaseViewModel {
 
     final res = await read(subScriptionServices).savePaymentResponse(
         planName: subName,
-        email: box.read('email'),
-        username: box.read('username'),
+        email:  LocalStorageManager.box.read('email'),
+        username:  LocalStorageManager.box.read('username'),
         amount: amount,
         createdAt: today.toString(),
         expiredAt: expiredAt,
         paystackResponse: paystackResponse);
 
     if (res.message == 'Request successful') {
-      box.write('subName', subName);
-      box.write('subAmount', res.data!.subscription!.amount);
-      box.write('expiredAt', res.data!.subscription!.expiredAt);
-      box.write('isSubActive', res.data!.subscriptionIsActive);
+       LocalStorageManager.box.write('subName', subName);
+       LocalStorageManager.box.write('subAmount', res.data!.subscription!.amount);
+       LocalStorageManager.box.write('expiredAt', res.data!.subscription!.expiredAt);
+       LocalStorageManager.box.write('isSubActive', res.data!.subscriptionIsActive);
       saveData = false;
       checkPaymentStatus(context, onTap: () {
         Get.to(() => const CongratulationScreen(),
             arguments: CongratulationsArgs(
                 payLater: false,
-                name: box.read('username'),
+                name:  LocalStorageManager.box.read('username'),
                 title: 'You have Subscribed to Akwa Amaka TV !',
                 subtitle: 'Your plan will expire on',
                 date: res.data!.subscription!.expiredAt));

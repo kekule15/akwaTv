@@ -3,6 +3,7 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/images.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
@@ -28,7 +29,7 @@ class ResetPasswordPage extends ConsumerStatefulWidget {
 
 class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
   bool btnState = false;
-  GetStorage box = GetStorage();
+
 
   bool autovalidate = false;
   final _formKey = GlobalKey<FormState>();
@@ -107,7 +108,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
               if (form!.validate()) {
                 form.save();
                 _loginViewModel.resetPasswordService(
-                    email: box.read('email'),
+                    email:  LocalStorageManager.box.read('email'),
                     password: newPasswordController.text.toString());
               } else {}
             },

@@ -1,6 +1,7 @@
 import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_box_widget.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
 import 'package:akwatv/views/home/subscription/congratulation_page.dart';
@@ -26,7 +27,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
     super.initState();
   }
 
-  GetStorage box = GetStorage();
+
 
   @override
   Widget build(
@@ -157,10 +158,10 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                     Get.to(() => const CongratulationScreen(),
                         arguments: CongratulationsArgs(
                             payLater: false,
-                            name: box.read('username'),
+                            name:  LocalStorageManager.box.read('username'),
                             title: 'Your free trial begins now !',
                             subtitle: 'Your plan will expire on',
-                            date: box.read('expiredAt')));
+                            date:  LocalStorageManager.box.read('expiredAt')));
                   },
                   title: const Text(
                     'Pay Later',

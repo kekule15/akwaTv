@@ -1,6 +1,7 @@
 import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
@@ -21,7 +22,7 @@ class ChangePasswordPage extends ConsumerStatefulWidget {
 
 class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   bool btnState = false;
-  GetStorage box = GetStorage();
+  
 
   bool autovalidate = false;
   final _formKey = GlobalKey<FormState>();
@@ -137,7 +138,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
               if (form!.validate()) {
                 form.save();
                 loginViewModel.changeUserPassword(
-                    email: box.read('email'),
+                    email:  LocalStorageManager.box.read('email'),
                     password: currentPasswordController.text.toString(),
                     newPassword: newPasswordController.text.toString(),
                     confirmPassword: confirmPasswordController.text.toString());

@@ -1,6 +1,7 @@
 import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
@@ -27,7 +28,6 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   final phoneController = TextEditingController();
   bool btnLoader = false;
   final _formKey = GlobalKey<FormState>();
-  GetStorage box = GetStorage();
   @override
   void dispose() {
     nameController.clear();
@@ -43,14 +43,14 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   updateData(BuildContext context) {
-    if (box.read('username') != '') {
-      nameController.text = box.read('username');
+    if ( LocalStorageManager.box.read('username') != '') {
+      nameController.text =  LocalStorageManager.box.read('username');
     }
-    if (box.read('email') != '') {
-      emailController.text = box.read('email');
+    if ( LocalStorageManager.box.read('email') != '') {
+      emailController.text =  LocalStorageManager.box.read('email');
     }
-    if (box.read('phone') != '') {
-      phoneController.text = box.read('phone');
+    if ( LocalStorageManager.box.read('phone') != '') {
+      phoneController.text =  LocalStorageManager.box.read('phone');
     }
   }
 
@@ -111,7 +111,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   onTap: () {
                     takePhoto(ImageSource.gallery, context);
                   },
-                  child: box.read('avatar') == null
+                  child:  LocalStorageManager.box.read('avatar') == null
                       ? CircleAvatar(
                           radius: 50,
                           backgroundColor: AppColors.primary,
@@ -129,7 +129,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                       : CircleAvatar(
                           radius: 50,
                           backgroundColor: AppColors.primary,
-                          backgroundImage: NetworkImage(box.read('avatar')),
+                          backgroundImage: NetworkImage( LocalStorageManager.box.read('avatar')),
                           child: loginViewModel.uploadPicBTN
                               ? const Center(
                                   child: SizedBox(

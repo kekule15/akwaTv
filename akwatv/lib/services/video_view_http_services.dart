@@ -12,6 +12,7 @@ import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/utils/providers.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:dio/dio.dart';
@@ -21,7 +22,7 @@ import 'package:get/get.dart';
 
 class VideoViewService extends ApiManager {
   final Reader reader;
-  GetStorage box = GetStorage();
+  
 
   final getvideoListUrl = "api/movies";
   final categoryListUrl = 'api/lists';
@@ -37,43 +38,47 @@ class VideoViewService extends ApiManager {
   // get list of videos
 
   Future<HomeVideoModel?> getListOfVideos() async {
-    final response = await getHttp(getvideoListUrl, token: box.read('token'));
+    final response = await getHttp(getvideoListUrl, token:  LocalStorageManager.box.read('token'));
 
     if (response.responseCodeError == null) {
       // List data = response.data;
       // final userDataList = data.map((e) => HomeVideoModel.fromJson(e)).toList();
       // return userDataList;
       return HomeVideoModel.fromJson(response.data);
-    } else if (response.statusCode == 401 ||
-        response.statusCode == 403 ||
-        response.statusCode == 404 ||
-        response.statusCode == 502 ||
-        response.statusCode == 500) {
-      // box.erase();
-      Get.to(() => const AuthScreen());
-      return HomeVideoModel(message: 'Request Not Succesful');
-    } else {
+    } 
+    // else if (response.statusCode == 401 ||
+    //     response.statusCode == 403 ||
+    //     response.statusCode == 404 ||
+    //     response.statusCode == 502 ||
+    //     response.statusCode == 500) {
+    //   //  LocalStorageManager.box.erase();
+    //   Get.to(() => const AuthScreen());
+    //   return HomeVideoModel(message: 'Request Not Succesful');
+    // }
+     else {
       return HomeVideoModel(message: 'Request Not Succesful');
     }
   }
 
   Future<CategoryModel?> getCategoryList() async {
-    final response = await getHttp(categoryListUrl, token: box.read('token'));
+    final response = await getHttp(categoryListUrl, token:  LocalStorageManager.box.read('token'));
 
     if (response.responseCodeError == null) {
       // List data = response.data;
       // final userDataList = data.map((e) => HomeVideoModel.fromJson(e)).toList();
       // return userDataList;
       return CategoryModel.fromJson(response.data);
-    } else if (response.statusCode == 401 ||
-        response.statusCode == 403 ||
-        response.statusCode == 404 ||
-        response.statusCode == 502 ||
-        response.statusCode == 500) {
-      // box.erase();
-      Get.to(() => const AuthScreen());
-      return CategoryModel(message: 'Request Not Succesful');
-    } else {
+    } 
+    // else if (response.statusCode == 401 ||
+    //     response.statusCode == 403 ||
+    //     response.statusCode == 404 ||
+    //     response.statusCode == 502 ||
+    //     response.statusCode == 500) {
+    //   //  LocalStorageManager.box.erase();
+    //   Get.to(() => const AuthScreen());
+    //   return CategoryModel(message: 'Request Not Succesful');
+    // } 
+    else {
       return CategoryModel(message: 'Request Not Succesful');
     }
   }
@@ -81,12 +86,12 @@ class VideoViewService extends ApiManager {
   // add to watchList
   Future<AddToWatchListModel?> addToWatchList(
       {required dynamic movieID}) async {
-    final body = {"user_id": box.read('userId'), "movie_id": movieID};
+    final body = {"user_id":  LocalStorageManager.box.read('userId'), "movie_id": movieID};
 
     final response = await postHttp(
       addToWatchListUrl,
       body,
-      token: box.read('token'),
+      token:  LocalStorageManager.box.read('token'),
     );
 
     if (response.responseCodeError == null) {
@@ -102,9 +107,9 @@ class VideoViewService extends ApiManager {
     final body = {"movie_id": movieID};
 
     final response = await deleteHttp(
-      deleteWatchListUrl + "/${box.read('userId')}",
+      deleteWatchListUrl + "/${ LocalStorageManager.box.read('userId')}",
       data: body,
-      token: box.read('token'),
+      token:  LocalStorageManager.box.read('token'),
     );
 
     if (response.responseCodeError == null) {
@@ -115,24 +120,27 @@ class VideoViewService extends ApiManager {
   }
 
   // Get watch list
-  Future<GetWatchListModel?> getWatchList() async {
-    final response = await getHttp(getWatchListUrl + box.read('userId'),
-        token: box.read('token'));
+  Future<GetWatchListModel?> getWatchList({required dynamic userID}) async {
+    final response = await getHttp(getWatchListUrl + userID,
+        token:  LocalStorageManager.box.read('token'));
 
     if (response.responseCodeError == null) {
       // List data = response.data;
       // final userDataList = data.map((e) => HomeVideoModel.fromJson(e)).toList();
       // return userDataList;
       return GetWatchListModel.fromJson(response.data);
-    } else if (response.statusCode == 401 ||
-        response.statusCode == 403 ||
-        response.statusCode == 404 ||
-        response.statusCode == 502 ||
-        response.statusCode == 500) {
-      // box.erase();
-      Get.to(() => const AuthScreen());
-      return GetWatchListModel(message: 'Request Not Succesful');
-    } else {
+    } 
+    // else if (response.statusCode == 401 ||
+    //     response.statusCode == 403 ||
+    //     response.statusCode == 404 ||
+    //     response.statusCode == 502 ||
+    //     response.statusCode == 500) {
+    //   //  LocalStorageManager.box.erase();
+    //   Get.to(() => const AuthScreen());
+    //   return GetWatchListModel(message: 'Request Not Succesful');
+    // } 
+    
+    else {
       return GetWatchListModel(message: 'Request Not Succesful');
     }
   }
@@ -141,7 +149,7 @@ class VideoViewService extends ApiManager {
   Future<HomeVideoModel?> searchMovvies({required dynamic title}) async {
     final response = await getHttp(
       searchMovieUrl + title,
-      token: box.read('token'),
+      token:  LocalStorageManager.box.read('token'),
     );
 
     if (response.responseCodeError == null) {
@@ -154,12 +162,12 @@ class VideoViewService extends ApiManager {
   // like video
 
   Future<LikeVideoResponseModel?> likeVideo({required dynamic movieID}) async {
-    final body = {"user_id": box.read('userId'), "movie_id": movieID};
+    final body = {"user_id":  LocalStorageManager.box.read('userId'), "movie_id": movieID};
 
     final response = await postHttp(
       likeVideoUrl,
       body,
-      token: box.read('token'),
+      token:  LocalStorageManager.box.read('token'),
     );
 
     if (response.responseCodeError == null) {

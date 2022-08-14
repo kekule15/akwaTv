@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/notification_fcm.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -24,7 +25,7 @@ class NotifyMe {
 
   static Future<void> sendNotification(
       {required String sender, required String content}) async {
-    var token = fcmStorage.read('userToken');
+    var token = LocalStorageManager.fcmStorage.read('userToken');
 
     final data = {
       "to": token,
