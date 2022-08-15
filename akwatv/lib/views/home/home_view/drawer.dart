@@ -7,6 +7,8 @@ import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/home/home_view/drawer_widget.dart';
 import 'package:akwatv/views/home/home_view/video_category_page.dart';
 import 'package:akwatv/views/home/navigation_page.dart';
+import 'package:akwatv/views/home/profile/edit_profile.dart';
+import 'package:akwatv/views/home/profile/profile_view.dart';
 import 'package:akwatv/views/home/settings/settings_screen.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
@@ -25,7 +27,6 @@ class MyDrawerPage extends ConsumerStatefulWidget {
 }
 
 class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
- 
   @override
   Widget build(BuildContext context) {
     final videoProvider = ref.watch(videoViewModel);
@@ -42,61 +43,67 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                 Border(right: BorderSide(width: 0.4, color: AppColors.gray))),
         child: Stack(
           children: [
-            SizedBox(
-              height: 170.h,
-              child: DrawerHeader(
-                padding: EdgeInsets.fromLTRB(ySpace2, 0, 0, 15.h),
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 10.h),
-                decoration: const BoxDecoration(
-                  color: AppColors.termsTextColor,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                      PreferenceUtils.getString(key: 'avatar') != null
-                        ? CircleAvatar(
-                            radius: 30,
-                            backgroundColor: AppColors.primary,
-                            backgroundImage: NetworkImage(  PreferenceUtils.getString(key: 'avatar')),
-                          )
-                        : const CircleAvatar(
-                            radius: 30,
-                            backgroundColor: AppColors.primary,
-                            child: const Icon(Icons.person)),
-                    const SizedBox(
-                      width: ySpace1,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                           PreferenceUtils.getString(key: 'username'),
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(color: AppColors.white),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(
-                              top: ySpaceMin, bottom: ySpaceMin),
-                          height: ySpaceMin - 4.5,
-                          width: SizeConfig.xMargin(context, 30.w),
-                          decoration: const BoxDecoration(
-                            color: AppColors.gray,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 120.w,
-                          child: Text(
-                              PreferenceUtils.getString(key: 'email'),
+            InkWell(
+              onTap: (() {
+                Get.to((const EditProfilePage()));
+              }),
+              child: SizedBox(
+                height: 170.h,
+                child: DrawerHeader(
+                  padding: EdgeInsets.fromLTRB(ySpace2, 0, 0, 15.h),
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10.h),
+                  decoration: const BoxDecoration(
+                    color: AppColors.termsTextColor,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      PreferenceUtils.getString(key: 'avatar') != ''
+                          ? CircleAvatar(
+                              radius: 30,
+                              backgroundColor: AppColors.primary,
+                              backgroundImage: NetworkImage(
+                                  PreferenceUtils.getString(key: 'avatar')),
+                            )
+                          : const CircleAvatar(
+                              radius: 30,
+                              backgroundColor: AppColors.primary,
+                              child: const Icon(Icons.person)),
+                      const SizedBox(
+                        width: ySpace1,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            PreferenceUtils.getString(key: 'username'),
                             textAlign: TextAlign.start,
-                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(color: AppColors.white),
                           ),
-                        )
-                      ],
-                    )
-                  ],
+                          Container(
+                            margin: const EdgeInsets.only(
+                                top: ySpaceMin, bottom: ySpaceMin),
+                            height: ySpaceMin - 4.5,
+                            width: SizeConfig.xMargin(context, 30.w),
+                            decoration: const BoxDecoration(
+                              color: AppColors.gray,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 120.w,
+                            child: Text(
+                              PreferenceUtils.getString(key: 'email'),
+                              textAlign: TextAlign.start,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: AppColors.white),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

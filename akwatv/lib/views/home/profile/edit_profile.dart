@@ -43,14 +43,14 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   updateData(BuildContext context) {
-    if ( PreferenceUtils.getString(key: 'username') != '') {
-      nameController.text =   PreferenceUtils.getString(key: 'username');
+    if (PreferenceUtils.getString(key: 'username') != '') {
+      nameController.text = PreferenceUtils.getString(key: 'username');
     }
-    if ( PreferenceUtils.getString(key: 'email') != '') {
-      emailController.text =  PreferenceUtils.getString(key: 'email');
+    if (PreferenceUtils.getString(key: 'email') != '') {
+      emailController.text = PreferenceUtils.getString(key: 'email');
     }
-    if (  PreferenceUtils.getString(key: 'phone') != '') {
-      phoneController.text =  PreferenceUtils.getString(key: 'phone');
+    if (PreferenceUtils.getString(key: 'phone') != '') {
+      phoneController.text = PreferenceUtils.getString(key: 'phone');
     }
   }
 
@@ -111,7 +111,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   onTap: () {
                     takePhoto(ImageSource.gallery, context);
                   },
-                  child:  PreferenceUtils.getString(key: 'avatar') == null
+                  child: PreferenceUtils.getString(key: 'avatar') == ''
                       ? CircleAvatar(
                           radius: 50,
                           backgroundColor: AppColors.primary,
@@ -129,7 +129,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                       : CircleAvatar(
                           radius: 50,
                           backgroundColor: AppColors.primary,
-                          backgroundImage: NetworkImage( PreferenceUtils.getString(key: 'avatar')),
+                          backgroundImage: NetworkImage(
+                              PreferenceUtils.getString(key: 'avatar')),
                           child: loginViewModel.uploadPicBTN
                               ? const Center(
                                   child: SizedBox(

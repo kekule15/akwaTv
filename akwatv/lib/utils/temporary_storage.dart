@@ -3,7 +3,7 @@ import 'dart:async' show Future;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageManager {
-  // static GetStorage box = GetStorage();
+  static GetStorage box = GetStorage();
   // static GetStorage fcmStorage = GetStorage();
   // static GetStorage devicePlatformInfo = GetStorage();
 }
@@ -34,7 +34,7 @@ class PreferenceUtils {
     return prefs.setBool(key, value!);
   }
 
-   static Future<bool> getBool({required dynamic key}) async{
+   static Future getBool({required dynamic key}) async{
       var prefs = await _instance;
     return prefs.getBool(key) ?? false;
   }

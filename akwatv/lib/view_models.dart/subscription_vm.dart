@@ -1,3 +1,5 @@
+import 'package:akwatv/models/future_manager.dart';
+import 'package:akwatv/models/payment_history_model.dart';
 import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/temporary_storage.dart';
@@ -20,11 +22,12 @@ class SubScriptionViewModel extends BaseViewModel {
   bool saveData = false;
   DateTime today = DateTime.now();
   String expiredAt = DateTime.now().add(const Duration(days: 30)).toString();
+  FutureManager<PaymentHistoryModel> payHistoryData = FutureManager();
+  bool payLoader = false;
   SubScriptionViewModel(Reader read) : super(read) {
     subPlans();
     plugin.initialize(publicKey: payStackAPIKey);
   }
- 
 
   List<Map<String, dynamic>> subPlans() {
     return [
@@ -45,8 +48,6 @@ class SubScriptionViewModel extends BaseViewModel {
     ];
   }
 
-
-
   void sendPaymentToPaystack({
     required BuildContext context,
     required double amount,
@@ -54,7 +55,7 @@ class SubScriptionViewModel extends BaseViewModel {
     Charge charge = Charge()
       // Convert to kobo and round to the nearest whole number
       ..amount = (amount * 100).round()
-      ..email =  PreferenceUtils.getString(key: 'email')
+      ..email = PreferenceUtils.getString(key: 'email')
       ..card = _getCardFromUI()
       ..reference = _getReference();
     var checkout =
@@ -105,7 +106,7 @@ class SubScriptionViewModel extends BaseViewModel {
 
     final res = await read(subScriptionServices).savePaymentResponse(
         planName: subName,
-        email:  PreferenceUtils.getString(key: 'email'),
+        email: PreferenceUtils.getString(key: 'email'),
         username: PreferenceUtils.getString(key: 'username'),
         amount: amount,
         createdAt: today.toString(),
@@ -113,12 +114,14 @@ class SubScriptionViewModel extends BaseViewModel {
         paystackResponse: paystackResponse);
 
     if (res.message == 'Request successful') {
-      
       PreferenceUtils.setString(key: 'subName', value: subName);
-      PreferenceUtils.setString(key: 'subAmount', value: res.data!.subscription!.amount);
-      PreferenceUtils.setString(key: 'expiredAt', value: res.data!.subscription!.expiredAt);
-       PreferenceUtils.setBool(key: 'isSubActive', value: res.data!.subscriptionIsActive);
-      
+      PreferenceUtils.setString(
+          key: 'subAmount', value: res.data!.subscription!.amount);
+      LocalStorageManager.box
+          .write('expiredAt', res.data!.subscription!.expiredAt);
+      LocalStorageManager.box
+          .write('isSubActive', res.data!.subscriptionIsActive);
+
       saveData = false;
       checkPaymentStatus(context, onTap: () {
         Get.to(() => const CongratulationScreen(),
@@ -135,6 +138,24 @@ class SubScriptionViewModel extends BaseViewModel {
       notifyListeners();
     }
     saveData = false;
+  }
+
+  getPaymentHistoryService() async {
+    payLoader = true;
+    payHistoryData.load();
+    notifyListeners();
+
+    final res = await read(subScriptionServices).getUsersPaymentHistory();
+
+    if (res.message == 'Request successful') {
+      payHistoryData.onSuccess(res);
+      payLoader = false;
+      notifyListeners();
+    } else {
+      payLoader = false;
+      payHistoryData.onError(res.message!);
+      notifyListeners();
+    }
   }
 
   void changeIndex(

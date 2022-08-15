@@ -1,5 +1,7 @@
+import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/svgs.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SubscriptionPayHistory extends ConsumerWidget {
@@ -7,6 +9,8 @@ class SubscriptionPayHistory extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var subViewModel = ref.watch(subScriptionProvider);
+    var data = subViewModel.payHistoryData.data;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -37,42 +41,75 @@ class SubscriptionPayHistory extends ConsumerWidget {
           const SizedBox(
             height: 20,
           ),
-          Column(
-            children: List.generate(
-                4,
-                (index) => Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.gray4,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: const ListTile(
-                          title: Text(
-                            'You Subscribed for a Regular Plan',
-                            style: TextStyle(
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17),
+          subViewModel.payLoader
+              ? const Center(
+                  child: SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: CircularProgressIndicator(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                )
+              : data!.data!.isEmpty == true
+                  ? Center(
+                      child: Column(
+                        children: const [
+                          SizedBox(
+                            height: 50,
                           ),
-                          subtitle: Text(
-                            'NGN 500.00',
-                            style: TextStyle(
-                                color: AppColors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13),
+                          SvgImage(
+                            asset: emptyVid,
+                            height: 200,
+                            width: 200,
                           ),
-                          trailing: Text(
-                            'Aug-10-2022',
-                            style: TextStyle(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12),
+                          SizedBox(
+                            height: 40,
                           ),
-                        ),
+                          Text(
+                            'No Movie Fetched',
+                            style:
+                                TextStyle(color: AppColors.white, fontSize: 17),
+                          )
+                        ],
                       ),
-                    )),
-          )
+                    )
+                  : Column(
+                      children: List.generate(
+                          data.data!.length,
+                          (index) => Padding(
+                                padding: const EdgeInsets.only(bottom: 15),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColors.gray4,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: ListTile(
+                                    title: Text(
+                                      'You Subscribed for a ${data.data![index].name} Plan',
+                                      style: const TextStyle(
+                                          color: AppColors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 17),
+                                    ),
+                                    subtitle: Text(
+                                      'NGN ${data.data![index].amount}',
+                                      style: const TextStyle(
+                                          color: AppColors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13),
+                                    ),
+                                    trailing: const Text(
+                                      'Aug-10-2022',
+                                      style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              )),
+                    )
         ],
       ),
     );

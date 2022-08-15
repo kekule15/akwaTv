@@ -162,7 +162,8 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                             name:  PreferenceUtils.getString(key: 'username'),
                             title: 'Your free trial begins now !',
                             subtitle: 'Your plan will expire on',
-                            date:formatter.parse(PreferenceUtils.getString(key: 'expiredAt'))));
+                            date: LocalStorageManager.box
+          .read('expiredAt')));
                   },
                   title: const Text(
                     'Pay Later',

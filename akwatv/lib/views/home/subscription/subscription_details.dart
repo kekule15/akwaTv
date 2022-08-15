@@ -25,13 +25,10 @@ class SubScriptionDetailsPage extends ConsumerStatefulWidget {
 
 class _SubScriptionDetailsPageState
     extends ConsumerState<SubScriptionDetailsPage> {
- 
-
   @override
   Widget build(BuildContext context) {
     var subViewModel = ref.watch(subScriptionProvider);
     var data = subViewModel.subPlans();
-   
 
     return Scaffold(
       appBar: AppBar(
@@ -74,12 +71,16 @@ class _SubScriptionDetailsPageState
                             fontWeight: FontWeight.w500,
                             fontSize: 14),
                       ),
-                      Text(PreferenceUtils.getBool(key: 'isSubActive')
-                         == true ? 'Active' : 'Expired',
+                      Text(
+                        LocalStorageManager.box.read('isSubActive') == true
+                            ? 'Active'
+                            : 'Expired',
                         style: TextStyle(
-                            color:  PreferenceUtils.getBool(key: 'isSubActive') == true
-                                ? AppColors.green
-                                : AppColors.primary,
+                            color:
+                                LocalStorageManager.box.read('isSubActive') ==
+                                        true
+                                    ? AppColors.green
+                                    : AppColors.primary,
                             fontWeight: FontWeight.w500,
                             fontSize: 14),
                       ),
@@ -89,7 +90,7 @@ class _SubScriptionDetailsPageState
                     height: 10,
                   ),
                   Text(
-                     PreferenceUtils.getString(key: 'subName'),
+                    PreferenceUtils.getString(key: 'subName'),
                     style: const TextStyle(
                         color: AppColors.white,
                         fontWeight: FontWeight.bold,
@@ -130,7 +131,7 @@ class _SubScriptionDetailsPageState
                                 fontSize: 12),
                           ),
                           Text(
-                            'NGN ${  PreferenceUtils.getString(key: 'subAmount')}',
+                            'NGN ${PreferenceUtils.getString(key: 'subAmount')}',
                             style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w500,
@@ -149,7 +150,8 @@ class _SubScriptionDetailsPageState
                                 fontSize: 12),
                           ),
                           Text(
-                           formatter.parse(PreferenceUtils.getString(key: 'expiredAt')).toString(),
+                            formatter.format(
+                                LocalStorageManager.box.read('expiredAt')),
                             style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w500,
@@ -195,11 +197,16 @@ class _SubScriptionDetailsPageState
                                 context: context,
                                 amount: subViewModel.subAmount));
                       },
-                      isUpgrade: data[index]['name'] ==   PreferenceUtils.getString(key: 'subName') &&
-                                PreferenceUtils.getString(key: 'subName') == 'Free'
+                      isUpgrade: data[index]['name'] ==
+                                  PreferenceUtils.getString(key: 'subName') &&
+                              PreferenceUtils.getString(key: 'subName') ==
+                                  'Free'
                           ? false
-                          : data[index]['name'] ==   PreferenceUtils.getString(key: 'subName') &&
-                                   PreferenceUtils.getString(key: 'subName') != 'Free'
+                          : data[index]['name'] ==
+                                      PreferenceUtils.getString(
+                                          key: 'subName') &&
+                                  PreferenceUtils.getString(key: 'subName') !=
+                                      'Free'
                               ? false
                               : true,
                       onTap: data[index]['onTap'],
@@ -265,6 +272,7 @@ class _SubScriptionDetailsPageState
           borderColor: false,
           color: AppColors.primary,
           onclick: () async {
+            subViewModel.getPaymentHistoryService();
             Get.to(() => const SubscriptionPayHistory());
             //sendPaymentToPaystack(500);
           },

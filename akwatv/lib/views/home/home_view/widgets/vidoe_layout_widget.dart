@@ -31,48 +31,33 @@ class VideoLayoutWidget extends ConsumerWidget {
         child: Card(
           color: AppColors.termsTextColor,
           child: Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 80,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(img), fit: BoxFit.cover)),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                              color: AppColors.white, fontSize: 14),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Text(
-                            subtitle,
-                            style: const TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                color: AppColors.white,
-                                fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+              padding: const EdgeInsets.only(right: 10),
+              child: ListTile(
+                //visualDensity: VisualDensity(horizontal: -4, vertical: 0),
+                minVerticalPadding: 18,
+                contentPadding: EdgeInsets.zero,
+                visualDensity: VisualDensity(horizontal: -1, vertical: 4),
+
+                dense: true,
+                leading: Container(
+                  height: 100,
+                  width: 90,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(img), fit: BoxFit.cover)),
                 ),
-                SizedBox(
+                title: Text(
+                  title,
+                  style: const TextStyle(color: AppColors.white, fontSize: 14),
+                ),
+                subtitle: Text(
+                  subtitle,
+                  style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      color: AppColors.white,
+                      fontSize: 12),
+                ),
+                trailing: SizedBox(
                   height: 25,
                   width: 25,
                   child: InkWell(
@@ -85,10 +70,67 @@ class VideoLayoutWidget extends ConsumerWidget {
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
-          ),
+                ),
+              )
+
+              //  Row(
+              //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Row(
+              //       children: [
+              //         Container(
+              //           height: 80,
+              //           width: 100,
+              //           decoration: BoxDecoration(
+              //               image: DecorationImage(
+              //                   image: NetworkImage(img), fit: BoxFit.cover)),
+              //         ),
+              //         const SizedBox(
+              //           width: 20,
+              //         ),
+              //         Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: [
+              //             Text(
+              //               title,
+              //               style: const TextStyle(
+              //                   color: AppColors.white, fontSize: 14),
+              //             ),
+              //             const SizedBox(
+              //               height: 5,
+              //             ),
+              //             SizedBox(
+              //               width: 200,
+              //               child: Text(
+              //                 subtitle,
+              //                 style: const TextStyle(
+              //                     overflow: TextOverflow.ellipsis,
+              //                     color: AppColors.white,
+              //                     fontSize: 12),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ],
+              //     ),
+              //     SizedBox(
+              //       height: 25,
+              //       width: 25,
+              //       child: InkWell(
+              //         onTap: () => iconTap(),
+              //         child: playButtonWidget(
+              //           icon: Icon(
+              //             icon,
+              //             color: iconColor,
+              //             size: 15,
+              //           ),
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // ),
+
+              ),
         ),
       ),
     );

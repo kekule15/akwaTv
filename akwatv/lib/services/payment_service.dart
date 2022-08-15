@@ -6,6 +6,7 @@ import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/delete_watchlist_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/get_watchList_model.dart';
+import 'package:akwatv/models/payment_history_model.dart';
 import 'package:akwatv/models/save_sub_response_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
@@ -24,6 +25,7 @@ class PaymentService extends ApiManager {
   
 
   final saveSubResponseUrl = 'api/subscription/save-response/';
+   final paymentHistoryUrl = 'api/user/getPaymentHistory/';
 
   PaymentService(this.reader) : super(reader);
 
@@ -56,6 +58,22 @@ class PaymentService extends ApiManager {
       return SaveSubResponseModel.fromJson(response.data);
     } else {
       return SaveSubResponseModel(message: 'Error');
+    }
+  }
+
+  //get users payment history
+
+  Future<PaymentHistoryModel> getUsersPaymentHistory() async {
+      final response = await getHttp(
+      paymentHistoryUrl + PreferenceUtils.getString(key: 'userId'),
+      
+      token:  PreferenceUtils.getString(key: 'token'),
+    );
+
+    if (response.responseCodeError == null) {
+      return PaymentHistoryModel.fromJson(response.data);
+    } else {
+      return PaymentHistoryModel(message: 'Error');
     }
   }
 }

@@ -81,11 +81,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               SizedBox(
                 height: 100.h,
               ),
-                PreferenceUtils.getString(key: 'avatar') != null
+                PreferenceUtils.getString(key: 'avatar') != ''
                   ? CircleAvatar(
                       radius: 50,
                       backgroundColor: AppColors.primary,
-                      backgroundImage: NetworkImage(  PreferenceUtils.getString(key: 'avatar')),
+                      backgroundImage: NetworkImage(PreferenceUtils.getString(key: 'avatar')),
                     )
                   : const CircleAvatar(
                       radius: 50,
