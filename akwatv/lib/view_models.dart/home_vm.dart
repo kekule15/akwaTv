@@ -48,7 +48,8 @@ class HomeViewModel extends BaseViewModel {
       }
     ];
   }
-    List<Map<String, dynamic>> profileList() {
+
+  List<Map<String, dynamic>> profileList() {
     return [
       {
         'title': "Profile",
@@ -65,13 +66,19 @@ class HomeViewModel extends BaseViewModel {
         }
       },
       {
+        'title': "Help",
+        "icon": Icons.help_center,
+        "onTap": () {
+          Get.to(() => const HelpCenterPage());
+        }
+      },
+      {
         'title': "Settings",
         "icon": Icons.settings,
         "onTap": () {
           Get.to(() => const SettingsPage());
         }
       },
-      
     ];
   }
 

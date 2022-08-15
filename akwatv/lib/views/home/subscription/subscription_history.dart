@@ -1,5 +1,6 @@
 import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
+import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -99,9 +100,10 @@ class SubscriptionPayHistory extends ConsumerWidget {
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13),
                                     ),
-                                    trailing: const Text(
-                                      'Aug-10-2022',
-                                      style: TextStyle(
+                                    trailing: Text(
+                                      formatter.format(
+                                          data.data![index].timestamps!),
+                                      style: const TextStyle(
                                           color: AppColors.primary,
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12),

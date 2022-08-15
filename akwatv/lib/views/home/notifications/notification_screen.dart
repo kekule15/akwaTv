@@ -18,20 +18,7 @@ class _ViewNotificationScreenState
       body: ListView(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
-        children: [
-          InkWell(
-            onTap: () {
-              DateTime today = DateTime.now();
-              print(today.add(Duration(days: 30)));
-            },
-            child: Center(
-              child: Text(
-                'Hello',
-                style: TextStyle(color: AppColors.primary, fontSize: 20),
-              ),
-            ),
-          )
-        ],
+        children: [],
       ),
     );
   }

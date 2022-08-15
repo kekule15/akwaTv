@@ -1,12 +1,15 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/utils/custom_drop_down.dart';
+import 'package:akwatv/views/home/help/help_screen.dart';
 import 'package:akwatv/views/home/profile/change_password.dart';
 import 'package:akwatv/views/home/profile/edit_profile.dart';
+import 'package:akwatv/views/home/settings/widgets/activity_cards.dart';
 import 'package:akwatv/views/onboarding/forgot_password/reset_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -35,72 +38,45 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             const SizedBox(
               height: ySpace1,
             ),
-            Card(
-              color: AppColors.termsTextColor,
-              child: ListTile(
+            ActivityCardWidget(
                 onTap: () {
                   Get.to(() => const EditProfilePage());
                 },
-                horizontalTitleGap: 0,
-                leading: const Icon(
-                  Icons.person,
-                  color: AppColors.primary,
-                ),
-                title: const Text('Edit Profile',
-                    style: TextStyle(color: AppColors.white)),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.gray,
-                  size: 12,
-                ),
-              ),
-            ),
+                title: 'Edit Profile',
+                leadingIcon: Icons.person,
+                isTrailing: false,
+                isBody: false),
+
             const SizedBox(
               height: ySpace1,
             ),
-            Card(
-              color: AppColors.termsTextColor,
-              child: ListTile(
-                horizontalTitleGap: 0,
+            ActivityCardWidget(
                 onTap: () {
                   Get.to(() => const ChangePasswordPage());
                 },
-                leading: const Icon(
-                  Icons.visibility_off,
-                  color: AppColors.primary,
-                ),
-                title: const Text('Change Password',
-                    style: TextStyle(color: AppColors.white)),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.gray,
-                  size: 12,
-                ),
-              ),
-            ),
+                title: 'Change Password',
+                leadingIcon: Icons.visibility_off,
+                isTrailing: false,
+                isBody: false),
+
             const SizedBox(
               height: ySpace1,
             ),
-            Card(
-              color: AppColors.termsTextColor,
-              child: ListTile(
-                  horizontalTitleGap: 0,
-                  //  contentPadding: EdgeInsets.all(0),
-                  leading: const Icon(
-                    Icons.notifications,
-                    color: AppColors.primary,
-                  ),
-                  title: const Text('Notifications',
-                      style: TextStyle(color: AppColors.white)),
-                  trailing: Switch(
-                      activeColor: AppColors.primary,
-                      value: notificationHandler,
-                      onChanged: (value) {
-                        setState(() {
-                          notificationHandler = value;
-                        });
-                      })),
-            ),
+            ActivityCardWidget(
+                onTap: () {},
+                title: 'notifications',
+                leadingIcon: Icons.notifications,
+                isTrailing: true,
+                trailingIcon: Switch(
+                    activeColor: AppColors.primary,
+                    value: notificationHandler,
+                    onChanged: (value) {
+                      setState(() {
+                        notificationHandler = value;
+                      });
+                    }),
+                isBody: false),
+
             const SizedBox(
               height: ySpace1,
             ),
@@ -182,52 +158,38 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             // const SizedBox(
             //   height: ySpace1,
             // ),
-           
-           
-            const Card(
-              color: AppColors.termsTextColor,
-              child: ListTile(
-                horizontalTitleGap: 0,
-                //  contentPadding: EdgeInsets.all(0),
-                leading: Padding(
-                  padding: EdgeInsets.only(top: 8, bottom: 8),
-                  child: Icon(
-                    Icons.language,
-                    color: AppColors.primary,
-                  ),
-                ),
-                title: Text('App Language',
-                    style: TextStyle(color: AppColors.white)),
-                subtitle:
-                    Text('English', style: TextStyle(color: AppColors.white)),
-                trailing: Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.gray,
-                  size: 12,
-                ),
-              ),
-            ),
+
+            ActivityCardWidget(
+                onTap: () {},
+                title: 'App Language',
+                leadingIcon: Icons.language,
+                isTrailing: false,
+                isBody: false),
+
             const SizedBox(
               height: ySpace1,
             ),
-            const Card(
-              color: AppColors.termsTextColor,
-              child: ListTile(
-                horizontalTitleGap: 0,
-                //  contentPadding: EdgeInsets.all(0),
-                leading: Icon(
-                  Icons.supervised_user_circle,
-                  color: AppColors.primary,
-                ),
-                title:
-                    Text('About Us', style: TextStyle(color: AppColors.white)),
-                trailing: Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.gray,
-                  size: 12,
-                ),
-              ),
+            ActivityCardWidget(
+                onTap: () {
+                  Get.to(() => const HelpCenterPage());
+                },
+                title: 'Help',
+                leadingIcon: Icons.help_center,
+                isTrailing: false,
+                isBody: false),
+
+            const SizedBox(
+              height: ySpace1,
             ),
+            ActivityCardWidget(
+                onTap: () {
+                  _launchURL();
+                },
+                title: 'About Us',
+                leadingIcon: Icons.supervised_user_circle,
+                isTrailing: false,
+                isBody: false),
+
             const SizedBox(
               height: ySpace1,
             ),
@@ -248,6 +210,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         ),
       ),
     );
+  }
+
+  _launchURL() async {
+    const url = 'https://google.com';
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   dynamic _groupValue = 0;

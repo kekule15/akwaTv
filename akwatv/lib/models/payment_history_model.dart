@@ -36,35 +36,39 @@ class DatumList {
     DatumList({
         this.id,
         this.userId,
+        this.name,
         this.amount,
         this.status,
+        this.timestamps,
         this.v,
-        this.name,
     });
 
     final String? id;
     final String? userId;
+    final String? name;
     final String? amount;
     final String? status;
+    final DateTime? timestamps;
     final int? v;
-    final String? name;
 
     factory DatumList.fromJson(Map<String, dynamic> json) => DatumList(
         id: json["_id"] == null ? null : json["_id"],
         userId: json["userId"] == null ? null : json["userId"],
+        name: json["name"] == null ? null : json["name"],
         amount: json["amount"] == null ? null : json["amount"],
         status: json["status"] == null ? null : json["status"],
+        timestamps: json["timestamps"] == null ? null : DateTime.parse(json["timestamps"]),
         v: json["__v"] == null ? null : json["__v"],
-        name: json["name"] == null ? null : json["name"],
     );
 
     Map<String, dynamic> toJson() => {
         "_id": id == null ? null : id,
         "userId": userId == null ? null : userId,
+        "name": name == null ? null : name,
         "amount": amount == null ? null : amount,
         "status": status == null ? null : status,
+        "timestamps": timestamps == null ? null : timestamps!.toIso8601String(),
         "__v": v == null ? null : v,
-        "name": name == null ? null : name,
     };
 }
 

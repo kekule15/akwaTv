@@ -53,7 +53,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                   padding: EdgeInsets.fromLTRB(ySpace2, 0, 0, 15.h),
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 10.h),
                   decoration: const BoxDecoration(
-                    color: AppColors.termsTextColor,
+                    color: AppColors.gray4,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

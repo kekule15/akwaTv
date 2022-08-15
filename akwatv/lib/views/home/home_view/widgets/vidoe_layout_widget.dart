@@ -29,7 +29,7 @@ class VideoLayoutWidget extends ConsumerWidget {
       child: InkWell(
         onTap: () => onTap(),
         child: Card(
-          color: AppColors.termsTextColor,
+          color: AppColors.gray4,
           child: Padding(
               padding: const EdgeInsets.only(right: 10),
               child: ListTile(
