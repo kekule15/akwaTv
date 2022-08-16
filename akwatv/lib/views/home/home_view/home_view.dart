@@ -232,9 +232,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Akwa Amaka Originals',
-                              style: TextStyle(
+                             Text(
+                              'akwaType'.tr,
+                              style:const TextStyle(
                                   color: AppColors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500),

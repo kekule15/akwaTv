@@ -27,7 +27,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
       appBar: AppBar(
         backgroundColor: AppColors.black,
         title: Text(
-          'Forgot Password',
+          'forgotPassword'.tr,
           style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
         ),
       ),
@@ -44,7 +44,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Enter your mail address linked with your Akwa-TV  account',
+                  'linkEmail'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: AppColors.white, fontSize: 13.sp),
                 ),
@@ -54,14 +54,14 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
               ),
               CustomField(
                 style: const TextStyle(color: AppColors.white),
-                headtext: 'Email Address',
+                headtext: 'email'.tr,
                 validate: true,
                 onChanged: (value) {},
                 fillColor: AppColors.termsTextColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
-                hint: 'Enter valid email address',
+                hint: 'enterEmail'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.name,
               ),
@@ -92,7 +92,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                     ),
                   )
                 : Text(
-                    'Recover',
+                    'continue'.tr,
                     style: TextStyle(color: AppColors.white, fontSize: 14.sp),
                   ),
             borderColor: false,

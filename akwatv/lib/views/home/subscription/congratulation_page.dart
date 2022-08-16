@@ -33,7 +33,7 @@ class CongratulationScreen extends ConsumerWidget {
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
-          'Congratulaions!',
+          'congratulations'.tr,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: AppColors.white,
@@ -111,7 +111,7 @@ class CongratulationScreen extends ConsumerWidget {
             Get.offAll(() => const HomeNavigation());
           },
           title: Text(
-            'Continue',
+            'continue'.tr,
             style: TextStyle(color: AppColors.white, fontSize: 16.sp),
           ),
         ),

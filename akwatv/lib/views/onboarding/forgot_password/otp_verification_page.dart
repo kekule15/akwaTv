@@ -56,7 +56,7 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    'OTP Verification',
+                    'verifyOTP'.tr,
                     style: TextStyle(
                         color: AppColors.white,
                         fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
                   height: 60.h,
                 ),
                 Text(
-                  'Enter OTP sent to your Akwa-TV account',
+                  'otpText'.tr,
                   style: TextStyle(
                       color: AppColors.white,
                       fontWeight: FontWeight.bold,
@@ -123,7 +123,7 @@ class _OTPVerificationPageState extends ConsumerState<OTPVerificationPage> {
                     ),
                   )
                 : Text(
-                    'Confirm',
+                    'continue'.tr,
                     style: TextStyle(
                         color: AppColors.white,
                         fontWeight: FontWeight.bold,

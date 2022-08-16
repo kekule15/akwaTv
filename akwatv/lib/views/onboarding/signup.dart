@@ -44,15 +44,15 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               const SizedBox(
                 height: ySpace3 * 1,
               ),
-              const ListTile(
-                contentPadding: EdgeInsets.all(0),
+               ListTile(
+                contentPadding:const EdgeInsets.all(0),
                 title: Text(
-                  'SignUp',
-                  style: TextStyle(color: AppColors.primary),
+                  'register'.tr,
+                  style:const TextStyle(color: AppColors.primary),
                 ),
                 subtitle: Text(
-                  'Signup to start your free seven days trial',
-                  style: TextStyle(color: AppColors.white),
+                  'registerText'.tr,
+                  style:const TextStyle(color: AppColors.white),
                 ),
               ),
               const SizedBox(
@@ -65,8 +65,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: nameController,
-                headtext: 'Full name',
-                hint: 'Enter your full name',
+                headtext: 'name'.tr,
+                hint: 'enterName'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.name,
               ),
@@ -80,11 +80,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 ],
                 validate: true,
                 fillColor: AppColors.termsTextColor,
-                headtext: 'Email address',
+                headtext: 'email'.tr,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
-                hint: 'Enter your email address',
+                hint: 'enterEmail'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.email,
               ),
@@ -98,11 +98,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 ],
                 validate: true,
                 fillColor: AppColors.termsTextColor,
-                headtext: 'phone number',
+                headtext: 'phone'.tr,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: phoneController,
-                hint: 'Enter your phone number',
+                hint: 'enterPhone'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.phone,
               ),
@@ -118,11 +118,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 validate: true,
                 fillColor: AppColors.termsTextColor,
                 obscureText: _obscure,
-                headtext: 'Password',
+                headtext: 'password'.tr,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: passwordController,
-                hint: 'Enter your password',
+                hint: 'enterPassword'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 sIcon: const IsObscure(),
               ),
@@ -152,7 +152,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         ),
                       )
                     : Text(
-                        'Register',
+                        'continue'.tr,
                         style:
                             TextStyle(color: AppColors.white, fontSize: 16.sp),
                       ),
@@ -160,10 +160,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               const SizedBox(
                 height: ySpace3,
               ),
-              const Text(
-                'By creating an account you agree to our',
+               Text(
+                'agreeRegister'.tr,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.white),
+                style:const TextStyle(color: AppColors.white),
               ),
               RichText(
                 textAlign: TextAlign.center,
@@ -172,23 +172,23 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                     ..onTap = () {
                       // Get.to(const CreateAccountScreen());
                     },
-                  text: 'terms ',
+                  text: 'terms '.tr,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,
                   ),
                   children: <TextSpan>[
-                    const TextSpan(
-                      text: 'and ',
-                      style: TextStyle(
+                     TextSpan(
+                      text: 'and '.tr,
+                      style:const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
                       ),
                     ),
                     TextSpan(
-                      text: 'Conditions',
+                      text: 'conditions'.tr,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,

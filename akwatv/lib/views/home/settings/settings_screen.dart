@@ -1,6 +1,8 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/utils/custom_drop_down.dart';
+import 'package:akwatv/utils/providers.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/home/help/help_screen.dart';
 import 'package:akwatv/views/home/profile/change_password.dart';
 import 'package:akwatv/views/home/profile/edit_profile.dart';
@@ -20,14 +22,16 @@ class SettingsPage extends ConsumerStatefulWidget {
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
   bool notificationHandler = true;
+  bool languageToggle = false;
   @override
   Widget build(BuildContext context) {
+    final viewModel = ref.watch(homeViewModel);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.black,
-        title: const Text(
-          'Settings',
-          style: TextStyle(color: AppColors.white),
+        title: Text(
+          'settings'.tr,
+          style: const TextStyle(color: AppColors.white),
         ),
       ),
       body: Padding(
@@ -42,7 +46,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 onTap: () {
                   Get.to(() => const EditProfilePage());
                 },
-                title: 'Edit Profile',
+                title: 'editProfile'.tr,
                 leadingIcon: Icons.person,
                 isTrailing: false,
                 isBody: false),
@@ -54,7 +58,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 onTap: () {
                   Get.to(() => const ChangePasswordPage());
                 },
-                title: 'Change Password',
+                title: 'resetPassword'.tr,
                 leadingIcon: Icons.visibility_off,
                 isTrailing: false,
                 isBody: false),
@@ -64,7 +68,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
             ActivityCardWidget(
                 onTap: () {},
-                title: 'notifications',
+                title: 'notifications'.tr,
                 leadingIcon: Icons.notifications,
                 isTrailing: true,
                 trailingIcon: Switch(
@@ -160,11 +164,66 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             // ),
 
             ActivityCardWidget(
-                onTap: () {},
-                title: 'App Language',
-                leadingIcon: Icons.language,
-                isTrailing: false,
-                isBody: false),
+              onTap: () {
+                setState(() {
+                  languageToggle = !languageToggle;
+                });
+              },
+              title: 'language'.tr,
+              leadingIcon: Icons.language,
+              isTrailing: false,
+              isBody: languageToggle,
+              body: SizedBox(
+                height: 120,
+                child: Column(
+                  children: [
+                    RadioListTile(
+                      contentPadding: const EdgeInsets.all(0),
+                      dense: true,
+                      value: 1,
+                      groupValue: viewModel.languageSelected,
+                      title: const Text(
+                        "English",
+                        style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      onChanged: (newValue) {
+                        var locale = const Locale('en_US');
+                        Get.updateLocale(locale);
+                        viewModel.changeLanguage(
+                            lang: newValue, langCode: 'en_US');
+                      },
+                      activeColor: AppColors.primary,
+                      selected: true,
+                    ),
+                    RadioListTile(
+                      contentPadding: const EdgeInsets.all(0),
+                      dense: true,
+                      value: 2,
+                      groupValue: viewModel.languageSelected,
+                      title: const Text(
+                        "French",
+                        style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      onChanged: (newValue) {
+                        var locale = const Locale('fr');
+                        Get.updateLocale(locale);
+                        viewModel.changeLanguage(
+                            lang: newValue, langCode: 'fr');
+                        // setState(() => viewModel.languageSelected = newValue);
+                      },
+                      activeColor: AppColors.primary,
+                      selected: true,
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
             const SizedBox(
               height: ySpace1,
@@ -173,7 +232,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 onTap: () {
                   Get.to(() => const HelpCenterPage());
                 },
-                title: 'Help',
+                title: 'help'.tr,
                 leadingIcon: Icons.help_center,
                 isTrailing: false,
                 isBody: false),
@@ -185,7 +244,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 onTap: () {
                   _launchURL();
                 },
-                title: 'About Us',
+                title: 'aboutUs'.tr,
                 leadingIcon: Icons.supervised_user_circle,
                 isTrailing: false,
                 isBody: false),
@@ -221,163 +280,163 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     }
   }
 
-  dynamic _groupValue = 0;
-  //video download dialog
-  videoDownload(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
-            return AlertDialog(
-              backgroundColor: AppColors.termsTextColor,
-              title: const Text(
-                "Video downloads",
-                style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600),
-              ),
-              content: SizedBox(
-                height: 130,
-                child: Column(children: [
-                  RadioListTile(
-                    contentPadding: const EdgeInsets.all(0),
-                    dense: true,
-                    value: 1,
-                    groupValue: _groupValue,
-                    title: const Text(
-                      "Over Wi-Fi only",
-                      style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    onChanged: (newValue) {
-                      setState(() => _groupValue = newValue);
-                    },
-                    activeColor: AppColors.primary,
-                    selected: true,
-                  ),
-                  const SizedBox(
-                    height: ySpace1,
-                  ),
-                  RadioListTile(
-                    contentPadding: const EdgeInsets.all(0),
-                    dense: true,
-                    value: 2,
-                    groupValue: _groupValue,
-                    title: const Text(
-                      "Over Wi-Fi or Mobile Network",
-                      style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    onChanged: (newValue) {
-                      setState(() => _groupValue = newValue);
-                    },
-                    activeColor: AppColors.primary,
-                    selected: true,
-                  ),
-                ]),
-              ),
-              actions: [
-                TextButton(
-                  child: const Text(
-                    "OK",
-                    style: TextStyle(color: AppColors.primary, fontSize: 15),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
+  // //video download dialog
+  // videoDownload(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return StatefulBuilder(
+  //         builder:
+  //             (BuildContext context, void Function(void Function()) setState) {
+  //           return AlertDialog(
+  //             backgroundColor: AppColors.termsTextColor,
+  //             title: const Text(
+  //               "Video downloads",
+  //               style: TextStyle(
+  //                   color: AppColors.white,
+  //                   fontSize: 15,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //             content: SizedBox(
+  //               height: 130,
+  //               child: Column(children: [
+  //                 RadioListTile(
+  //                   contentPadding: const EdgeInsets.all(0),
+  //                   dense: true,
+  //                   value: 1,
+  //                   groupValue: _groupValue,
+  //                   title: const Text(
+  //                     "Over Wi-Fi only",
+  //                     style: TextStyle(
+  //                         color: AppColors.white,
+  //                         fontSize: 15,
+  //                         fontWeight: FontWeight.w600),
+  //                   ),
+  //                   onChanged: (newValue) {
+  //                     setState(() => _groupValue = newValue);
+  //                   },
+  //                   activeColor: AppColors.primary,
+  //                   selected: true,
+  //                 ),
+  //                 const SizedBox(
+  //                   height: ySpace1,
+  //                 ),
+  //                 RadioListTile(
+  //                   contentPadding: const EdgeInsets.all(0),
+  //                   dense: true,
+  //                   value: 2,
+  //                   groupValue: _groupValue,
+  //                   title: const Text(
+  //                     "Over Wi-Fi or Mobile Network",
+  //                     style: TextStyle(
+  //                         color: AppColors.white,
+  //                         fontSize: 15,
+  //                         fontWeight: FontWeight.w600),
+  //                   ),
+  //                   onChanged: (newValue) {
+  //                     setState(() => _groupValue = newValue);
+  //                   },
+  //                   activeColor: AppColors.primary,
+  //                   selected: true,
+  //                 ),
+  //               ]),
+  //             ),
+  //             actions: [
+  //               TextButton(
+  //                 child: const Text(
+  //                   "OK",
+  //                   style: TextStyle(color: AppColors.primary, fontSize: 15),
+  //                 ),
+  //                 onPressed: () {
+  //                   Navigator.pop(context);
+  //                 },
+  //               )
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
-  dynamic _stremValue = 0;
-  //video download dialog
-  videoStream(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
-            return AlertDialog(
-              backgroundColor: AppColors.termsTextColor,
-              title: const Text(
-                "Video Streaming",
-                style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600),
-              ),
-              content: SizedBox(
-                height: 130,
-                child: Column(children: [
-                  RadioListTile(
-                    contentPadding: const EdgeInsets.all(0),
-                    dense: true,
-                    value: 1,
-                    groupValue: _stremValue,
-                    title: const Text(
-                      "Over Wi-Fi only",
-                      style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    onChanged: (newValue) {
-                      setState(() => _stremValue = newValue);
-                    },
-                    activeColor: AppColors.primary,
-                    selected: true,
-                  ),
-                  const SizedBox(
-                    height: ySpace1,
-                  ),
-                  RadioListTile(
-                    contentPadding: const EdgeInsets.all(0),
-                    dense: true,
-                    value: 2,
-                    groupValue: _stremValue,
-                    title: const Text(
-                      "Over Wi-Fi or Mobile Network",
-                      style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    onChanged: (newValue) {
-                      setState(() => _stremValue = newValue);
-                    },
-                    activeColor: AppColors.primary,
-                    selected: true,
-                  ),
-                ]),
-              ),
-              actions: [
-                TextButton(
-                  child: const Text(
-                    "OK",
-                    style: TextStyle(color: AppColors.primary, fontSize: 15),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
+  // dynamic _stremValue = 0;
+  // //video download dialog
+  // videoStream(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return StatefulBuilder(
+  //         builder:
+  //             (BuildContext context, void Function(void Function()) setState) {
+  //           return AlertDialog(
+  //             backgroundColor: AppColors.termsTextColor,
+  //             title: const Text(
+  //               "Video Streaming",
+  //               style: TextStyle(
+  //                   color: AppColors.white,
+  //                   fontSize: 15,
+  //                   fontWeight: FontWeight.w600),
+  //             ),
+  //             content: SizedBox(
+  //               height: 130,
+  //               child: Column(children: [
+  //                 RadioListTile(
+  //                   contentPadding: const EdgeInsets.all(0),
+  //                   dense: true,
+  //                   value: 1,
+  //                   groupValue: _stremValue,
+  //                   title: const Text(
+  //                     "Over Wi-Fi only",
+  //                     style: TextStyle(
+  //                         color: AppColors.white,
+  //                         fontSize: 15,
+  //                         fontWeight: FontWeight.w600),
+  //                   ),
+  //                   onChanged: (newValue) {
+  //                     setState(() => _stremValue = newValue);
+  //                   },
+  //                   activeColor: AppColors.primary,
+  //                   selected: true,
+  //                 ),
+  //                 const SizedBox(
+  //                   height: ySpace1,
+  //                 ),
+  //                 RadioListTile(
+  //                   contentPadding: const EdgeInsets.all(0),
+  //                   dense: true,
+  //                   value: 2,
+  //                   groupValue: _stremValue,
+  //                   title: const Text(
+  //                     "Over Wi-Fi or Mobile Network",
+  //                     style: TextStyle(
+  //                         color: AppColors.white,
+  //                         fontSize: 15,
+  //                         fontWeight: FontWeight.w600),
+  //                   ),
+  //                   onChanged: (newValue) {
+  //                     setState(() => _stremValue = newValue);
+  //                   },
+  //                   activeColor: AppColors.primary,
+  //                   selected: true,
+  //                 ),
+  //               ]),
+  //             ),
+  //             actions: [
+  //               TextButton(
+  //                 child: const Text(
+  //                   "OK",
+  //                   style: TextStyle(color: AppColors.primary, fontSize: 15),
+  //                 ),
+  //                 onPressed: () {
+  //                   Navigator.pop(context);
+  //                 },
+  //               )
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
+
 }

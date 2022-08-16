@@ -114,7 +114,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      'Akwa Amaka Originals',
+                      'akwaType'.tr,
                       style: TextStyle(color: AppColors.white, fontSize: 12.sp),
                     ),
                   ),
@@ -197,7 +197,7 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
                           onTap: () {
                             showDialogWithFields();
                           },
-                          title: 'Logout',
+                          title: 'logout'.tr,
                           icon: Icons.logout,
                           iconColor: AppColors.primary,
                           titleColor: AppColors.primary)),
@@ -219,18 +219,18 @@ class _MyDrawerPageState extends ConsumerState<MyDrawerPage> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text('Logout'),
-          content: Text('Sure you want to logout?'),
+          title: Text('logout'.tr),
+          content: Text('logoutText'.tr),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('No', style: TextStyle(color: AppColors.gray)),
+              child: Text('no'.tr, style:const TextStyle(color: AppColors.gray)),
             ),
             TextButton(
               onPressed: () async {
                 viewModel.logoutNow();
               },
-              child: Text('Yes', style: TextStyle(color: AppColors.primary)),
+              child: Text('yes'.tr, style:const TextStyle(color: AppColors.primary)),
             ),
           ],
         );

@@ -46,15 +46,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               const SizedBox(
                 height: ySpace3 * 1,
               ),
-              const ListTile(
-                contentPadding: EdgeInsets.all(0),
+              ListTile(
+                contentPadding: const EdgeInsets.all(0),
                 title: Text(
-                  'SignIn',
-                  style: TextStyle(color: AppColors.primary),
+                  'login'.tr,
+                  style: const TextStyle(color: AppColors.primary),
                 ),
                 subtitle: Text(
-                  'Welcome back!',
-                  style: TextStyle(color: AppColors.white),
+                  'welcome'.tr,
+                  style: const TextStyle(color: AppColors.white),
                 ),
               ),
               const SizedBox(
@@ -65,13 +65,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
-                headtext: 'Email',
+                headtext: 'email'.tr,
                 validate: true,
                 fillColor: AppColors.termsTextColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
-                hint: 'Enter your email',
+                hint: 'enterEmail'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.email,
               ),
@@ -84,14 +84,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
-                headtext: 'Password',
+                headtext: 'password'.tr,
                 validate: true,
                 fillColor: AppColors.termsTextColor,
                 obscureText: _obscure,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: passwordController,
-                hint: 'Enter your password',
+                hint: 'enterPassword'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 sIcon: const IsObscure(),
               ),
@@ -102,6 +102,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 borderColor: false,
                 color: AppColors.primary,
                 onclick: () async {
+                  // var locale = const Locale('fr');
+
+                  // Get.updateLocale(locale);
+
                   final form = _formKey.currentState;
                   if (form!.validate()) {
                     form.save();
@@ -121,17 +125,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ),
                       )
                     : Text(
-                        'Login',
+                        'login'.tr,
                         style:
                             TextStyle(color: AppColors.white, fontSize: 16.sp),
                       ),
               ),
-              
-              
               const SizedBox(
                 height: ySpace3,
               ),
-              
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -148,9 +149,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               rememberMe = value!;
                             });
                           }),
-                      const Text(
-                        'Remeber me',
-                        style: TextStyle(color: AppColors.white),
+                      Text(
+                        'rememberMe'.tr,
+                        style: const TextStyle(color: AppColors.white),
                       ),
                     ],
                   ),
@@ -158,16 +159,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     onTap: () {
                       Get.to(() => const ForgotPasswordPage());
                     },
-                    child: const Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: AppColors.white),
+                    child: Text(
+                      'forgotPassword'.tr,
+                      style: const TextStyle(color: AppColors.white),
                     ),
                   )
                 ],
               )
-            
-            
-            
             ],
           ),
         ),

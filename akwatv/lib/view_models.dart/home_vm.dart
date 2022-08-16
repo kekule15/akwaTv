@@ -1,4 +1,5 @@
 import 'package:akwatv/utils/exports.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
 import 'package:akwatv/views/home/help/help_screen.dart';
 import 'package:akwatv/views/home/profile/edit_profile.dart';
@@ -10,28 +11,31 @@ import 'package:get/get.dart';
 
 class HomeViewModel extends BaseViewModel {
   int selectedIndex = 0;
+  int languageSelected = 1;
   HomeViewModel(Reader read) : super(read) {
     subDrawerList();
+
+    _loadFromPrefs();
   }
 
   List<Map<String, dynamic>> subDrawerList() {
     return [
       {
-        'title': "Settings",
+        'title': "settings".tr,
         "icon": Icons.settings,
         "onTap": () {
           Get.to(() => const SettingsPage());
         }
       },
       {
-        'title': "Subscription",
+        'title': "subscription".tr,
         "icon": Icons.subscriptions,
         "onTap": () {
           Get.to(() => const SubScriptionDetailsPage());
         }
       },
       {
-        'title': "Account",
+        'title': "account".tr,
         "icon": Icons.person,
         "onTap": () {
           Get.back();
@@ -40,7 +44,7 @@ class HomeViewModel extends BaseViewModel {
         }
       },
       {
-        'title': "Help",
+        'title': "help".tr,
         "icon": Icons.live_help,
         "onTap": () {
           Get.to(() => const HelpCenterPage());
@@ -80,6 +84,28 @@ class HomeViewModel extends BaseViewModel {
         }
       },
     ];
+  }
+
+  // change language
+
+  String languageCode = 'en_US';
+
+  changeLanguage({required dynamic lang, required String langCode}) {
+    languageSelected = lang;
+    _saveToPrefs(code: langCode, selectd: languageSelected);
+    notifyListeners();
+  }
+
+  _loadFromPrefs() async {
+    languageCode = PreferenceUtils.getString(key: languageCode);
+    languageSelected = PreferenceUtils.getInt(key: 'languageSelected');
+    
+    notifyListeners();
+  }
+
+  _saveToPrefs({required dynamic code, required int selectd}) async {
+    PreferenceUtils.setInt(key: 'languageSelected', value: selectd);
+    PreferenceUtils.setString(key: languageCode, value: code);
   }
 
   void changeIndex(int index) async {

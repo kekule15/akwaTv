@@ -39,6 +39,15 @@ class PreferenceUtils {
     return prefs.getBool(key) ?? false;
   }
 
+   static int getInt({required String key}) {
+   return _prefsInstance!.getInt(key) ?? 0;
+  }
+  static Future setInt(
+      {required String key, required int value}) async {
+    var prefs = await _instance;
+    return prefs.setInt(key, value);
+  }
+
   static Future eraseAllData() async {
     var prefs = await _instance;
 

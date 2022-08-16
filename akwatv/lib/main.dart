@@ -1,7 +1,9 @@
 import 'package:akwatv/firebase_options.dart';
+import 'package:akwatv/localStrings.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/notification_fcm.dart';
+import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/views/onboarding/splash.dart';
@@ -75,9 +77,12 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+     final viewModel = ref.watch(homeViewModel);
     return ScreenUtilInit(
         designSize: const Size(360, 700),
         builder: (widget, child) => GetMaterialApp(
+          translations: LocalString(),
+          locale:  Locale(PreferenceUtils.getString(key: viewModel.languageCode)),
               debugShowCheckedModeBanner: false,
               title: 'Akwa Tv',
               theme: ThemeData(

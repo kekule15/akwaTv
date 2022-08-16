@@ -38,7 +38,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
       appBar: AppBar(
         backgroundColor: AppColors.black,
         title: Text(
-          'Change Password',
+          'resetPassword'.tr,
           style: TextStyle(
               color: AppColors.white,
               fontWeight: FontWeight.bold,
@@ -56,7 +56,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 height: 40.h,
               ),
               Text(
-                'Update  password to secure your\n Akwa-Tv account',
+                'passwordSecurityText'.tr,
                 style: TextStyle(
                     color: AppColors.white,
                     fontWeight: FontWeight.w400,
@@ -68,7 +68,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
               ),
               CustomField(
                 style: const TextStyle(color: AppColors.white),
-                headtext: 'Current Password',
+                headtext: 'currentPassword'.tr,
                 validate: true,
                 fillColor: AppColors.termsTextColor,
                 textInputFormatters: [
@@ -77,7 +77,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: currentPasswordController,
-                hint: 'enter your current password',
+                hint: 'enterCurrentPassword'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.password,
                 obscureText: _obscure,
@@ -88,7 +88,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
               ),
               CustomField(
                 style: const TextStyle(color: AppColors.white),
-                headtext: 'New Password',
+                headtext: 'newPassword'.tr,
                 validate: true,
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
@@ -97,7 +97,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: newPasswordController,
-                hint: 'enter your new password',
+                hint: 'newPasswordText'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.password,
                 obscureText: _obscure,
@@ -108,7 +108,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
               ),
               CustomField(
                 style: const TextStyle(color: AppColors.white),
-                headtext: 'Confirm New Password',
+                headtext: 'confirmNewPassword'.tr,
                 validate: true,
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
@@ -117,7 +117,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: confirmPasswordController,
-                hint: 'confirm your new password',
+                hint: 'confirmNewPassword'.tr,
                 hintstyle: const TextStyle(color: AppColors.gray, fontSize: 11),
                 fieldType: TextFieldType.password,
                 obscureText: _obscure,
@@ -153,7 +153,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                     ),
                   )
                 : Text(
-                    'Submit',
+                    'continue'.tr,
                     style: TextStyle(color: AppColors.white, fontSize: 14.sp),
                   ),
             borderColor: false,

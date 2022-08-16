@@ -53,7 +53,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    'Reset Password',
+                    'resetPassword'.tr,
                     style: TextStyle(
                         color: AppColors.white,
                         fontWeight: FontWeight.bold,
@@ -65,7 +65,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                   height: 60.h,
                 ),
                 Text(
-                  'Create new password to access your Akwa-Tv account',
+                  'createPassword'.tr,
                   style: TextStyle(
                       color: AppColors.white,
                       fontWeight: FontWeight.w400,
@@ -77,10 +77,10 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                 ),
                 CustomField(
                   style: const TextStyle(color: AppColors.white),
-                  headtext: 'Enter New Password',
+                  headtext: 'newPasswordText'.tr,
                   validate: true,
                   fillColor: AppColors.termsTextColor,
-                  contentPadding:
+                  contentPadding:const
                       EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   controller: newPasswordController,
                   hint: '****',
@@ -121,7 +121,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                     ),
                   )
                 : Text(
-                    'Submit',
+                    'continue'.tr,
                     style: TextStyle(color: AppColors.white, fontSize: 14.sp),
                   ),
             borderColor: false,

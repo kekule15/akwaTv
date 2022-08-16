@@ -90,9 +90,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const ImageWidget(asset: akwaTvLogo),
-                const Text(
-                  "LET’S GET STARTED",
-                  style: TextStyle(color: AppColors.white),
+                 Text(
+                  "letStart".tr,
+                  style:const TextStyle(color: AppColors.white),
                 ),
                 const SizedBox(
                   height: ySpace3 * 3,
@@ -102,9 +102,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     Get.to(() => const SignUpPage());
                   },
                   borderColor: false,
-                  title: const Text(
-                    'SignUp',
-                    style: TextStyle(color: AppColors.white),
+                  title:  Text(
+                    'register'.tr,
+                    style:const TextStyle(color: AppColors.white),
                   ),
                   color: AppColors.primary,
                 ),

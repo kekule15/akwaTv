@@ -13,6 +13,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as DIO;
 import 'package:http_parser/http_parser.dart';
+import 'package:get/get.dart';
 
 class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -92,9 +93,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.black,
-        title: const Text(
-          'Edit Profile',
-          style: TextStyle(color: AppColors.white),
+        title: Text(
+          'editProfile'.tr,
+          style: const TextStyle(color: AppColors.white),
         ),
       ),
       body: Padding(
@@ -146,7 +147,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 height: ySpace1,
               ),
               Text(
-                'Tap to change your picture',
+                'changePicture'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13.sp, color: AppColors.white),
               ),
@@ -160,8 +161,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: nameController,
-                headtext: 'Name',
-                hint: 'Name',
+                headtext: 'name'.tr,
+                hint: 'enterName'.tr,
                 hintstyle: const TextStyle(color: AppColors.white),
                 fieldType: TextFieldType.name,
               ),
@@ -173,13 +174,13 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
-                headtext: 'Email address',
+                headtext: 'email'.tr,
                 validate: true,
                 fillColor: AppColors.termsTextColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
-                hint: 'Email address',
+                hint: 'enterEmail'.tr,
                 hintstyle: const TextStyle(color: AppColors.white),
                 fieldType: TextFieldType.email,
               ),
@@ -191,13 +192,13 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
-                headtext: 'Phone number',
+                headtext: 'phone'.tr,
                 validate: true,
                 fillColor: AppColors.termsTextColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: phoneController,
-                hint: 'Phone number',
+                hint: 'enterPhone'.tr,
                 hintstyle: const TextStyle(color: AppColors.white),
                 fieldType: TextFieldType.phone,
               ),
@@ -226,7 +227,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                         ),
                       )
                     : Text(
-                        'Update',
+                        'continue'.tr,
                         style:
                             TextStyle(color: AppColors.white, fontSize: 16.sp),
                       ),

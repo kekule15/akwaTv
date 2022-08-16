@@ -21,12 +21,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   List<String> textTitle = [
     'Watch your favorite movies on any device',
     'Download and watch later',
-    'Start a free 7 days trial'
+    'Start a free 14 days trial'
   ];
   List<String> textSubTitle = [
     "You can now stream on your phonetablets,  TV and laptop without making an additional payment.",
     "You can now download unlimited videos and watch later",
-    "Oh yes, you can watch unlimted videos with your free seven days trial"
+    "Oh yes, you can watch unlimted videos with your free 14 days trial"
   ];
 
   List<String> onboardImages = [
