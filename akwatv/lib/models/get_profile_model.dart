@@ -13,26 +13,22 @@ class GetProfileModel {
         this.data,
         this.errors,
         this.message,
-        this.level,
     });
 
     final Data? data;
     final Errors? errors;
     final String? message;
-    final String? level;
 
     factory GetProfileModel.fromJson(Map<String, dynamic> json) => GetProfileModel(
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         errors: json["errors"] == null ? null : Errors.fromJson(json["errors"]),
         message: json["message"] == null ? null : json["message"],
-        level: json["level"] == null ? null : json["level"],
     );
 
     Map<String, dynamic> toJson() => {
         "data": data == null ? null : data!.toJson(),
         "errors": errors == null ? null : errors!.toJson(),
         "message": message == null ? null : message,
-        "level": level == null ? null : level,
     };
 }
 
@@ -44,6 +40,7 @@ class Data {
         this.password,
         this.phone,
         this.userAgent,
+        this.avatar,
         this.deviceToken,
         this.verified,
         this.isAdmin,
@@ -62,6 +59,7 @@ class Data {
     final String? password;
     final String? phone;
     final String? userAgent;
+    final dynamic avatar;
     final dynamic deviceToken;
     final bool? verified;
     final bool? isAdmin;
@@ -80,6 +78,7 @@ class Data {
         password: json["password"] == null ? null : json["password"],
         phone: json["phone"] == null ? null : json["phone"],
         userAgent: json["userAgent"] == null ? null : json["userAgent"],
+        avatar: json["avatar"],
         deviceToken: json["deviceToken"],
         verified: json["verified"] == null ? null : json["verified"],
         isAdmin: json["isAdmin"] == null ? null : json["isAdmin"],
@@ -99,6 +98,7 @@ class Data {
         "password": password == null ? null : password,
         "phone": phone == null ? null : phone,
         "userAgent": userAgent == null ? null : userAgent,
+        "avatar": avatar,
         "deviceToken": deviceToken,
         "verified": verified == null ? null : verified,
         "isAdmin": isAdmin == null ? null : isAdmin,

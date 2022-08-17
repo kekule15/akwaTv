@@ -4,6 +4,7 @@ import 'package:akwatv/widgets/image_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:get/get.dart';
 
 class CallAdminPage extends ConsumerWidget {
   const CallAdminPage({Key? key}) : super(key: key);
@@ -13,9 +14,9 @@ class CallAdminPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.black,
-        title: const Text(
-          'Call Center ',
-          style: TextStyle(color: AppColors.white, fontSize: 20),
+        title: Text(
+          'callCenter'.tr,
+          style: const TextStyle(color: AppColors.white, fontSize: 20),
         ),
       ),
       body: ListView(
@@ -26,10 +27,10 @@ class CallAdminPage extends ConsumerWidget {
           const SizedBox(
             height: 50,
           ),
-          const Text(
-            'Emmergency Call Center ',
+          Text(
+            'emergencyCall'.tr,
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.white, fontSize: 20),
+            style: const TextStyle(color: AppColors.white, fontSize: 20),
           ),
           const SizedBox(
             height: 20,
@@ -42,26 +43,26 @@ class CallAdminPage extends ConsumerWidget {
           const SizedBox(
             height: 50,
           ),
-          const Text(
-            "He, let's help you today",
+          Text(
+            "hiLetsHelp".tr,
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.white, fontSize: 20),
+            style: const TextStyle(color: AppColors.white, fontSize: 20),
           ),
           const SizedBox(
             height: 20,
           ),
-          const Text(
-            "Phone lines are available between 8:00 AM and 5:00 PM on Weekdays",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.white, fontSize: 14),
-          ),
+          // const Text(
+          //   "Phone lines are available between 8:00 AM and 5:00 PM on Weekdays",
+          //   textAlign: TextAlign.center,
+          //   style: TextStyle(color: AppColors.white, fontSize: 14),
+          // ),
           const SizedBox(
             height: 40,
           ),
-          const Text(
-            "Tap the number to call",
+          Text(
+            "tapToCall".tr,
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.white, fontSize: 15),
+            style: const TextStyle(color: AppColors.white, fontSize: 15),
           ),
           const SizedBox(
             height: 10,

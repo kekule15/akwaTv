@@ -79,7 +79,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                   style: const TextStyle(color: AppColors.white),
                   headtext: 'newPasswordText'.tr,
                   validate: true,
-                  fillColor: AppColors.termsTextColor,
+                  fillColor: AppColors.gray4,
                   contentPadding:const
                       EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   controller: newPasswordController,

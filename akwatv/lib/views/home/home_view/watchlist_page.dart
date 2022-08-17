@@ -1,8 +1,11 @@
+import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/styles/appColors.dart';
+import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
+import 'package:akwatv/widgets/customfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -16,10 +19,46 @@ class ViewAllWatchList extends ConsumerStatefulWidget {
 }
 
 class _ViewAllWatchListState extends ConsumerState<ViewAllWatchList> {
+  List<Datum> seachedVideoData = [];
+
+  final TextEditingController textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var watchListVideoData =
         ModalRoute.of(context)?.settings.arguments as List<Datum>;
+    Widget _showBottomSheetWithSearch(int index, List<Datum> myList) {
+      return Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: VideoLayoutWidget(
+              title: myList[index].title!,
+              img: myList[index].img!,
+              subtitle: myList[index].desc!,
+              onTap: () {
+                Get.to(
+                    () => VideoDetailsPage(
+                          videoData: myList[index],
+                        ),
+                    arguments: myList[index]);
+              },
+              icon: Icons.done,
+              iconTap: () {},
+              iconColor: AppColors.white));
+    }
+
+    List<Datum> _buildSearchList(String userSearchTerm) {
+      List<Datum> searchList = [];
+
+      for (int i = 0; i < watchListVideoData.length; i++) {
+        String name = watchListVideoData[i].title!;
+        if (name.toLowerCase().contains(userSearchTerm.toLowerCase())) {
+          searchList.add(watchListVideoData[i]);
+        } else {
+          searchList;
+        }
+      }
+      return searchList;
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -38,31 +77,87 @@ class _ViewAllWatchListState extends ConsumerState<ViewAllWatchList> {
           const SizedBox(
             height: 30,
           ),
-          Column(
-            children: List.generate(
-                watchListVideoData.length,
-                (index) => Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: VideoLayoutWidget(
-                        title: watchListVideoData[index].title!,
-                        img: watchListVideoData[index].img!,
-                        subtitle: watchListVideoData[index].desc!,
-                        onTap: () {
-                          Get.to(
-                              () => VideoDetailsPage(
-                                    videoData: watchListVideoData[index],
-                                  ),
-                              arguments: watchListVideoData[index]);
-                        },
-                        icon: Icons.close,
-                        iconTap: () {
-                          deleteWatchList(
-                            data: watchListVideoData[index],
-                            movieID: watchListVideoData[index].id,
-                          );
-                        },
-                        iconColor: AppColors.primary))),
+          CustomField(
+            style: const TextStyle(color: AppColors.white),
+            pIcon: const Icon(
+              Icons.search,
+              color: AppColors.white,
+              size: 20,
+            ),
+            onChanged: (value) {
+              setState(() {
+                seachedVideoData = _buildSearchList(value);
+              });
+            },
+            sIcon: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      textController.clear();
+                      seachedVideoData.clear();
+                    });
+                  },
+                  child: const Icon(
+                    Icons.close,
+                    color: AppColors.white,
+                  )),
+            ),
+            validate: true,
+            fillColor: AppColors.gray4,
+            controller: textController,
+            hint: 'searchBy'.tr,
+            hintstyle: const TextStyle(color: AppColors.white),
+            fieldType: TextFieldType.name,
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount:
+                  (seachedVideoData != null && seachedVideoData.isNotEmpty)
+                      ? seachedVideoData.length
+                      : watchListVideoData.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  child: (seachedVideoData != null &&
+                          seachedVideoData.isNotEmpty)
+                      ? _showBottomSheetWithSearch(index, seachedVideoData)
+                      : _showBottomSheetWithSearch(index, watchListVideoData),
+                );
+              }),
+          const SizedBox(
+            height: ySpace3,
+          ),
+
+          // Column(
+          //   children: List.generate(
+          //       watchListVideoData.length,
+          //       (index) => Padding(
+          //           padding: const EdgeInsets.only(bottom: 10),
+          //           child: VideoLayoutWidget(
+          //               title: watchListVideoData[index].title!,
+          //               img: watchListVideoData[index].img!,
+          //               subtitle: watchListVideoData[index].desc!,
+          //               onTap: () {
+          //                 Get.to(
+          //                     () => VideoDetailsPage(
+          //                           videoData: watchListVideoData[index],
+          //                         ),
+          //                     arguments: watchListVideoData[index]);
+          //               },
+          //               icon: Icons.close,
+          //               iconTap: () {
+          //                 deleteWatchList(
+          //                   data: watchListVideoData[index],
+          //                   movieID: watchListVideoData[index].id,
+          //                 );
+          //               },
+          //               iconColor: AppColors.primary))),
+          // ),
         ],
       ),
     );

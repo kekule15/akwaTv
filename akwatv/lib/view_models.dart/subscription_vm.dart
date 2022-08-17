@@ -115,6 +115,7 @@ class SubScriptionViewModel extends BaseViewModel {
 
     if (res.message == 'Request successful') {
       PreferenceUtils.setString(key: 'subName', value: subName);
+      PreferenceUtils.setString(key: 'plan', value: 'Done');
       PreferenceUtils.setString(
           key: 'subAmount', value: res.data!.subscription!.amount);
       LocalStorageManager.box

@@ -141,13 +141,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   height: 50,
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  child:  Padding(
+                    padding:const EdgeInsets.all(8.0),
                     child: TabBar(
                         unselectedLabelColor: Colors.grey,
                         indicatorSize: TabBarIndicatorSize.label,
                         labelColor: AppColors.white,
-                        indicator: BoxDecoration(
+                        indicator:const BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
                                   width: 1, color: AppColors.primary)),
@@ -156,13 +156,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           Tab(
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("Account"),
+                              child: Text("account".tr),
                             ),
                           ),
                           Tab(
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("WatchList"),
+                              child: Text("watchlist".tr),
                             ),
                           ),
                         ]),
@@ -258,18 +258,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             watchListVideoData.isEmpty == true
                                 ? Center(
                                     child: Column(
-                                      children: const [
-                                        SvgImage(
+                                      children:  [
+                                       const SvgImage(
                                           asset: emptyVid,
                                           height: 200,
                                           width: 200,
                                         ),
-                                        SizedBox(
+                                      const  SizedBox(
                                           height: 40,
                                         ),
                                         Text(
-                                          'No Movie Fetched',
-                                          style: TextStyle(
+                                          'noMovieFetched'.tr,
+                                          style:const TextStyle(
                                               color: AppColors.white,
                                               fontSize: 17),
                                         )

@@ -77,6 +77,8 @@ class LoginViewModel extends BaseViewModel {
       PreferenceUtils.setString(key: 'phone', value: res.data!.account!.phone);
       PreferenceUtils.setString(key: 'email', value: res.data!.account!.email);
       //  LocalStorageManager.box.write('avatar', res.data!.account!.avatar);
+       PreferenceUtils.setString(
+          key: 'avatar', value: res.data!.account!.avatar);
       PreferenceUtils.setString(
           key: 'username', value: res.data!.account!.username);
       PreferenceUtils.setBool(
@@ -181,6 +183,7 @@ class LoginViewModel extends BaseViewModel {
       PreferenceUtils.setString(key: 'phone', value: res.data!.phone);
       PreferenceUtils.setString(key: 'email', value: res.data!.email);
       //  LocalStorageManager.box.write('avatar', res.data!.account!.avatar);
+       PreferenceUtils.setString(key: 'avatar', value: res.data!.avatar);
       PreferenceUtils.setString(key: 'username', value: res.data!.username);
       PreferenceUtils.setBool(key: 'verified', value: res.data!.verified);
       PreferenceUtils.setString(key: 'userId', value: res.data!.id);

@@ -126,10 +126,10 @@ class CustomField extends StatelessWidget {
                         filled: true,
                         focusColor: fillColor,
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(3),
                             borderSide: BorderSide.none),
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(3),
                             borderSide: BorderSide.none),
                         contentPadding: contentPadding,
                         errorMaxLines: 6,
@@ -247,8 +247,7 @@ class CustomField extends StatelessWidget {
                         return null;
                       },
                     )
-                  : 
-                  Theme(
+                  : Theme(
                       data: Theme.of(context).copyWith(
                           inputDecorationTheme: const InputDecorationTheme(
                         filled: false,
@@ -298,9 +297,6 @@ class CustomField extends StatelessWidget {
                                 )
                               : null),
                     )),
-       
-       
-       
         )
       ],
     );

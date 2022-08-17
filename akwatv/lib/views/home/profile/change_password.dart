@@ -70,7 +70,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 style: const TextStyle(color: AppColors.white),
                 headtext: 'currentPassword'.tr,
                 validate: true,
-                fillColor: AppColors.termsTextColor,
+                 fillColor: AppColors.gray4,
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
@@ -93,7 +93,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
-                fillColor: AppColors.termsTextColor,
+                 fillColor: AppColors.gray4,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: newPasswordController,
@@ -113,7 +113,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 textInputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp('[ ]')),
                 ],
-                fillColor: AppColors.termsTextColor,
+                fillColor: AppColors.gray4,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: confirmPasswordController,

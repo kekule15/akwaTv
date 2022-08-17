@@ -132,17 +132,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                           backgroundColor: AppColors.primary,
                           backgroundImage: NetworkImage(
                               PreferenceUtils.getString(key: 'avatar')),
-                          child: loginViewModel.uploadPicBTN
-                              ? const Center(
-                                  child: SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      color: AppColors.white,
-                                    ),
-                                  ),
-                                )
-                              : const SizedBox())),
+                          )),
               const SizedBox(
                 height: ySpace1,
               ),
@@ -157,7 +147,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
               CustomField(
                 style: const TextStyle(color: AppColors.white),
                 validate: true,
-                fillColor: AppColors.termsTextColor,
+                 fillColor: AppColors.gray4,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: nameController,
@@ -176,7 +166,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 ],
                 headtext: 'email'.tr,
                 validate: true,
-                fillColor: AppColors.termsTextColor,
+                fillColor: AppColors.gray4,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
@@ -194,7 +184,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                 ],
                 headtext: 'phone'.tr,
                 validate: true,
-                fillColor: AppColors.termsTextColor,
+                 fillColor: AppColors.gray4,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: phoneController,

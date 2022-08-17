@@ -23,6 +23,7 @@ class SettingsPage extends ConsumerStatefulWidget {
 class _SettingsPageState extends ConsumerState<SettingsPage> {
   bool notificationHandler = true;
   bool languageToggle = false;
+  
   @override
   Widget build(BuildContext context) {
     final viewModel = ref.watch(homeViewModel);

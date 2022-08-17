@@ -14,9 +14,9 @@ class HelpCenterPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.black,
-        title: const Text(
-          'Help Center ',
-          style: TextStyle(color: AppColors.white),
+        title: Text(
+          'helpCenter'.tr,
+          style: const TextStyle(color: AppColors.white),
         ),
       ),
       backgroundColor: AppColors.black,
@@ -28,9 +28,9 @@ class HelpCenterPage extends ConsumerWidget {
           const SizedBox(
             height: 50,
           ),
-          const Text(
-            "We're here to help!",
-            style: TextStyle(color: AppColors.white, fontSize: 25),
+          Text(
+            "hereToHelp".tr,
+            style: const TextStyle(color: AppColors.white, fontSize: 25),
           ),
           const SizedBox(
             height: 20,
@@ -39,7 +39,7 @@ class HelpCenterPage extends ConsumerWidget {
               onTap: () {
                 Get.to(() => const CallAdminPage());
               },
-              title: 'Call us',
+              title: 'callUs'.tr,
               leadingIcon: Icons.call,
               isTrailing: false,
               isBody: false),
@@ -51,7 +51,7 @@ class HelpCenterPage extends ConsumerWidget {
                 launchEmailSubmission();
                 //Get.to(() => const HelpCenterPage());
               },
-              title: 'Send an Email',
+              title: 'sendEmail'.tr,
               leadingIcon: Icons.email,
               isTrailing: false,
               isBody: false),
@@ -62,7 +62,7 @@ class HelpCenterPage extends ConsumerWidget {
               onTap: () {
                 Get.to(() => const HelpCenterPage());
               },
-              title: 'Terms and Conditions',
+              title: 'termsAndCondition'.tr,
               leadingIcon: Icons.help_center,
               isTrailing: false,
               isBody: false),

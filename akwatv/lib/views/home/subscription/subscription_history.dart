@@ -4,6 +4,7 @@ import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
 class SubscriptionPayHistory extends ConsumerWidget {
   const SubscriptionPayHistory({Key? key}) : super(key: key);
@@ -16,9 +17,9 @@ class SubscriptionPayHistory extends ConsumerWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.black,
-        title: const Text(
-          'Payment History',
-          style: TextStyle(
+        title: Text(
+          'paymentHistory'.tr,
+          style: const TextStyle(
               color: AppColors.white,
               fontWeight: FontWeight.w500,
               fontSize: 23),
@@ -32,9 +33,9 @@ class SubscriptionPayHistory extends ConsumerWidget {
           const SizedBox(
             height: 30,
           ),
-          const Text(
-            'Your Subscription payment history',
-            style: TextStyle(
+           Text(
+            'paymentHistoryText'.tr,
+            style:const TextStyle(
                 color: AppColors.white,
                 fontWeight: FontWeight.w500,
                 fontSize: 17),
@@ -68,7 +69,7 @@ class SubscriptionPayHistory extends ConsumerWidget {
                             height: 40,
                           ),
                           Text(
-                            'No Movie Fetched',
+                            'No Data Fetched',
                             style:
                                 TextStyle(color: AppColors.white, fontSize: 17),
                           )

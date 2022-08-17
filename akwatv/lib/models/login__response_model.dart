@@ -63,6 +63,8 @@ class Account {
         this.email,
         this.password,
         this.phone,
+        this.userAgent,
+        this.avatar,
         this.deviceToken,
         this.verified,
         this.isAdmin,
@@ -73,7 +75,6 @@ class Account {
         this.v,
         this.subscription,
         this.lastLogin,
-        this.userAgent,
     });
 
     final String? id;
@@ -81,17 +82,18 @@ class Account {
     final String? email;
     final String? password;
     final String? phone;
-    final String? deviceToken;
+    final String? userAgent;
+    final dynamic avatar;
+    final dynamic deviceToken;
     final bool? verified;
     final bool? isAdmin;
     final bool? subscriptionIsActive;
-    final List<String>? watchList;
-    final List<String>? ratedList;
+    final List<dynamic>? watchList;
+    final List<dynamic>? ratedList;
     final DateTime? timestamps;
     final int? v;
     final Subscription? subscription;
     final DateTime? lastLogin;
-    final String? userAgent;
 
     factory Account.fromJson(Map<String, dynamic> json) => Account(
         id: json["_id"] == null ? null : json["_id"],
@@ -99,17 +101,18 @@ class Account {
         email: json["email"] == null ? null : json["email"],
         password: json["password"] == null ? null : json["password"],
         phone: json["phone"] == null ? null : json["phone"],
-        deviceToken: json["deviceToken"] == null ? null : json["deviceToken"],
+        userAgent: json["userAgent"] == null ? null : json["userAgent"],
+        avatar: json["avatar"],
+        deviceToken: json["deviceToken"],
         verified: json["verified"] == null ? null : json["verified"],
         isAdmin: json["isAdmin"] == null ? null : json["isAdmin"],
         subscriptionIsActive: json["subscriptionIsActive"] == null ? null : json["subscriptionIsActive"],
-        watchList: json["watchList"] == null ? null : List<String>.from(json["watchList"].map((x) => x)),
-        ratedList: json["ratedList"] == null ? null : List<String>.from(json["ratedList"].map((x) => x)),
+        watchList: json["watchList"] == null ? null : List<dynamic>.from(json["watchList"].map((x) => x)),
+        ratedList: json["ratedList"] == null ? null : List<dynamic>.from(json["ratedList"].map((x) => x)),
         timestamps: json["timestamps"] == null ? null : DateTime.parse(json["timestamps"]),
         v: json["__v"] == null ? null : json["__v"],
         subscription: json["subscription"] == null ? null : Subscription.fromJson(json["subscription"]),
         lastLogin: json["last_login"] == null ? null : DateTime.parse(json["last_login"]),
-        userAgent: json["userAgent"] == null ? null : json["userAgent"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -118,7 +121,9 @@ class Account {
         "email": email == null ? null : email,
         "password": password == null ? null : password,
         "phone": phone == null ? null : phone,
-        "deviceToken": deviceToken == null ? null : deviceToken,
+        "userAgent": userAgent == null ? null : userAgent,
+        "avatar": avatar,
+        "deviceToken": deviceToken,
         "verified": verified == null ? null : verified,
         "isAdmin": isAdmin == null ? null : isAdmin,
         "subscriptionIsActive": subscriptionIsActive == null ? null : subscriptionIsActive,
@@ -128,7 +133,6 @@ class Account {
         "__v": v == null ? null : v,
         "subscription": subscription == null ? null : subscription!.toJson(),
         "last_login": lastLogin == null ? null : lastLogin!.toIso8601String(),
-        "userAgent": userAgent == null ? null : userAgent,
     };
 }
 

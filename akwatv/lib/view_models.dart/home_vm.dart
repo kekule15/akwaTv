@@ -56,28 +56,28 @@ class HomeViewModel extends BaseViewModel {
   List<Map<String, dynamic>> profileList() {
     return [
       {
-        'title': "Profile",
+        'title': "profile".tr,
         "icon": Icons.person,
         "onTap": () {
           Get.to(() => const EditProfilePage());
         }
       },
       {
-        'title': "Subscription",
+        'title': "subscription".tr,
         "icon": Icons.subscriptions,
         "onTap": () {
           Get.to(() => const SubScriptionDetailsPage());
         }
       },
       {
-        'title': "Help",
+        'title': "help".tr,
         "icon": Icons.help_center,
         "onTap": () {
           Get.to(() => const HelpCenterPage());
         }
       },
       {
-        'title': "Settings",
+        'title': "settings".tr,
         "icon": Icons.settings,
         "onTap": () {
           Get.to(() => const SettingsPage());
@@ -99,7 +99,7 @@ class HomeViewModel extends BaseViewModel {
   _loadFromPrefs() async {
     languageCode = PreferenceUtils.getString(key: languageCode);
     languageSelected = PreferenceUtils.getInt(key: 'languageSelected');
-    
+
     notifyListeners();
   }
 

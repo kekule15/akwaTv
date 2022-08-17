@@ -29,8 +29,6 @@ class VideoCategoryPage extends ConsumerStatefulWidget {
 }
 
 class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
-  final searchController = TextEditingController();
-
   List<Datum> categoryVideoData = [];
 
   @override
@@ -48,6 +46,10 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
 
     super.didChangeDependencies();
   }
+
+  List<Datum> seachedVideoData = [];
+
+  final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -67,29 +69,58 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
           children: [
+            CustomField(
+              style: const TextStyle(color: AppColors.white),
+              pIcon: const Icon(
+                Icons.search,
+                color: AppColors.white,
+                size: 20,
+              ),
+              onChanged: (value) {
+                setState(() {
+                  seachedVideoData = _buildSearchList(value);
+                });
+              },
+              sIcon: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        textController.clear();
+                        seachedVideoData.clear();
+                      });
+                    },
+                    child: const Icon(
+                      Icons.close,
+                      color: AppColors.white,
+                    )),
+              ),
+              validate: true,
+              fillColor: AppColors.gray4,
+              controller: textController,
+              hint: 'searchBy'.tr,
+              hintstyle: const TextStyle(color: AppColors.white),
+              fieldType: TextFieldType.name,
+            ),
             const SizedBox(
-              height: ySpace1,
+              height: 20,
             ),
-            Column(
-              children: List.generate(
-                  categoryVideoData.length,
-                  (index) => Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: VideoLayoutWidget(
-                          title: categoryVideoData[index].title!,
-                          img: categoryVideoData[index].img!,
-                          subtitle: categoryVideoData[index].desc!,
-                          onTap: () {
-                            Get.to(
-                                () => VideoDetailsPage(
-                                      videoData: categoryVideoData[index],
-                                    ),
-                                arguments: categoryVideoData[index]);
-                          },
-                          icon: Icons.done,
-                          iconTap: () {},
-                          iconColor: AppColors.white))),
-            ),
+            ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemCount:
+                    (seachedVideoData != null && seachedVideoData.isNotEmpty)
+                        ? seachedVideoData.length
+                        : categoryVideoData.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    child: (seachedVideoData != null &&
+                            seachedVideoData.isNotEmpty)
+                        ? _showBottomSheetWithSearch(index, seachedVideoData)
+                        : _showBottomSheetWithSearch(index, categoryVideoData),
+                  );
+                }),
             const SizedBox(
               height: ySpace3,
             ),
@@ -97,5 +128,38 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
         ),
       ),
     );
+  }
+
+  Widget _showBottomSheetWithSearch(int index, List<Datum> myList) {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: VideoLayoutWidget(
+            title: myList[index].title!,
+            img: myList[index].img!,
+            subtitle: myList[index].desc!,
+            onTap: () {
+              Get.to(
+                  () => VideoDetailsPage(
+                        videoData: myList[index],
+                      ),
+                  arguments: myList[index]);
+            },
+            icon: Icons.done,
+            iconTap: () {},
+            iconColor: AppColors.white));
+  }
+
+  List<Datum> _buildSearchList(String userSearchTerm) {
+    List<Datum> searchList = [];
+
+    for (int i = 0; i < categoryVideoData.length; i++) {
+      String name = categoryVideoData[i].title!;
+      if (name.toLowerCase().contains(userSearchTerm.toLowerCase())) {
+        searchList.add(categoryVideoData[i]);
+      } else {
+        searchList;
+      }
+    }
+    return searchList;
   }
 }

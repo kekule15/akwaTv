@@ -3,17 +3,13 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/temporary_storage.dart';
-import 'package:akwatv/views/home/subscription/congratulation_page.dart';
 import 'package:akwatv/views/home/subscription/subscription_history.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_box_widget.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
-import 'package:akwatv/views/routes_args/congratulations_args.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter_paystack_payment/flutter_paystack_payment.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class SubScriptionDetailsPage extends ConsumerStatefulWidget {
   const SubScriptionDetailsPage({Key? key}) : super(key: key);
@@ -35,9 +31,9 @@ class _SubScriptionDetailsPageState
           backgroundColor: AppColors.black,
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            'Subscription',
-            style: TextStyle(
+          title: Text(
+            'subscription'.tr,
+            style: const TextStyle(
                 color: AppColors.white,
                 fontWeight: FontWeight.w500,
                 fontSize: 23),
@@ -64,17 +60,17 @@ class _SubScriptionDetailsPageState
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Current Plan',
-                        style: TextStyle(
+                      Text(
+                        'currentPlan'.tr,
+                        style: const TextStyle(
                             color: AppColors.white,
                             fontWeight: FontWeight.w500,
                             fontSize: 14),
                       ),
                       Text(
                         LocalStorageManager.box.read('isSubActive') == true
-                            ? 'Active'
-                            : 'Expired',
+                            ? 'active'.tr
+                            : 'expire'.tr,
                         style: TextStyle(
                             color:
                                 LocalStorageManager.box.read('isSubActive') ==
@@ -103,11 +99,11 @@ class _SubScriptionDetailsPageState
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: AppColors.black),
-                    child: const Padding(
-                      padding: EdgeInsets.all(15.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
                       child: Text(
-                        'Upgrade now and enjoy awesome features on Akwa Amaka TV',
-                        style: TextStyle(
+                        'upgradePlanText'.tr,
+                        style: const TextStyle(
                             color: AppColors.white,
                             fontWeight: FontWeight.w400,
                             fontSize: 12),
@@ -123,9 +119,9 @@ class _SubScriptionDetailsPageState
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Amount Paid',
-                            style: TextStyle(
+                          Text(
+                            'amountPaid'.tr,
+                            style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 12),
@@ -142,9 +138,9 @@ class _SubScriptionDetailsPageState
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Text(
-                            'Validity',
-                            style: TextStyle(
+                          Text(
+                            'validity'.tr,
+                            style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 12),
@@ -168,9 +164,9 @@ class _SubScriptionDetailsPageState
           const SizedBox(
             height: 20,
           ),
-          const Text(
-            'Upgrade Plan',
-            style: TextStyle(
+          Text(
+            'upgradePlan'.tr,
+            style: const TextStyle(
                 color: AppColors.white,
                 fontWeight: FontWeight.w500,
                 fontSize: 17),
@@ -222,10 +218,10 @@ class _SubScriptionDetailsPageState
           const SizedBox(
             height: 30,
           ),
-          const Text(
-            'By Subscribing to Akwa Amaka TV you agree to our',
+          Text(
+            'agreePlan'.tr,
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.white),
+            style: const TextStyle(color: AppColors.white),
           ),
           RichText(
             textAlign: TextAlign.center,
@@ -234,23 +230,23 @@ class _SubScriptionDetailsPageState
                 ..onTap = () {
                   // Get.to(const CreateAccountScreen());
                 },
-              text: 'terms ',
+              text: 'terms '.tr,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: AppColors.primary,
               ),
               children: <TextSpan>[
-                const TextSpan(
-                  text: 'and ',
-                  style: TextStyle(
+                TextSpan(
+                  text: 'and '.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppColors.white,
                   ),
                 ),
                 TextSpan(
-                  text: 'Conditions',
+                  text: 'conditions'.tr,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -276,9 +272,9 @@ class _SubScriptionDetailsPageState
             Get.to(() => const SubscriptionPayHistory());
             //sendPaymentToPaystack(500);
           },
-          title: const Text(
-            'Payment History',
-            style: TextStyle(color: AppColors.white, fontSize: 16),
+          title:  Text(
+            'paymentHistory'.tr,
+            style:const TextStyle(color: AppColors.white, fontSize: 16),
           ),
         ),
       ),

@@ -55,9 +55,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                   : searchController.text.trim());
                         }
                       },
-                      child: const Text(
-                        'Search',
-                        style: TextStyle(
+                      child: Text(
+                        'search'.tr,
+                        style: const TextStyle(
                             color: AppColors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
@@ -65,9 +65,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     ),
                   ),
                   validate: true,
-                  fillColor: AppColors.gray.withOpacity(0.4),
+                  fillColor: AppColors.gray4,
                   controller: searchController,
-                  hint: 'search by movie title...',
+                  hint: 'searchBy'.tr,
                   hintstyle: const TextStyle(color: AppColors.white),
                   fieldType: TextFieldType.name,
                 ),
@@ -87,7 +87,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 height: 30,
               ),
               Text(
-                'Top Searched',
+                'topSearched'.tr,
                 style: TextStyle(color: AppColors.white, fontSize: 16.sp),
               ),
               const SizedBox(
@@ -106,21 +106,21 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   : videoService.searchMovieData.isEmpty == true
                       ? Center(
                           child: Column(
-                            children: const [
-                              SizedBox(
+                            children: [
+                              const SizedBox(
                                 height: 50,
                               ),
-                              SvgImage(
+                              const SvgImage(
                                 asset: emptyVid,
                                 height: 200,
                                 width: 200,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 40,
                               ),
                               Text(
-                                'No Movie Fetched',
-                                style: TextStyle(
+                                'noMovieFetched'.tr,
+                                style: const TextStyle(
                                     color: AppColors.white, fontSize: 17),
                               )
                             ],

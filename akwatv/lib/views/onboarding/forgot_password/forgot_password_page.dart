@@ -57,7 +57,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                 headtext: 'email'.tr,
                 validate: true,
                 onChanged: (value) {},
-                fillColor: AppColors.termsTextColor,
+                fillColor: AppColors.gray4,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,

@@ -50,7 +50,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 contentPadding: const EdgeInsets.all(0),
                 title: Text(
                   'login'.tr,
-                  style: const TextStyle(color: AppColors.primary),
+                  style: const TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
                   'welcome'.tr,
@@ -67,7 +70,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ],
                 headtext: 'email'.tr,
                 validate: true,
-                fillColor: AppColors.termsTextColor,
+                fillColor: AppColors.gray4,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 controller: emailController,
@@ -86,7 +89,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ],
                 headtext: 'password'.tr,
                 validate: true,
-                fillColor: AppColors.termsTextColor,
+                fillColor: AppColors.gray4,
                 obscureText: _obscure,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
