@@ -4,6 +4,7 @@ import 'package:akwatv/models/change_user_password_model.dart';
 import 'package:akwatv/models/forgot_password_model.dart';
 import 'package:akwatv/models/future_manager.dart';
 import 'package:akwatv/models/get_profile_model.dart';
+import 'package:akwatv/models/notification_model.dart';
 import 'package:akwatv/models/otp_verification_model.dart';
 import 'package:akwatv/models/rest_password_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
@@ -36,8 +37,10 @@ class LoginViewModel extends BaseViewModel {
   FutureManager<ResetPassWordModel?> resetPasswordData = FutureManager();
   FutureManager<UpdateUserResponseModel?> updateUserData = FutureManager();
   FutureManager<GetProfileModel?> userProfileData = FutureManager();
+  FutureManager<UserNotificationModel?> notificationData = FutureManager();
   LoginViewModel(this.read) : super(read) {
     getProfile();
+    getNotifications();
   }
   bool logoutBTN = false;
   bool loginBtn = false;
@@ -77,7 +80,7 @@ class LoginViewModel extends BaseViewModel {
       PreferenceUtils.setString(key: 'phone', value: res.data!.account!.phone);
       PreferenceUtils.setString(key: 'email', value: res.data!.account!.email);
       //  LocalStorageManager.box.write('avatar', res.data!.account!.avatar);
-       PreferenceUtils.setString(
+      PreferenceUtils.setString(
           key: 'avatar', value: res.data!.account!.avatar);
       PreferenceUtils.setString(
           key: 'username', value: res.data!.account!.username);
@@ -91,10 +94,8 @@ class LoginViewModel extends BaseViewModel {
           key: 'subAmount', value: res.data!.account!.subscription!.amount);
       LocalStorageManager.box
           .write('expiredAt', res.data!.account!.subscription!.expiredAt);
-       LocalStorageManager.box
+      LocalStorageManager.box
           .write('isSubActive', res.data!.account!.subscriptionIsActive);
-      
-     
 
       await getProfile();
       NotifyMe.showAlert(res.message!);
@@ -183,7 +184,7 @@ class LoginViewModel extends BaseViewModel {
       PreferenceUtils.setString(key: 'phone', value: res.data!.phone);
       PreferenceUtils.setString(key: 'email', value: res.data!.email);
       //  LocalStorageManager.box.write('avatar', res.data!.account!.avatar);
-       PreferenceUtils.setString(key: 'avatar', value: res.data!.avatar);
+      PreferenceUtils.setString(key: 'avatar', value: res.data!.avatar);
       PreferenceUtils.setString(key: 'username', value: res.data!.username);
       PreferenceUtils.setBool(key: 'verified', value: res.data!.verified);
       PreferenceUtils.setString(key: 'userId', value: res.data!.id);
@@ -194,7 +195,7 @@ class LoginViewModel extends BaseViewModel {
           key: 'subAmount', value: res.data!.subscription!.amount);
       LocalStorageManager.box
           .write('expiredAt', res.data!.subscription!.expiredAt);
-       LocalStorageManager.box
+      LocalStorageManager.box
           .write('isSubActive', res.data!.subscriptionIsActive);
 
       notifyListeners();
@@ -381,5 +382,20 @@ class LoginViewModel extends BaseViewModel {
         deviceToken: deviceToken,
         userId: PreferenceUtils.getString(key: 'userId'));
     return res;
+  }
+
+  // get User notifications
+  getNotifications() async {
+    notificationData.load();
+    notifyListeners();
+    final res = await read(onboardingProvider).getNotification();
+    if (res.message == 'Request successful') {
+      notificationData.onSuccess(res);
+      notifyListeners();
+    } else {
+      notificationData.onError('Error');
+      notifyListeners();
+    }
+    resetPassword = false;
   }
 }

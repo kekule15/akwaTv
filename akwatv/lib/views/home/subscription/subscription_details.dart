@@ -1,3 +1,4 @@
+import 'package:akwatv/providers/network_provider.dart';
 import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/app_helpers.dart';
@@ -25,6 +26,7 @@ class _SubScriptionDetailsPageState
   Widget build(BuildContext context) {
     var subViewModel = ref.watch(subScriptionProvider);
     var data = subViewModel.subPlans();
+        final network = ref.watch(networkProvider);
 
     return Scaffold(
       appBar: AppBar(

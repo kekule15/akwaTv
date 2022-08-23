@@ -1,9 +1,11 @@
 import 'package:akwatv/models/vidoe_model.dart';
+import 'package:akwatv/providers/network_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/like_button.dart';
+import 'package:akwatv/widgets/network_widget.dart';
 import 'package:akwatv/widgets/video_box_widget.dart';
 import 'package:better_player/better_player.dart';
 import 'package:chewie/chewie.dart';
@@ -23,7 +25,6 @@ class VideoDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
- 
   // BetterPlayerController? _betterPlayerController;
   ChewieController? chewieController;
 
@@ -133,6 +134,7 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final _videoViewModel = ref.watch(videoViewModel);
+    final network = ref.watch(networkProvider);
     // final loginViewModel = ref.watch(viewModel);
     var videoList = _videoViewModel.listVideoData.data;
     var videoData = ModalRoute.of(context)?.settings.arguments as Datum;
@@ -150,246 +152,261 @@ class _VideoDetailsPageState extends ConsumerState<VideoDetailsPage> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        body: widget.videoData == null
-            ? const Center(
-                child: SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : ListView(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  AspectRatio(
-                      aspectRatio: 16 / 9,
-                      child: Chewie(
-                        controller: chewieController!,
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: generalHorizontalPadding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+          body: network.isCheck == true
+              ? widget.videoData == null
+                  ? const Center(
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : ListView(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
                       children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          mtitle,
-                          style: TextStyle(
-                              color: AppColors.white,
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        ListTile(
-                          contentPadding: const EdgeInsets.all(0),
-                          title: Text(
-                            description,
-                            style: TextStyle(
-                                color: AppColors.white.withOpacity(0.8),
-                                fontSize: 12),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                _videoViewModel.addToWatchListService(
-                                    movieID: movieID);
-                              },
-                              child: Column(
+                        AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Chewie(
+                              controller: chewieController!,
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: generalHorizontalPadding),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                mtitle,
+                                style: TextStyle(
+                                    color: AppColors.white,
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ListTile(
+                                contentPadding: const EdgeInsets.all(0),
+                                title: Text(
+                                  description,
+                                  style: TextStyle(
+                                      color: AppColors.white.withOpacity(0.8),
+                                      fontSize: 12),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
                                 children: [
-                                  _videoViewModel.addTOListBTN
-                                      ? const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            color: AppColors.primary,
-                                          ),
+                                  InkWell(
+                                    onTap: () {
+                                      _videoViewModel.addToWatchListService(
+                                          movieID: movieID);
+                                    },
+                                    child: Column(
+                                      children: [
+                                        _videoViewModel.addTOListBTN
+                                            ? const SizedBox(
+                                                height: 20,
+                                                width: 20,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: AppColors.primary,
+                                                ),
+                                              )
+                                            : const Icon(
+                                                Icons.add,
+                                                color: AppColors.white,
+                                                size: 20,
+                                              ),
+                                        const Text(
+                                          'Add To List',
+                                          style: TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 12),
                                         )
-                                      : const Icon(
-                                          Icons.add,
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
+                                  Column(
+                                    children: [
+                                      LikeButton(
+                                        onTap: () {
+                                          if (ratedListVideos
+                                              .contains(movieID)) {
+                                            ratedListVideos.remove(movieID);
+                                            setState(() {
+                                              likeStatus = false;
+                                            });
+                                          } else {
+                                            ratedListVideos.add(movieID);
+                                            setState(() {
+                                              likeStatus = true;
+                                            });
+                                          }
+                                          _videoViewModel.likeVideoButton(
+                                              movieID: movieID);
+                                        },
+                                        isLiked: likeStatus,
+                                      ),
+                                      const Text(
+                                        'Like',
+                                        style: TextStyle(
+                                            color: AppColors.white,
+                                            fontSize: 12),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
+                                  InkWell(
+                                    onTap: () async {},
+                                    child: Column(
+                                      children: const [
+                                        Icon(
+                                          Icons.share,
                                           color: AppColors.white,
                                           size: 20,
                                         ),
-                                  const Text(
-                                    'Add To List',
-                                    style: TextStyle(
-                                        color: AppColors.white, fontSize: 12),
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 50,
-                            ),
-                            Column(
-                              children: [
-                                LikeButton(
-                                  onTap: () {
-                                    if (ratedListVideos.contains(movieID)) {
-                                      ratedListVideos.remove(movieID);
-                                      setState(() {
-                                        likeStatus = false;
-                                      });
-                                    } else {
-                                      ratedListVideos.add(movieID);
-                                      setState(() {
-                                        likeStatus = true;
-                                      });
-                                    }
-                                    _videoViewModel.likeVideoButton(
-                                        movieID: movieID);
-                                  },
-                                  isLiked: likeStatus,
-                                ),
-                                const Text(
-                                  'Like',
-                                  style: TextStyle(
-                                      color: AppColors.white, fontSize: 12),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 50,
-                            ),
-                            InkWell(
-                              onTap: () async {},
-                              child: Column(
-                                children: const [
-                                  Icon(
-                                    Icons.share,
-                                    color: AppColors.white,
-                                    size: 20,
+                                        Text(
+                                          'Share',
+                                          style: TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 12),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                    'Share',
-                                    style: TextStyle(
-                                        color: AppColors.white, fontSize: 12),
-                                  )
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
+                                  // InkWell(
+                                  //   onTap: () async {},
+                                  //   child: Column(
+                                  //     children: const [
+                                  //       Icon(
+                                  //         Icons.file_download,
+                                  //         color: AppColors.white,
+                                  //         size: 20,
+                                  //       ),
+                                  //       Text(
+                                  //         'Download',
+                                  //         style: TextStyle(
+                                  //             color: AppColors.white, fontSize: 12),
+                                  //       )
+                                  //     ],
+                                  //   ),
+                                  // )
                                 ],
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 50,
-                            ),
-                            // InkWell(
-                            //   onTap: () async {},
-                            //   child: Column(
-                            //     children: const [
-                            //       Icon(
-                            //         Icons.file_download,
-                            //         color: AppColors.white,
-                            //         size: 20,
-                            //       ),
-                            //       Text(
-                            //         'Download',
-                            //         style: TextStyle(
-                            //             color: AppColors.white, fontSize: 12),
-                            //       )
-                            //     ],
-                            //   ),
-                            // )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Divider(
-                    color: AppColors.gray,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: generalHorizontalPadding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'SIMILAR MOVIES #${videoData.genre}',
-                          style: TextStyle(
-                              color: AppColors.white, fontSize: 13.sp),
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
-                        similarVideoData.isEmpty
-                            ? const Center(
-                                child: SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                            : SizedBox(
-                                height: 240,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: similarVideoData.length,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 0, right: 20),
-                                          child: HorizontalVideoBoxWidget(
-                                              ontap: () {
-                                                resetPlayer(
-                                                    videoLink:
-                                                        similarVideoData[index]
-                                                            .video!,
-                                                    title:
-                                                        similarVideoData[index]
-                                                            .title!,
-                                                    desc:
+                        const Divider(
+                          color: AppColors.gray,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: generalHorizontalPadding),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'SIMILAR MOVIES #${videoData.genre}',
+                                style: TextStyle(
+                                    color: AppColors.white, fontSize: 13.sp),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              similarVideoData.isEmpty
+                                  ? const Center(
+                                      child: SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: 240,
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: similarVideoData.length,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 0, right: 20),
+                                                child: HorizontalVideoBoxWidget(
+                                                    ontap: () {
+                                                      resetPlayer(
+                                                          videoLink:
+                                                              similarVideoData[
+                                                                      index]
+                                                                  .video!,
+                                                          title:
+                                                              similarVideoData[
+                                                                      index]
+                                                                  .title!,
+                                                          desc:
+                                                              similarVideoData[
+                                                                      index]
+                                                                  .desc!,
+                                                          id: similarVideoData[
+                                                                  index]
+                                                              .id!);
+                                                      if (ratedListVideos
+                                                          .contains(movieID)) {
+                                                        setState(() {
+                                                          likeStatus = true;
+                                                          movieID =
+                                                              similarVideoData[
+                                                                      index]
+                                                                  .id!;
+                                                        });
+                                                      } else {
+                                                        setState(() {
+                                                          likeStatus = false;
+                                                          movieID =
+                                                              similarVideoData[
+                                                                      index]
+                                                                  .id!;
+                                                        });
+                                                      }
+                                                    },
+                                                    decs:
                                                         similarVideoData[index]
                                                             .desc!,
-                                                    id: similarVideoData[index]
-                                                        .id!);
-                                                if (ratedListVideos
-                                                    .contains(movieID)) {
-                                                  setState(() {
-                                                    likeStatus = true;
-                                                    movieID =
+                                                    img: similarVideoData[index]
+                                                        .img!,
+                                                    title:
                                                         similarVideoData[index]
-                                                            .id!;
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    likeStatus = false;
-                                                    movieID =
-                                                        similarVideoData[index]
-                                                            .id!;
-                                                  });
-                                                }
-                                              },
-                                              decs:
-                                                  similarVideoData[index].desc!,
-                                              img: similarVideoData[index].img!,
-                                              title: similarVideoData[index]
-                                                  .title!));
-                                    }),
-                              ),
+                                                            .title!));
+                                          }),
+                                    ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
-              ),
-      ),
+                    )
+              : networkWidget()),
     );
   }
 }

@@ -45,6 +45,7 @@ class LocalString extends Translations {
           'no': 'No',
           'conditions': 'conditions',
           'profile': 'Profile',
+          'networkText': 'Check your Internet Connection',
 
           'editProfile': 'Edit Profile',
           'notifications': 'Notifications',
@@ -148,6 +149,7 @@ class LocalString extends Translations {
           'searchBy': 'rechercher par titre de film',
           'topSearched': 'Les plus recherchés',
           'noMovieFetched': 'Aucun film récupéré',
+          'networkText': 'Vérifiez votre connection internet',
 
           //home navigation
           'akwaType': 'Akwa Amaka Originaux',

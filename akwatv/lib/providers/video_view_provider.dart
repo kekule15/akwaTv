@@ -6,4 +6,4 @@ final videoRequestProvider = ChangeNotifierProvider.autoDispose<VideoServiceView
     (ref) => VideoServiceViewModel(ref.read));
 
 final videoServiceProvider =
-    Provider<VideoViewService>((ref) => VideoViewService(ref.read));
+    Provider.autoDispose<VideoViewService>((ref) => VideoViewService(ref.read));

@@ -5,6 +5,7 @@ import 'package:akwatv/models/change_user_password_model.dart';
 import 'package:akwatv/models/forgot_password_model.dart';
 import 'package:akwatv/models/get_profile_model.dart';
 import 'package:akwatv/models/logout_response_model.dart';
+import 'package:akwatv/models/notification_model.dart';
 import 'package:akwatv/models/otp_verification_model.dart';
 import 'package:akwatv/models/rest_password_model.dart';
 import 'package:akwatv/models/sign_up_model.dart';
@@ -37,6 +38,7 @@ class OnBoardingService extends ApiManager {
   final resetPasswordUrl = 'api/auth/reset-password';
   final updateUserUrl = 'api/user/update/';
   final updateDeviceUrl = 'api/auth/update-device-token/';
+  final notificationUrl = 'api/user/getNotificationList/';
 
   OnBoardingService(this.reader) : super(reader);
 
@@ -70,8 +72,7 @@ class OnBoardingService extends ApiManager {
     final _signInBody = {
       "email": email,
       "password": password,
-      "userAgent":
-      PreferenceUtils.getString(key: 'deviceId')
+      "userAgent": PreferenceUtils.getString(key: 'deviceId')
     };
 
     final response =
@@ -118,10 +119,9 @@ class OnBoardingService extends ApiManager {
 
   // get profile details
   Future<GetProfileModel> getProfileService() async {
-    print('my user ID ${ PreferenceUtils.getString(key: 'userId')
-     }');
+    print('my user ID ${PreferenceUtils.getString(key: 'userId')}');
     final response = await getHttp(
-        getProfileUrl +  PreferenceUtils.getString(key: 'userId') ,
+        getProfileUrl + PreferenceUtils.getString(key: 'userId'),
         token: PreferenceUtils.getString(key: 'token'));
     if (response.responseCodeError == null) {
       return GetProfileModel.fromJson(response.data);
@@ -154,7 +154,7 @@ class OnBoardingService extends ApiManager {
     };
 
     final response = await postHttp(changeUserPasswordUrl, body,
-        token: PreferenceUtils.getString(key: 'token') );
+        token: PreferenceUtils.getString(key: 'token'));
 
     if (response.responseCodeError == null) {
       return ChangeUserPassword.fromJson(response.data);
@@ -172,10 +172,10 @@ class OnBoardingService extends ApiManager {
     };
 
     final response = await postHttp(
-      uploadPicUrl +  PreferenceUtils.getString(key: 'userId'),
+      uploadPicUrl + PreferenceUtils.getString(key: 'userId'),
       body,
       formdata: true,
-      token: PreferenceUtils.getString(key: 'token') ,
+      token: PreferenceUtils.getString(key: 'token'),
     );
     print('body sent $image');
 
@@ -252,8 +252,8 @@ class OnBoardingService extends ApiManager {
     final body = {"email": email, "phone": phone, "username": username};
 
     final response = await patchHttp(
-        updateUserUrl +  PreferenceUtils.getString(key: 'userId'), body,
-        token: PreferenceUtils.getString(key: 'token') );
+        updateUserUrl + PreferenceUtils.getString(key: 'userId'), body,
+        token: PreferenceUtils.getString(key: 'token'));
 
     if (response.responseCodeError == null) {
       return UpdateUserResponseModel.fromJson(response.data);
@@ -267,16 +267,31 @@ class OnBoardingService extends ApiManager {
     required dynamic deviceToken,
     required dynamic userId,
   }) async {
-    print('my device token ${ PreferenceUtils.getString(key: 'token')}');
+    print('my device token ${PreferenceUtils.getString(key: 'token')}');
     final body = {"deviceToken": deviceToken};
 
     final response = await postHttp(updateDeviceUrl + userId, body,
-        token: PreferenceUtils.getString(key: 'token') );
+        token: PreferenceUtils.getString(key: 'token'));
     print(" my device response ${response.data}");
     if (response.responseCodeError == null) {
       return UpdateDeviceModel.fromJson(response.data);
     } else {
       return UpdateDeviceModel(message: 'Error');
+    }
+  }
+
+  //get users notification
+  Future<UserNotificationModel> getNotification() async {
+    print('my user ID ${PreferenceUtils.getString(key: 'userId')}');
+    final response = await getHttp(
+        notificationUrl + PreferenceUtils.getString(key: 'userId'),
+        token: PreferenceUtils.getString(key: 'token'));
+    if (response.responseCodeError == null) {
+      return UserNotificationModel.fromJson(response.data);
+    } else {
+      return UserNotificationModel(
+        message: 'Error',
+      );
     }
   }
 }

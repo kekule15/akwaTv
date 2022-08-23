@@ -1,4 +1,5 @@
 import 'package:akwatv/models/vidoe_model.dart';
+import 'package:akwatv/providers/network_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/providers.dart';
@@ -11,6 +12,7 @@ import 'package:akwatv/views/home/home_view/watchlist_page.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
+import 'package:akwatv/widgets/network_widget.dart';
 import 'package:dio/dio.dart' as DIO;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,13 +61,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     _scaffoldKey.currentState!.openDrawer();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final loginViewModel = ref.watch(viewModel);
     final _viewModel = ref.watch(homeViewModel);
     var data = _viewModel.profileList();
+    final network = ref.watch(networkProvider);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -81,11 +82,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               SizedBox(
                 height: 100.h,
               ),
-                PreferenceUtils.getString(key: 'avatar') != ''
+              PreferenceUtils.getString(key: 'avatar') != ''
                   ? CircleAvatar(
                       radius: 50,
                       backgroundColor: AppColors.primary,
-                      backgroundImage: NetworkImage(PreferenceUtils.getString(key: 'avatar')),
+                      backgroundImage: NetworkImage(
+                          PreferenceUtils.getString(key: 'avatar')),
                     )
                   : const CircleAvatar(
                       radius: 50,
@@ -96,7 +98,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 height: 10.h,
               ),
               Text(
-                 PreferenceUtils.getString(key: 'username'),
+                PreferenceUtils.getString(key: 'username'),
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: AppColors.white),
               )
@@ -131,198 +133,221 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 300),
-          child: DefaultTabController(
-            length: 2,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child:  Padding(
-                    padding:const EdgeInsets.all(8.0),
-                    child: TabBar(
-                        unselectedLabelColor: Colors.grey,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        labelColor: AppColors.white,
-                        indicator:const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: AppColors.primary)),
-                        ),
-                        tabs: [
-                          Tab(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text("account".tr),
-                            ),
-                          ),
-                          Tab(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text("watchlist".tr),
-                            ),
-                          ),
-                        ]),
-                  ),
-                ),
-                Container(
-                  height: 1,
-                  width: MediaQuery.of(context).size.width,
-                  color: AppColors.gray,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TabBarView(children: [
-                      //Account Tab
-                      ListView(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                  data.length,
-                                  (index) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 30),
-                                      child: drawerWidget(
-                                          onTap: data[index]["onTap"],
-                                          title: data[index]['title'],
-                                          icon: data[index]['icon'],
-                                          iconColor: AppColors.white,
-                                          titleColor: AppColors.white)),
-                                )),
-                          ),
-                          Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 20, left: 20),
-                              child: drawerWidget(
-                                  onTap: () {
-                                    showDialogWithFields();
-                                  },
-                                  title: 'Logout',
-                                  icon: Icons.logout,
-                                  iconColor: AppColors.primary,
-                                  titleColor: AppColors.primary)),
-                        ],
-                      ),
-
-                      //Favourite Tab
-                      MediaQuery.removePadding(
-                        context: context,
-                        removeRight: false,
-                        removeTop: true,
-                        removeLeft: false,
-                        child: ListView(
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          physics: const BouncingScrollPhysics(),
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Your Favourites',
-                                  style: TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    if (watchListVideoData.isEmpty != true) {
-                                      Get.to(() => const ViewAllWatchList(),
-                                          arguments: watchListVideoData);
-                                    } else {}
-                                  },
-                                  child: const Text(
-                                    'View All',
-                                    style: TextStyle(
-                                        color: AppColors.primary,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
+        network.isCheck == true
+            ? Padding(
+                padding: const EdgeInsets.only(top: 300),
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TabBar(
+                              unselectedLabelColor: Colors.grey,
+                              indicatorSize: TabBarIndicatorSize.label,
+                              labelColor: AppColors.white,
+                              indicator: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        width: 1, color: AppColors.primary)),
+                              ),
+                              tabs: [
+                                Tab(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text("account".tr),
                                   ),
                                 ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            watchListVideoData.isEmpty == true
-                                ? Center(
-                                    child: Column(
-                                      children:  [
-                                       const SvgImage(
-                                          asset: emptyVid,
-                                          height: 200,
-                                          width: 200,
-                                        ),
-                                      const  SizedBox(
-                                          height: 40,
-                                        ),
-                                        Text(
-                                          'noMovieFetched'.tr,
-                                          style:const TextStyle(
-                                              color: AppColors.white,
-                                              fontSize: 17),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                : Column(
-                                    children: List.generate(
-                                        watchListVideoData.length,
+                                Tab(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text("watchlist".tr),
+                                  ),
+                                ),
+                              ]),
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        width: MediaQuery.of(context).size.width,
+                        color: AppColors.gray,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TabBarView(children: [
+                            //Account Tab
+                            ListView(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: List.generate(
+                                        data.length,
                                         (index) => Padding(
                                             padding: const EdgeInsets.only(
-                                                bottom: 10),
-                                            child: VideoLayoutWidget(
-                                                title: watchListVideoData[index]
-                                                    .title!,
-                                                img: watchListVideoData[index]
-                                                    .img!,
-                                                subtitle:
-                                                    watchListVideoData[index]
-                                                        .desc!,
-                                                onTap: () {
-                                                  Get.to(
-                                                      () => VideoDetailsPage(
-                                                            videoData:
-                                                                watchListVideoData[
-                                                                    index],
-                                                          ),
-                                                      arguments:
-                                                          watchListVideoData[
-                                                              index]);
-                                                },
-                                                icon: Icons.close,
-                                                iconTap: () {
-                                                  deleteWatchList(
-                                                    data: watchListVideoData[
-                                                        index],
-                                                    movieID: watchListVideoData[
-                                                            index]
-                                                        .id,
-                                                  );
-                                                },
-                                                iconColor: AppColors.primary))),
+                                                bottom: 30),
+                                            child: drawerWidget(
+                                                onTap: data[index]["onTap"],
+                                                title: data[index]['title'],
+                                                icon: data[index]['icon'],
+                                                iconColor: AppColors.white,
+                                                titleColor: AppColors.white)),
+                                      )),
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 20, left: 20),
+                                    child: drawerWidget(
+                                        onTap: () {
+                                          showDialogWithFields();
+                                        },
+                                        title: 'Logout',
+                                        icon: Icons.logout,
+                                        iconColor: AppColors.primary,
+                                        titleColor: AppColors.primary)),
+                              ],
+                            ),
+
+                            //Favourite Tab
+                            MediaQuery.removePadding(
+                              context: context,
+                              removeRight: false,
+                              removeTop: true,
+                              removeLeft: false,
+                              child: ListView(
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                physics: const BouncingScrollPhysics(),
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
                                   ),
-                          ],
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Your Favourites',
+                                        style: TextStyle(
+                                            color: AppColors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          if (watchListVideoData.isEmpty !=
+                                              true) {
+                                            Get.to(
+                                                () => const ViewAllWatchList(),
+                                                arguments: watchListVideoData);
+                                          } else {}
+                                        },
+                                        child: const Text(
+                                          'View All',
+                                          style: TextStyle(
+                                              color: AppColors.primary,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  watchListVideoData.isEmpty == true
+                                      ? Center(
+                                          child: Column(
+                                            children: [
+                                              const SvgImage(
+                                                asset: emptyVid,
+                                                height: 200,
+                                                width: 200,
+                                              ),
+                                              const SizedBox(
+                                                height: 40,
+                                              ),
+                                              Text(
+                                                'noMovieFetched'.tr,
+                                                style: const TextStyle(
+                                                    color: AppColors.white,
+                                                    fontSize: 17),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : Column(
+                                          children: List.generate(
+                                              watchListVideoData.length,
+                                              (index) => Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 10),
+                                                  child: VideoLayoutWidget(
+                                                      title: watchListVideoData[
+                                                              index]
+                                                          .title!,
+                                                      img: watchListVideoData[
+                                                              index]
+                                                          .img!,
+                                                      subtitle:
+                                                          watchListVideoData[
+                                                                  index]
+                                                              .desc!,
+                                                      onTap: () {
+                                                        Get.to(
+                                                            () =>
+                                                                VideoDetailsPage(
+                                                                  videoData:
+                                                                      watchListVideoData[
+                                                                          index],
+                                                                ),
+                                                            arguments:
+                                                                watchListVideoData[
+                                                                    index]);
+                                                      },
+                                                      icon: Icons.close,
+                                                      iconTap: () {
+                                                        deleteWatchList(
+                                                          data:
+                                                              watchListVideoData[
+                                                                  index],
+                                                          movieID:
+                                                              watchListVideoData[
+                                                                      index]
+                                                                  .id,
+                                                        );
+                                                      },
+                                                      iconColor:
+                                                          AppColors.primary))),
+                                        ),
+                                ],
+                              ),
+                            ),
+                          ]),
                         ),
                       ),
-                    ]),
+                    ],
                   ),
                 ),
+              )
+            : Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                networkWidget(),
               ],
-            ),
-          ),
-        ),
+            )
       ]),
     );
   }

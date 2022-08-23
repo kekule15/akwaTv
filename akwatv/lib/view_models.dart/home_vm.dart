@@ -1,3 +1,4 @@
+import 'package:akwatv/providers/network_provider.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
@@ -109,12 +110,13 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void changeIndex(int index) async {
-    // if (index == 3) {
-    //   await read(videoViewModel).getAllWatchList();
+    await read(networkProvider).checkNet();
+    // if (index == 2) {
+    //   await read(viewModel).getNotifications();
     // }
-    if (index == 0) {
-      await read(videoViewModel).getCategoryList();
-    }
+    // if (index == 0) {
+    //   await read(videoViewModel).getCategoryList();
+    // }
     selectedIndex = index;
     notifyListeners();
   }

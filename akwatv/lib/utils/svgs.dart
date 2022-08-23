@@ -16,3 +16,5 @@ const successLogo = 'assets/svg/success_logo.svg';
 const emptyVid = 'assets/svg/empty_vid.svg';
 
 const callAdminIcon = 'assets/svg/call.svg';
+
+const connection = 'assets/svg/connection.svg';
