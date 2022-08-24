@@ -96,7 +96,7 @@ class HomeViewModel extends BaseViewModel {
     _saveToPrefs(code: langCode, selectd: languageSelected);
     notifyListeners();
   }
-
+  
   _loadFromPrefs() async {
     languageCode = PreferenceUtils.getString(key: languageCode);
     languageSelected = PreferenceUtils.getInt(key: 'languageSelected');

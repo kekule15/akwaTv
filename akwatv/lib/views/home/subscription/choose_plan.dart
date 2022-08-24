@@ -3,6 +3,7 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/temporary_storage.dart';
+import 'package:akwatv/views/home/settings/terms_conditions.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_box_widget.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
 import 'package:akwatv/views/home/subscription/congratulation_page.dart';
@@ -110,7 +111,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
               text: TextSpan(
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    // Get.to(const CreateAccountScreen());
+                    Get.to(() => const TermsAndConditions());
                   },
                 text: 'terms '.tr,
                 style: const TextStyle(
@@ -136,7 +137,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        // Get.to(const CreateAccountScreen());
+                        Get.to(() => const TermsAndConditions());
                       },
                   )
                 ],

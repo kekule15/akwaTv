@@ -1,6 +1,7 @@
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/views/home/help/call_admin.dart';
+import 'package:akwatv/views/home/settings/terms_conditions.dart';
 import 'package:akwatv/views/home/settings/widgets/activity_cards.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -60,7 +61,7 @@ class HelpCenterPage extends ConsumerWidget {
           ),
           ActivityCardWidget(
               onTap: () {
-                Get.to(() => const HelpCenterPage());
+                Get.to(() => const TermsAndConditions());
               },
               title: 'termsAndCondition'.tr,
               leadingIcon: Icons.help_center,

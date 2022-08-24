@@ -4,6 +4,7 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/temporary_storage.dart';
+import 'package:akwatv/views/home/settings/terms_conditions.dart';
 import 'package:akwatv/views/home/subscription/subscription_history.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_box_widget.dart';
 import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
@@ -26,7 +27,7 @@ class _SubScriptionDetailsPageState
   Widget build(BuildContext context) {
     var subViewModel = ref.watch(subScriptionProvider);
     var data = subViewModel.subPlans();
-        final network = ref.watch(networkProvider);
+    final network = ref.watch(networkProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -230,7 +231,7 @@ class _SubScriptionDetailsPageState
             text: TextSpan(
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  // Get.to(const CreateAccountScreen());
+                  Get.to(() => const TermsAndConditions());
                 },
               text: 'terms '.tr,
               style: const TextStyle(
@@ -256,7 +257,7 @@ class _SubScriptionDetailsPageState
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      // Get.to(const CreateAccountScreen());
+                      Get.to(() => const TermsAndConditions());
                     },
                 )
               ],
@@ -274,9 +275,9 @@ class _SubScriptionDetailsPageState
             Get.to(() => const SubscriptionPayHistory());
             //sendPaymentToPaystack(500);
           },
-          title:  Text(
+          title: Text(
             'paymentHistory'.tr,
-            style:const TextStyle(color: AppColors.white, fontSize: 16),
+            style: const TextStyle(color: AppColors.white, fontSize: 16),
           ),
         ),
       ),

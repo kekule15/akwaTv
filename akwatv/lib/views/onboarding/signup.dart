@@ -1,6 +1,7 @@
 import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
+import 'package:akwatv/views/home/settings/terms_conditions.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/customfield.dart';
@@ -173,7 +174,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 text: TextSpan(
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      // Get.to(const CreateAccountScreen());
+                      Get.to(() => const TermsAndConditions());
                     },
                   text: 'terms '.tr,
                   style: const TextStyle(
@@ -199,7 +200,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          // Get.to(const CreateAccountScreen());
+                          Get.to(() => const TermsAndConditions());
                         },
                     )
                   ],
