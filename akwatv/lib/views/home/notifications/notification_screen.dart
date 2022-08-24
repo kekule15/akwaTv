@@ -30,74 +30,99 @@ class _ViewNotificationScreenState
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          centerTitle: true,
+          //centerTitle: true,
           backgroundColor: AppColors.black,
-          title: const Text(
-            'Notifications',
-            style: TextStyle(color: AppColors.white, fontSize: 25),
+          title: const Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              'Notifications',
+              style: TextStyle(color: AppColors.white, fontSize: 25),
+            ),
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: InkWell(
+                onTap: () {
+                  notificationModel.getNotifications();
+                },
+                child: const Icon(
+                  Icons.refresh,
+                  color: AppColors.white,
+                  size: 25,
+                ),
+              ),
+            )
+          ],
         ),
         backgroundColor: AppColors.black,
         body: network.isCheck == true
-            ? ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  notificationModel.notificationData.data == null
-                      ? const Center(
-                          child: SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: CircularProgressIndicator(
-                              color: AppColors.primary,
+            ? RefreshIndicator(
+                onRefresh: () async {
+                  notificationModel.getNotifications();
+                },
+                strokeWidth: 2,
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    notificationModel.notificationData.data == null
+                        ? const Center(
+                            child: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CircularProgressIndicator(
+                                color: AppColors.primary,
+                              ),
                             ),
-                          ),
-                        )
-                      : notificationModel
-                                  .notificationData.data?.data?.isEmpty ==
-                              true
-                          ? Column(
-                              children: const [
-                                SizedBox(
-                                  height: 50,
-                                ),
-                                Text(
-                                  'No Notifications Yet',
-                                  style: TextStyle(
-                                    color: AppColors.white,
+                          )
+                        : notificationModel
+                                    .notificationData.data?.data?.isEmpty ==
+                                true
+                            ? Column(
+                                children: const [
+                                  SizedBox(
+                                    height: 50,
                                   ),
-                                ),
-                              ],
-                            )
-                          : Column(
-                              children: List.generate(
-                                  notificationModel.notificationData.data!.data!
-                                      .length, (index) {
-                                return Card(
-                                  color: AppColors.gray4,
-                                  child: ListTile(
-                                    title: Text(
-                                      notificationModel.notificationData.data!
-                                          .data![index].title!,
-                                      style: const TextStyle(
-                                        color: AppColors.white,
+                                  Text(
+                                    'No Notifications Yet',
+                                    style: TextStyle(
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: List.generate(
+                                    notificationModel.notificationData.data!
+                                        .data!.length, (index) {
+                                  return Card(
+                                    color: AppColors.gray4,
+                                    child: ListTile(
+                                      title: Text(
+                                        notificationModel.notificationData.data!
+                                            .data![index].title!,
+                                        style: const TextStyle(
+                                          color: AppColors.white,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        notificationModel.notificationData.data!
+                                            .data![index].message!,
+                                        style: const TextStyle(
+                                            color: AppColors.white,
+                                            fontSize: 13),
                                       ),
                                     ),
-                                    subtitle: Text(
-                                      notificationModel.notificationData.data!
-                                          .data![index].message!,
-                                      style: const TextStyle(
-                                          color: AppColors.white, fontSize: 13),
-                                    ),
-                                  ),
-                                );
-                              }),
-                            )
-                ],
+                                  );
+                                }),
+                              )
+                  ],
+                ),
               )
             : networkWidget());
   }

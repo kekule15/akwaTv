@@ -340,14 +340,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   ),
                 ),
               )
-            : Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                networkWidget(),
-              ],
-            )
+            :  networkWidget(),
       ]),
     );
   }

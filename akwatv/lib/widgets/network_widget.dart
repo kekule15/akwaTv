@@ -11,12 +11,12 @@ Widget networkWidget() {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(
-          height: 50,
+          height: 75,
         ),
         const SvgImage(
           asset: connection,
-          height: 200,
-          width: 200,
+          height: 170,
+          width: 190,
         ),
         const SizedBox(
           height: 40,
