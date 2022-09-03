@@ -159,11 +159,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                         arguments: CongratulationsArgs(
                             payLater: false,
                             name: PreferenceUtils.getString(key: 'username'),
-                            title:
-                                LocalStorageManager.box.read('isSubActive') ==
-                                        true
-                                    ? 'freeTrial'.tr
-                                    : 'freeTrialEnd'.tr,
+                            title: '',
                             subtitle:
                                 LocalStorageManager.box.read('isSubActive') ==
                                         true

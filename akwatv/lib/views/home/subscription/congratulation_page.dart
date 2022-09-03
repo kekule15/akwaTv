@@ -56,32 +56,36 @@ class CongratulationScreen extends ConsumerWidget {
               height: ySpace3,
             ),
             Text(
-              data.title,
+              '',
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.white, fontSize: 15.sp),
             ),
             const SizedBox(
-              height: ySpace1,
+              height: 3,
             ),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: "${data.subtitle} ",
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w300,
-                  color: AppColors.white,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: "${data.subtitle} ",
+                  style: const TextStyle(
+                    height: 2,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w300,
+                    color: AppColors.white,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: data.payLater == true ? '' : (data.date!),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary,
+                      ),
+                    )
+                  ],
                 ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: data.payLater == true ? '' : (data.date!),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primary,
-                    ),
-                  )
-                ],
               ),
             ),
             const SizedBox(

@@ -42,7 +42,7 @@ class LoginViewModel extends BaseViewModel {
   FutureManager<UserNotificationModel?> notificationData = FutureManager();
   LoginViewModel(this.read) : super(read) {
     getProfile();
-   // getNotifications();
+    // getNotifications();
   }
   bool logoutBTN = false;
   bool loginBtn = false;
@@ -61,9 +61,11 @@ class LoginViewModel extends BaseViewModel {
     final res = await read(onboardingProvider).logoutService();
     if (res.message == 'ACT-LOGED-OUT-SUCCESS') {
       await PreferenceUtils.eraseAllData();
+      await LocalStorageManager.box.erase();
       logoutBTN = false;
-      Get.offAll(() => const AuthScreen());
       NotifyMe.showAlert(res.message!);
+
+      Get.offAll(() => const AuthScreen());
     }
   }
 

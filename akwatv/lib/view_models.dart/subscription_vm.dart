@@ -121,8 +121,7 @@ class SubScriptionViewModel extends BaseViewModel {
           key: 'subAmount', value: res.data!.subscription!.amount);
       // LocalStorageManager.box
       //     .write('expiredAt', res.data!.subscription!.expiredAt);
-        var expireDate =
-          formatter.format(res.data!.subscription!.expiredAt!);
+      var expireDate = formatter.format(res.data!.subscription!.expiredAt!);
       LocalStorageManager.box.write('expiredAt', expireDate);
       LocalStorageManager.box
           .write('isSubActive', res.data!.subscriptionIsActive);
@@ -133,8 +132,8 @@ class SubScriptionViewModel extends BaseViewModel {
             arguments: CongratulationsArgs(
                 payLater: false,
                 name: PreferenceUtils.getString(key: 'username'),
-                title: 'You have Subscribed to Akwa Amaka TV !',
-                subtitle: 'Your plan will expire on',
+                title: 'You have Subscribed to Akwa Amaka TV.',
+                subtitle: 'Your Subscription plan will expire on',
                 date: expireDate));
       });
       notifyListeners();
