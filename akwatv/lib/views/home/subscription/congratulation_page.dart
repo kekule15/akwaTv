@@ -76,7 +76,7 @@ class CongratulationScreen extends ConsumerWidget {
                   TextSpan(
                     text: data.payLater == true
                         ? ''
-                        : formatter.format(data.date!),
+                        : (data.date!),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,

@@ -2,7 +2,7 @@ class CongratulationsArgs {
   final String name;
   final String title;
   final String? subtitle;
-  final DateTime? date;
+  final String? date;
   final bool payLater;
 
   CongratulationsArgs(

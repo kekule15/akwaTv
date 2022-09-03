@@ -11,6 +11,7 @@ import 'package:akwatv/models/sign_up_model.dart';
 import 'package:akwatv/models/login__response_model.dart';
 import 'package:akwatv/models/update_user_model.dart';
 import 'package:akwatv/models/upload_pic_model.dart';
+import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/notify_me.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/temporary_storage.dart';
@@ -21,6 +22,7 @@ import 'package:akwatv/views/home/subscription/congratulation_page.dart';
 import 'package:akwatv/views/onboarding/forgot_password/otp_verification_page.dart';
 import 'package:akwatv/views/onboarding/forgot_password/reset_password_page.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -92,10 +94,14 @@ class LoginViewModel extends BaseViewModel {
           key: 'subName', value: res.data!.account!.subscription!.name);
       PreferenceUtils.setString(
           key: 'subAmount', value: res.data!.account!.subscription!.amount);
-      LocalStorageManager.box
-          .write('expiredAt', res.data!.account!.subscription!.expiredAt);
+      // LocalStorageManager.box
+      //     .write('expiredAt', res.data!.account!.subscription!.expiredAt);
       LocalStorageManager.box
           .write('isSubActive', res.data!.account!.subscriptionIsActive);
+
+      var expireDate =
+          formatter.format(res.data!.account!.subscription!.expiredAt!);
+      LocalStorageManager.box.write('expiredAt', expireDate);
 
       await getProfile();
       NotifyMe.showAlert(res.message!);
@@ -193,10 +199,14 @@ class LoginViewModel extends BaseViewModel {
           key: 'subName', value: res.data!.subscription!.name);
       PreferenceUtils.setString(
           key: 'subAmount', value: res.data!.subscription!.amount);
-      LocalStorageManager.box
-          .write('expiredAt', res.data!.subscription!.expiredAt);
+      // LocalStorageManager.box
+      //     .write('expiredAt', res.data!.subscription!.expiredAt);
       LocalStorageManager.box
           .write('isSubActive', res.data!.subscriptionIsActive);
+
+      var expireDate = formatter.format(res.data!.subscription!.expiredAt!);
+      debugPrint('hello active. $expireDate');
+      LocalStorageManager.box.write('expiredAt', expireDate);
 
       notifyListeners();
     } else {

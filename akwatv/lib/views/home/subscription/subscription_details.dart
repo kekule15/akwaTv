@@ -149,7 +149,7 @@ class _SubScriptionDetailsPageState
                                 fontSize: 12),
                           ),
                           Text(
-                            formatter.format(
+                           (
                                 LocalStorageManager.box.read('expiredAt')),
                             style: const TextStyle(
                                 color: AppColors.white,

@@ -1,6 +1,7 @@
 import 'package:akwatv/models/future_manager.dart';
 import 'package:akwatv/models/payment_history_model.dart';
 import 'package:akwatv/providers/subscription_provider.dart';
+import 'package:akwatv/utils/app_helpers.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/view_models.dart/base_vm.dart';
@@ -118,8 +119,11 @@ class SubScriptionViewModel extends BaseViewModel {
       PreferenceUtils.setString(key: 'plan', value: 'Done');
       PreferenceUtils.setString(
           key: 'subAmount', value: res.data!.subscription!.amount);
-      LocalStorageManager.box
-          .write('expiredAt', res.data!.subscription!.expiredAt);
+      // LocalStorageManager.box
+      //     .write('expiredAt', res.data!.subscription!.expiredAt);
+        var expireDate =
+          formatter.format(res.data!.subscription!.expiredAt!);
+      LocalStorageManager.box.write('expiredAt', expireDate);
       LocalStorageManager.box
           .write('isSubActive', res.data!.subscriptionIsActive);
 
@@ -131,7 +135,7 @@ class SubScriptionViewModel extends BaseViewModel {
                 name: PreferenceUtils.getString(key: 'username'),
                 title: 'You have Subscribed to Akwa Amaka TV !',
                 subtitle: 'Your plan will expire on',
-                date: res.data!.subscription!.expiredAt));
+                date: expireDate));
       });
       notifyListeners();
     } else {

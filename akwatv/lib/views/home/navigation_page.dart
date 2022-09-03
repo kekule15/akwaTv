@@ -24,14 +24,7 @@ class HomeNavigation extends ConsumerStatefulWidget {
 }
 
 class _HomeNavigation extends ConsumerState<HomeNavigation> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final _loginViewModel = ref.watch(viewModel);
-    final _videoViewModel = ref.watch(videoViewModel);
-    _loginViewModel.getProfile;
-    _videoViewModel.getVideoList;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +34,7 @@ class _HomeNavigation extends ConsumerState<HomeNavigation> {
       return Future.delayed(const Duration(seconds: 2));
     }
 
-    final _videoViewModel = ref.watch(videoViewModel);
+  
 
     return WillPopScope(
       onWillPop: _onBackPressed,

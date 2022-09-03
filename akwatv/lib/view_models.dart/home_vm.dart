@@ -96,7 +96,7 @@ class HomeViewModel extends BaseViewModel {
     _saveToPrefs(code: langCode, selectd: languageSelected);
     notifyListeners();
   }
-  
+
   _loadFromPrefs() async {
     languageCode = PreferenceUtils.getString(key: languageCode);
     languageSelected = PreferenceUtils.getInt(key: 'languageSelected');
@@ -111,13 +111,17 @@ class HomeViewModel extends BaseViewModel {
 
   void changeIndex(int index) async {
     await read(networkProvider).checkNet();
-    // if (index == 2) {
-    //   await read(viewModel).getNotifications();
-    // }
-    // if (index == 0) {
-    //   await read(videoViewModel).getCategoryList();
-    // }
+
     selectedIndex = index;
     notifyListeners();
+    if (index == 2) {
+      await read(viewModel).getNotifications();
+    }
+    if (index == 0) {
+      await read(videoViewModel).getVideoList();
+    }
+    if (index == 3) {
+      await read(videoViewModel).getAllWatchList();
+    }
   }
 }

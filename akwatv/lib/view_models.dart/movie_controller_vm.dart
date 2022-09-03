@@ -44,28 +44,40 @@ class MovieControllerViewModel extends BaseViewModel {
     videoPlayerController = VideoPlayerController.network(link);
 
     videoPlayerController!.initialize();
-    debugPrint(link);
+
+    debugPrint("selected video link $link");
 
     chewieController = ChewieController(
-      aspectRatio: 16 / 9,
-      videoPlayerController: videoPlayerController!,
-      autoPlay: true,
-      autoInitialize: true,
-      looping: false,
-      allowFullScreen: true,
-      allowPlaybackSpeedChanging: false,
-      materialProgressColors: ChewieProgressColors(
-        backgroundColor: AppColors.gray,
-        playedColor: AppColors.primary,
-      ),
-      placeholder: Container(
-        color: Colors.black87,
-        child: const Center(
-            child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-        )),
-      ),
-    );
+        aspectRatio: 16 / 9,
+        videoPlayerController: videoPlayerController!,
+        autoPlay: true,
+        autoInitialize: true,
+        looping: false,
+        allowFullScreen: true,
+        allowPlaybackSpeedChanging: false,
+        materialProgressColors: ChewieProgressColors(
+          backgroundColor: AppColors.gray,
+          playedColor: AppColors.primary,
+        ),
+        placeholder: Container(
+          color: Colors.black87,
+          child: const Center(
+              child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+          )),
+        ),
+        errorBuilder: ((context, errorMessage) {
+          return InkWell(
+            onTap: () {},
+            child: const Center(
+              child: Icon(
+                Icons.refresh,
+                color: AppColors.primary,
+                size: 35,
+              ),
+            ),
+          );
+        }));
     notifyListeners();
   }
 

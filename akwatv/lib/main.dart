@@ -5,17 +5,12 @@ import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/notification_fcm.dart';
 import 'package:akwatv/utils/providers.dart';
 import 'package:akwatv/utils/temporary_storage.dart';
-import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/views/onboarding/splash.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:device_information/device_information.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 Future main() async {

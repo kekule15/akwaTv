@@ -25,10 +25,11 @@ class VideoServiceViewModel extends BaseViewModel {
   FutureManager<DeleteWatchListModel> deleteWatchListData = FutureManager();
   //FutureManager<SearchResponseModel> searchedVideoData = FutureManager();
   List<Datum> searchMovieData = [];
+  List<Datum> watchListVideoData = [];
   VideoServiceViewModel(this.read) : super(read) {
     getVideoList();
     getCategoryList();
-    getAllWatchList();
+    //getAllWatchList();
   }
 
   bool addTOListBTN = false;
@@ -116,6 +117,7 @@ class VideoServiceViewModel extends BaseViewModel {
 
 // get user's watchlist
   getAllWatchList() async {
+    watchListVideoData = [];
     getWatchLoader = true;
     getWatchListData.load();
     notifyListeners();
@@ -125,6 +127,11 @@ class VideoServiceViewModel extends BaseViewModel {
     if (res != null) {
       getWatchListData.onSuccess(res);
       getWatchLoader = false;
+      for (var data in listVideoData.data!.data!.where(
+          (element) => getWatchListData.data!.data!.contains(element.id))) {
+        watchListVideoData.add(data);
+        notifyListeners();
+      }
       notifyListeners();
     } else {
       getWatchLoader = false;

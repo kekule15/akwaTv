@@ -33,23 +33,23 @@ class ProfilePage extends ConsumerStatefulWidget {
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
-  List<Datum> watchListVideoData = [];
+  //List<Datum> watchListVideoData = [];
   @override
   void didChangeDependencies() {
-    getWatchList();
+   // getWatchList();
     super.didChangeDependencies();
   }
 
-  getWatchList() async {
-    final videoProvider = ref.watch(videoViewModel);
-    var videoData = videoProvider.listVideoData.data;
-    var watchList = videoProvider.getWatchListData.data!.data;
+  // getWatchList() async {
+  //   final videoProvider = ref.watch(videoViewModel);
+  //   var videoData = videoProvider.listVideoData.data;
+  //   var watchList = videoProvider.getWatchListData.data!.data;
 
-    for (var data in videoData!.data!
-        .where((element) => watchList!.contains(element.id))) {
-      watchListVideoData.add(data);
-    }
-  }
+  //   for (var data in videoData!.data!
+  //       .where((element) => watchList!.contains(element.id))) {
+  //     watchListVideoData.add(data);
+  //   }
+  // }
 
   List<String> userDetailIcon = [
     userIcon,
@@ -70,6 +70,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     var data = _viewModel.profileList();
     final network = ref.watch(networkProvider);
     var videoCon = ref.watch(videoControllerProvider);
+    final videoProvider = ref.watch(videoViewModel);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -247,11 +248,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          if (watchListVideoData.isEmpty !=
+                                          if (videoProvider.watchListVideoData.isEmpty !=
                                               true) {
                                             Get.to(
                                                 () => const ViewAllWatchList(),
-                                                arguments: watchListVideoData);
+                                                arguments: videoProvider.watchListVideoData);
                                           } else {}
                                         },
                                         child: const Text(
@@ -267,7 +268,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  watchListVideoData.isEmpty == true
+                                  videoProvider.watchListVideoData.isEmpty == true
                                       ? Center(
                                           child: Column(
                                             children: [
@@ -290,48 +291,48 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         )
                                       : Column(
                                           children: List.generate(
-                                              watchListVideoData.length,
+                                             videoProvider.watchListVideoData.length,
                                               (index) => Padding(
                                                   padding:
                                                       const EdgeInsets.only(
                                                           bottom: 10),
                                                   child: VideoLayoutWidget(
-                                                      title: watchListVideoData[
+                                                      title: videoProvider.watchListVideoData[
                                                               index]
                                                           .title!,
-                                                      img: watchListVideoData[
+                                                      img: videoProvider.watchListVideoData[
                                                               index]
                                                           .img!,
                                                       subtitle:
-                                                          watchListVideoData[
+                                                          videoProvider.watchListVideoData[
                                                                   index]
                                                               .desc!,
                                                       onTap: () {
                                                         videoCon.initPlayer(
                                                           link:
-                                                              watchListVideoData[
+                                                              videoProvider.watchListVideoData[
                                                                       index]
                                                                   .video!,
                                                           description:
-                                                              watchListVideoData[
+                                                              videoProvider.watchListVideoData[
                                                                       index]
                                                                   .desc!,
                                                           title:
-                                                              watchListVideoData[
+                                                              videoProvider.watchListVideoData[
                                                                       index]
                                                                   .title!,
                                                           movieId:
-                                                              watchListVideoData[
+                                                              videoProvider.watchListVideoData[
                                                                       index]
                                                                   .id,
                                                         );
                                                         videoCon.sortSimilarVideos(
                                                             data:
-                                                                watchListVideoData[
+                                                                videoProvider.watchListVideoData[
                                                                     index]);
                                                         Get.to(() => VideoScreen(
                                                             url:
-                                                                watchListVideoData[
+                                                                videoProvider.watchListVideoData[
                                                                         index]
                                                                     .video!));
                                                        
@@ -340,10 +341,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                                       iconTap: () {
                                                         deleteWatchList(
                                                           data:
-                                                              watchListVideoData[
+                                                              videoProvider.watchListVideoData[
                                                                   index],
                                                           movieID:
-                                                              watchListVideoData[
+                                                              videoProvider.watchListVideoData[
                                                                       index]
                                                                   .id,
                                                         );
@@ -450,11 +451,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             TextButton(
               onPressed: () async {
                 videoProvider.deleteWatchListservice(movieID: movieID);
-                watchListVideoData.remove(data);
+                videoProvider.watchListVideoData.remove(data);
 
                 Future.delayed(const Duration(seconds: 1), () {
                   videoProvider.getAllWatchList();
-                  getWatchList();
+                  //getWatchList();
                   Get.back();
                 });
               },

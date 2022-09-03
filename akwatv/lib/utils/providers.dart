@@ -11,7 +11,7 @@ final navService =
     Provider.autoDispose<NavigationService>((ref) => NavigationService());
 
 final homeViewModel =
-    ChangeNotifierProvider<HomeViewModel>((ref) => HomeViewModel(ref.read));
+    ChangeNotifierProvider.autoDispose<HomeViewModel>((ref) => HomeViewModel(ref.read));
 
 final loginViewModel =
     ChangeNotifierProvider<LoginViewModel>((ref) => LoginViewModel(ref.read));
