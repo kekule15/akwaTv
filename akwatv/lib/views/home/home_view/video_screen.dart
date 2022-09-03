@@ -168,23 +168,23 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
                               const SizedBox(
                                 width: 50,
                               ),
-                              InkWell(
-                                onTap: () async {},
-                                child: Column(
-                                  children: const [
-                                    Icon(
-                                      Icons.share,
-                                      color: AppColors.white,
-                                      size: 20,
-                                    ),
-                                    Text(
-                                      'Share',
-                                      style: TextStyle(
-                                          color: AppColors.white, fontSize: 12),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () async {},
+                              //   child: Column(
+                              //     children: const [
+                              //       Icon(
+                              //         Icons.share,
+                              //         color: AppColors.white,
+                              //         size: 20,
+                              //       ),
+                              //       Text(
+                              //         'Share',
+                              //         style: TextStyle(
+                              //             color: AppColors.white, fontSize: 12),
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
                               const SizedBox(
                                 width: 50,
                               ),

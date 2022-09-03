@@ -74,7 +74,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         description: videoData.data![0].desc!,
                                         title: videoData.data![0].title!,
                                         movieId: videoData.data![0].id,
-                                       
                                       );
                                       videoCon.sortSimilarVideos(
                                           data: videoData.data![0]);
@@ -151,9 +150,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                         Text(
                                                           videoData
                                                               .data![0].title!,
-                                                          style: const TextStyle(
-                                                              color: AppColors
-                                                                  .white),
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 20,
+                                                            color:
+                                                                AppColors.white,
+                                                          ),
                                                         ),
                                                         Row(
                                                           crossAxisAlignment:
@@ -196,20 +198,20 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                         )
                                                       ],
                                                     ),
-                                                    CircleAvatar(
-                                                      radius: 14,
-                                                      backgroundColor: AppColors
-                                                          .white
-                                                          .withOpacity(0.2),
-                                                      child: const Center(
-                                                        child: Icon(
-                                                          Icons.share,
-                                                          color:
-                                                              AppColors.white,
-                                                          size: 20,
-                                                        ),
-                                                      ),
-                                                    )
+                                                    // CircleAvatar(
+                                                    //   radius: 14,
+                                                    //   backgroundColor: AppColors
+                                                    //       .white
+                                                    //       .withOpacity(0.2),
+                                                    //   child: const Center(
+                                                    //     child: Icon(
+                                                    //       Icons.share,
+                                                    //       color:
+                                                    //           AppColors.white,
+                                                    //       size: 20,
+                                                    //     ),
+                                                    //   ),
+                                                    // )
                                                   ],
                                                 ),
                                               ),
@@ -299,6 +301,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   physics: const BouncingScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
+                                  //reverse: true,
                                   itemCount: videoData.data!.length,
                                   itemBuilder: (context, index) {
                                     return Padding(
@@ -312,7 +315,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                                             title:
                                                 videoData.data![index].title!,
                                             movieId: videoData.data![index].id,
-                                           
                                           );
                                           videoCon.sortSimilarVideos(
                                               data: videoData.data![index]);

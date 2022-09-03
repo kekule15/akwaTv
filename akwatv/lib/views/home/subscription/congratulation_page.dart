@@ -20,8 +20,8 @@ class CongratulationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-   
     final _videoViewModel = ref.watch(videoViewModel);
+    final loginViewModel = ref.watch(viewModel);
     // final movieViewModel = ref.watch(movieController);
     var data =
         ModalRoute.of(context)?.settings.arguments as CongratulationsArgs;
@@ -74,9 +74,7 @@ class CongratulationScreen extends ConsumerWidget {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: data.payLater == true
-                        ? ''
-                        : (data.date!),
+                    text: data.payLater == true ? '' : (data.date!),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
@@ -106,9 +104,9 @@ class CongratulationScreen extends ConsumerWidget {
           borderColor: false,
           color: AppColors.primary,
           onclick: () {
-            _videoViewModel.getVideoList();
-            //  movieViewModel.setMovieUrl( 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
             Get.offAll(() => const HomeNavigation());
+            loginViewModel.getProfile();
+            _videoViewModel.getVideoList();
           },
           title: Text(
             'continue'.tr,

@@ -14,7 +14,8 @@ class MovieControllerViewModel extends BaseViewModel {
   String mTitle = '';
   String mDescription = '';
   String mMovieId = '';
-  String mLink = '';
+  String mLink =
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4';
   bool likeStatus = false;
   MovieControllerViewModel(Reader read) : super(read) {
     initPlayer(
@@ -36,6 +37,7 @@ class MovieControllerViewModel extends BaseViewModel {
     mDescription = description;
     mMovieId = movieId;
     mTitle = title;
+    
     notifyListeners();
 
     // check for rated videos
@@ -45,7 +47,7 @@ class MovieControllerViewModel extends BaseViewModel {
 
     videoPlayerController!.initialize();
 
-    debugPrint("selected video link $link");
+    //debugPrint("selected video link $link");
 
     chewieController = ChewieController(
         aspectRatio: 16 / 9,

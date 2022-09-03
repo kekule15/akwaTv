@@ -154,6 +154,7 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                   color: AppColors.termsTextColor,
                   onclick: () async {
                     // print(devicePlatformInfo.read('deviceId'));
+                    
 
                     Get.to(() => const CongratulationScreen(),
                         arguments: CongratulationsArgs(

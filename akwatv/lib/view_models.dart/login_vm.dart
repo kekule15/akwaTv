@@ -42,7 +42,7 @@ class LoginViewModel extends BaseViewModel {
   FutureManager<UserNotificationModel?> notificationData = FutureManager();
   LoginViewModel(this.read) : super(read) {
     getProfile();
-    getNotifications();
+   // getNotifications();
   }
   bool logoutBTN = false;
   bool loginBtn = false;
@@ -205,7 +205,7 @@ class LoginViewModel extends BaseViewModel {
           .write('isSubActive', res.data!.subscriptionIsActive);
 
       var expireDate = formatter.format(res.data!.subscription!.expiredAt!);
-      debugPrint('hello active. $expireDate');
+      //debugPrint('hello active. $expireDate');
       LocalStorageManager.box.write('expiredAt', expireDate);
 
       notifyListeners();
