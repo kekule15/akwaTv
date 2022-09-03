@@ -1,9 +1,11 @@
 import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/providers/network_provider.dart';
+import 'package:akwatv/providers/video_controller_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
+import 'package:akwatv/views/home/home_view/video_screen.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/customfield.dart';
@@ -28,6 +30,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   Widget build(BuildContext context) {
     final videoService = ref.watch(videoViewModel);
     final network = ref.watch(networkProvider);
+    var videoCon = ref.watch(videoControllerProvider);
     return Scaffold(
         appBar: PreferredSize(
             child: Padding(
@@ -115,11 +118,11 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                       const SizedBox(
                                         height: 50,
                                       ),
-                                      const SvgImage(
-                                        asset: emptyVid,
-                                        height: 200,
-                                        width: 200,
-                                      ),
+                                      // const SvgImage(
+                                      //   asset: emptyVid,
+                                      //   height: 200,
+                                      //   width: 200,
+                                      // ),
                                       const SizedBox(
                                         height: 40,
                                       ),
@@ -147,14 +150,26 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                             subtitle: videoService
                                                 .searchMovieData[index].desc!,
                                             onTap: () {
-                                              Get.to(
-                                                  () => VideoDetailsPage(
-                                                        videoData: videoService
-                                                                .searchMovieData[
-                                                            index],
-                                                      ),
-                                                  arguments: videoService
+                                              videoCon.initPlayer(
+                                                link: videoService
+                                                    .searchMovieData[index]
+                                                    .video!,
+                                                description: videoService
+                                                    .searchMovieData[index]
+                                                    .desc!,
+                                                title: videoService
+                                                    .searchMovieData[index]
+                                                    .title!,
+                                                movieId: videoService
+                                                    .searchMovieData[index].id,
+                                              );
+                                              videoCon.sortSimilarVideos(
+                                                  data: videoService
                                                       .searchMovieData[index]);
+                                              Get.to(() => VideoScreen(
+                                                  url: videoService
+                                                      .searchMovieData[index]
+                                                      .video!));
                                             },
                                             icon: Icons.done,
                                             iconTap: () {

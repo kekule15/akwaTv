@@ -1,10 +1,12 @@
 import 'package:akwatv/providers/network_provider.dart';
+import 'package:akwatv/providers/video_controller_provider.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/images.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
+import 'package:akwatv/views/home/home_view/video_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/like_button.dart';
 import 'package:akwatv/widgets/network_widget.dart';
@@ -32,12 +34,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   bool switchMode = false;
-
   @override
   Widget build(BuildContext context) {
     final _videoViewModel = ref.watch(videoViewModel);
     var videoData = _videoViewModel.listVideoData.data;
     final network = ref.watch(networkProvider);
+    var videoCon = ref.watch(videoControllerProvider);
 
     return Scaffold(
         key: _scaffoldKey,
@@ -67,11 +69,22 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Get.to(
-                                          () => VideoDetailsPage(
-                                                videoData: videoData!.data![0],
-                                              ),
-                                          arguments: videoData!.data![0]);
+                                      videoCon.initPlayer(
+                                        link: videoData!.data![0].video!,
+                                        description: videoData.data![0].desc!,
+                                        title: videoData.data![0].title!,
+                                        movieId: videoData.data![0].id,
+                                       
+                                      );
+                                      videoCon.sortSimilarVideos(
+                                          data: videoData.data![0]);
+                                      Get.to(() => VideoScreen(
+                                          url: videoData.data![0].video!));
+                                      // Get.to(
+                                      //     () => VideoDetailsPage(
+                                      //           videoData: videoData!.data![0],
+                                      //         ),
+                                      //     arguments: videoData!.data![0]);
                                     },
                                     child: Container(
                                       height: 330,
@@ -292,13 +305,28 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       padding: const EdgeInsets.only(left: 20),
                                       child: VideoBoxWidget(
                                         ontap: () {
-                                          Get.to(
-                                              () => VideoDetailsPage(
-                                                    videoData:
-                                                        videoData.data![index],
-                                                  ),
-                                              arguments:
-                                                  videoData.data![index]);
+                                          videoCon.initPlayer(
+                                            link: videoData.data![index].video!,
+                                            description:
+                                                videoData.data![index].desc!,
+                                            title:
+                                                videoData.data![index].title!,
+                                            movieId: videoData.data![index].id,
+                                           
+                                          );
+                                          videoCon.sortSimilarVideos(
+                                              data: videoData.data![index]);
+                                          Get.to(() => VideoScreen(
+                                              url: videoData
+                                                  .data![index].video!));
+
+                                          // Get.to(
+                                          //     () => VideoDetailsPage(
+                                          //           videoData:
+                                          //               videoData.data![index],
+                                          //         ),
+                                          //     arguments:
+                                          //         videoData.data![index]);
                                         },
                                         img: videoData.data![index].img!,
                                         title: videoData.data![index].title!,

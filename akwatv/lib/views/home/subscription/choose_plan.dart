@@ -29,8 +29,6 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
     super.initState();
   }
 
-
-
   @override
   Widget build(
     BuildContext context,
@@ -48,9 +46,9 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.black,
           centerTitle: true,
-          title:  Text(
+          title: Text(
             'choosePlan'.tr,
-            style:const TextStyle(
+            style: const TextStyle(
                 color: AppColors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold),
@@ -64,12 +62,12 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
             const SizedBox(
               height: 50,
             ),
-             Padding(
-              padding:const EdgeInsets.symmetric(horizontal: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 'planText'.tr,
                 textAlign: TextAlign.center,
-                style:const TextStyle(color: AppColors.white, fontSize: 17),
+                style: const TextStyle(color: AppColors.white, fontSize: 17),
               ),
             ),
             const SizedBox(
@@ -101,10 +99,10 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
             const SizedBox(
               height: 30,
             ),
-             Text(
+            Text(
               'agreePlan'.tr,
               textAlign: TextAlign.center,
-              style:const TextStyle(color: AppColors.white),
+              style: const TextStyle(color: AppColors.white),
             ),
             RichText(
               textAlign: TextAlign.center,
@@ -120,9 +118,9 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                   color: AppColors.primary,
                 ),
                 children: <TextSpan>[
-                   TextSpan(
+                  TextSpan(
                     text: 'and '.tr,
-                    style:const TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: AppColors.white,
@@ -160,15 +158,15 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                     Get.to(() => const CongratulationScreen(),
                         arguments: CongratulationsArgs(
                             payLater: false,
-                            name:  PreferenceUtils.getString(key: 'username'),
+                            name: PreferenceUtils.getString(key: 'username'),
                             title: 'freeTrial'.tr,
                             subtitle: 'trialExpire'.tr,
-                            date: LocalStorageManager.box
-          .read('expiredAt')));
+                            date: LocalStorageManager.box.read('expiredAt')));
                   },
-                  title:  Text(
+                  title: Text(
                     'payLater'.tr,
-                    style:const TextStyle(color: AppColors.white, fontSize: 16),
+                    style:
+                        const TextStyle(color: AppColors.white, fontSize: 16),
                   ),
                 ),
                 const SizedBox(
@@ -184,9 +182,10 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                         onTap: () => subViewModel.sendPaymentToPaystack(
                             context: context, amount: subViewModel.subAmount));
                   },
-                  title:  Text(
+                  title: Text(
                     'subscribe'.tr,
-                    style:const TextStyle(color: AppColors.white, fontSize: 16),
+                    style:
+                        const TextStyle(color: AppColors.white, fontSize: 16),
                   ),
                 ),
               ],

@@ -2,6 +2,7 @@ import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/models/category_model.dart';
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/providers/network_provider.dart';
+import 'package:akwatv/providers/video_controller_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/images.dart';
@@ -9,6 +10,7 @@ import 'package:akwatv/utils/svgs.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
+import 'package:akwatv/views/home/home_view/video_screen.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
@@ -137,6 +139,7 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
   }
 
   Widget _showBottomSheetWithSearch(int index, List<Datum> myList) {
+    var videoCon = ref.watch(videoControllerProvider);
     return Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: VideoLayoutWidget(
@@ -144,11 +147,14 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
             img: myList[index].img!,
             subtitle: myList[index].desc!,
             onTap: () {
-              Get.to(
-                  () => VideoDetailsPage(
-                        videoData: myList[index],
-                      ),
-                  arguments: myList[index]);
+              videoCon.initPlayer(
+                link: myList[index].video!,
+                description: myList[index].desc!,
+                title: myList[index].title!,
+                movieId: myList[index].id,
+              );
+              videoCon.sortSimilarVideos(data: myList[index]);
+              Get.to(() => VideoScreen(url: myList[index].video!));
             },
             icon: Icons.done,
             iconTap: () {},

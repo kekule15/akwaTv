@@ -64,11 +64,11 @@ class SubscriptionPayHistory extends ConsumerWidget {
                                   SizedBox(
                                     height: 50,
                                   ),
-                                  SvgImage(
-                                    asset: emptyVid,
-                                    height: 200,
-                                    width: 200,
-                                  ),
+                                  // SvgImage(
+                                  //   asset: emptyVid,
+                                  //   height: 200,
+                                  //   width: 200,
+                                  // ),
                                   SizedBox(
                                     height: 40,
                                   ),

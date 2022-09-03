@@ -1,8 +1,10 @@
 import 'package:akwatv/enums/text_field_type_enum.dart';
 import 'package:akwatv/models/vidoe_model.dart';
+import 'package:akwatv/providers/video_controller_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
+import 'package:akwatv/views/home/home_view/video_screen.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/customfield.dart';
@@ -24,6 +26,7 @@ class _ViewAllWatchListState extends ConsumerState<ViewAllWatchList> {
   final TextEditingController textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    var videoCon = ref.watch(videoControllerProvider);
     var watchListVideoData =
         ModalRoute.of(context)?.settings.arguments as List<Datum>;
     Widget _showBottomSheetWithSearch(int index, List<Datum> myList) {
@@ -34,11 +37,15 @@ class _ViewAllWatchListState extends ConsumerState<ViewAllWatchList> {
               img: myList[index].img!,
               subtitle: myList[index].desc!,
               onTap: () {
+                videoCon.initPlayer(
+                  link: watchListVideoData[index].video!,
+                  description: watchListVideoData[index].desc!,
+                  title: watchListVideoData[index].title!,
+                  movieId: watchListVideoData[index].id,
+                );
+                videoCon.sortSimilarVideos(data: watchListVideoData[index]);
                 Get.to(
-                    () => VideoDetailsPage(
-                          videoData: myList[index],
-                        ),
-                    arguments: myList[index]);
+                    () => VideoScreen(url: watchListVideoData[index].video!));
               },
               icon: Icons.done,
               iconTap: () {},

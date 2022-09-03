@@ -95,13 +95,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           const SizedBox(
                             height: ySpace3 * 1,
                           ),
-                          SizedBox(
-                              height: 180,
-                              width: MediaQuery.of(context).size.width,
-                              child: SvgImage(asset: onboardImages[index])),
-                          const SizedBox(
-                            height: ySpace2,
-                          ),
+                          // SizedBox(
+                          //     height: 180,
+                          //     width: MediaQuery.of(context).size.width,
+                          //     child: SvgImage(asset: onboardImages[index])),
+                          // const SizedBox(
+                          //   height: ySpace2,
+                          // ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: generalHorizontalPadding),
@@ -115,7 +115,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                           ),
                           const SizedBox(
-                            height: ySpace1,
+                            height: 50,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -128,8 +128,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   fontWeight: FontWeight.w400),
                             ),
                           ),
-                          SizedBox(
-                            height: 30.h,
+                          const SizedBox(
+                            height: 100,
                           ),
                           Center(
                             child: Row(

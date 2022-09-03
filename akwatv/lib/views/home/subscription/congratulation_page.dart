@@ -20,7 +20,7 @@ class CongratulationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _loginViewModel = ref.watch(viewModel);
+   
     final _videoViewModel = ref.watch(videoViewModel);
     // final movieViewModel = ref.watch(movieController);
     var data =

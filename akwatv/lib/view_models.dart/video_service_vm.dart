@@ -30,7 +30,7 @@ class VideoServiceViewModel extends BaseViewModel {
     getCategoryList();
     getAllWatchList();
   }
-  
+
   bool addTOListBTN = false;
   bool deleteTOListBTN = false;
   bool getWatchLoader = false;

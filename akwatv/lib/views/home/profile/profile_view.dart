@@ -1,5 +1,6 @@
 import 'package:akwatv/models/vidoe_model.dart';
 import 'package:akwatv/providers/network_provider.dart';
+import 'package:akwatv/providers/video_controller_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/providers.dart';
@@ -8,6 +9,7 @@ import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/drawer_widget.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
+import 'package:akwatv/views/home/home_view/video_screen.dart';
 import 'package:akwatv/views/home/home_view/watchlist_page.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
@@ -67,6 +69,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final _viewModel = ref.watch(homeViewModel);
     var data = _viewModel.profileList();
     final network = ref.watch(networkProvider);
+    var videoCon = ref.watch(videoControllerProvider);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -268,13 +271,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                       ? Center(
                                           child: Column(
                                             children: [
-                                              const SvgImage(
-                                                asset: emptyVid,
-                                                height: 200,
-                                                width: 200,
-                                              ),
+                                              // const SvgImage(
+                                              //   asset: emptyVid,
+                                              //   height: 200,
+                                              //   width: 200,
+                                              // ),
                                               const SizedBox(
-                                                height: 40,
+                                                height: 50,
                                               ),
                                               Text(
                                                 'noMovieFetched'.tr,
@@ -304,16 +307,34 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                                                   index]
                                                               .desc!,
                                                       onTap: () {
-                                                        Get.to(
-                                                            () =>
-                                                                VideoDetailsPage(
-                                                                  videoData:
-                                                                      watchListVideoData[
-                                                                          index],
-                                                                ),
-                                                            arguments:
+                                                        videoCon.initPlayer(
+                                                          link:
+                                                              watchListVideoData[
+                                                                      index]
+                                                                  .video!,
+                                                          description:
+                                                              watchListVideoData[
+                                                                      index]
+                                                                  .desc!,
+                                                          title:
+                                                              watchListVideoData[
+                                                                      index]
+                                                                  .title!,
+                                                          movieId:
+                                                              watchListVideoData[
+                                                                      index]
+                                                                  .id,
+                                                        );
+                                                        videoCon.sortSimilarVideos(
+                                                            data:
                                                                 watchListVideoData[
                                                                     index]);
+                                                        Get.to(() => VideoScreen(
+                                                            url:
+                                                                watchListVideoData[
+                                                                        index]
+                                                                    .video!));
+                                                       
                                                       },
                                                       icon: Icons.close,
                                                       iconTap: () {
@@ -340,7 +361,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   ),
                 ),
               )
-            :  networkWidget(),
+            : networkWidget(),
       ]),
     );
   }
