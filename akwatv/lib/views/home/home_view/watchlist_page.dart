@@ -6,11 +6,14 @@ import 'package:akwatv/utils/constvalues.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
 import 'package:akwatv/views/home/home_view/video_screen.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
+import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/customfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+
+import '../../../utils/temporary_storage.dart';
 
 class ViewAllWatchList extends ConsumerStatefulWidget {
   const ViewAllWatchList({Key? key}) : super(key: key);
@@ -36,17 +39,22 @@ class _ViewAllWatchListState extends ConsumerState<ViewAllWatchList> {
               title: myList[index].title!,
               img: myList[index].img!,
               subtitle: myList[index].desc!,
-              onTap: () {
-                videoCon.initPlayer(
-                  link: watchListVideoData[index].video!,
-                  description: watchListVideoData[index].desc!,
-                  title: watchListVideoData[index].title!,
-                  movieId: watchListVideoData[index].id,
-                );
-                videoCon.sortSimilarVideos(data: watchListVideoData[index]);
-                Get.to(
-                    () => VideoScreen(url: watchListVideoData[index].video!));
-              },
+              onTap: LocalStorageManager.box.read('isSubActive') == true
+                  ? () {
+                      videoCon.initPlayer(
+                        link: watchListVideoData[index].video!,
+                        description: watchListVideoData[index].desc!,
+                        title: watchListVideoData[index].title!,
+                        movieId: watchListVideoData[index].id,
+                      );
+                      videoCon.sortSimilarVideos(
+                          data: watchListVideoData[index]);
+                      Get.to(() =>
+                          VideoScreen(url: watchListVideoData[index].video!));
+                    }
+                  : () {
+                      checkSubscriptionStatus(context);
+                    },
               icon: Icons.done,
               iconTap: () {},
               iconColor: AppColors.white));

@@ -4,9 +4,11 @@ import 'package:akwatv/providers/video_controller_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
 import 'package:akwatv/views/home/home_view/video_screen.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
+import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/customfield.dart';
 import 'package:akwatv/widgets/network_widget.dart';
@@ -149,28 +151,42 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                                 .searchMovieData[index].img!,
                                             subtitle: videoService
                                                 .searchMovieData[index].desc!,
-                                            onTap: () {
-                                              videoCon.initPlayer(
-                                                link: videoService
-                                                    .searchMovieData[index]
-                                                    .video!,
-                                                description: videoService
-                                                    .searchMovieData[index]
-                                                    .desc!,
-                                                title: videoService
-                                                    .searchMovieData[index]
-                                                    .title!,
-                                                movieId: videoService
-                                                    .searchMovieData[index].id,
-                                              );
-                                              videoCon.sortSimilarVideos(
-                                                  data: videoService
-                                                      .searchMovieData[index]);
-                                              Get.to(() => VideoScreen(
-                                                  url: videoService
-                                                      .searchMovieData[index]
-                                                      .video!));
-                                            },
+                                            onTap: LocalStorageManager.box
+                                                        .read('isSubActive') ==
+                                                    true
+                                                ? () {
+                                                    videoCon.initPlayer(
+                                                      link: videoService
+                                                          .searchMovieData[
+                                                              index]
+                                                          .video!,
+                                                      description: videoService
+                                                          .searchMovieData[
+                                                              index]
+                                                          .desc!,
+                                                      title: videoService
+                                                          .searchMovieData[
+                                                              index]
+                                                          .title!,
+                                                      movieId: videoService
+                                                          .searchMovieData[
+                                                              index]
+                                                          .id,
+                                                    );
+                                                    videoCon.sortSimilarVideos(
+                                                        data: videoService
+                                                                .searchMovieData[
+                                                            index]);
+                                                    Get.to(() => VideoScreen(
+                                                        url: videoService
+                                                            .searchMovieData[
+                                                                index]
+                                                            .video!));
+                                                  }
+                                                : () {
+                                                    checkSubscriptionStatus(
+                                                        context);
+                                                  },
                                             icon: Icons.done,
                                             iconTap: () {
                                               // deleteWatchList(

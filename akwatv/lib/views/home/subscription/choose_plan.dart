@@ -154,14 +154,21 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
                   color: AppColors.termsTextColor,
                   onclick: () async {
                     // print(devicePlatformInfo.read('deviceId'));
-                    
 
                     Get.to(() => const CongratulationScreen(),
                         arguments: CongratulationsArgs(
                             payLater: false,
                             name: PreferenceUtils.getString(key: 'username'),
-                            title: 'freeTrial'.tr,
-                            subtitle: 'trialExpire'.tr,
+                            title:
+                                LocalStorageManager.box.read('isSubActive') ==
+                                        true
+                                    ? 'freeTrial'.tr
+                                    : 'freeTrialEnd'.tr,
+                            subtitle:
+                                LocalStorageManager.box.read('isSubActive') ==
+                                        true
+                                    ? 'trialExpire'.tr
+                                    : 'trialExpireEnd'.tr,
                             date: LocalStorageManager.box.read('expiredAt')));
                   },
                   title: Text(

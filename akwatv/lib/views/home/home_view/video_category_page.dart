@@ -7,11 +7,13 @@ import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/images.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
 import 'package:akwatv/views/home/home_view/video_screen.dart';
 import 'package:akwatv/views/home/home_view/widgets/vidoe_layout_widget.dart';
+import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
 import 'package:akwatv/views/onboarding/auth_screen.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/custom_button.dart';
@@ -146,16 +148,20 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
             title: myList[index].title!,
             img: myList[index].img!,
             subtitle: myList[index].desc!,
-            onTap: () {
-              videoCon.initPlayer(
-                link: myList[index].video!,
-                description: myList[index].desc!,
-                title: myList[index].title!,
-                movieId: myList[index].id,
-              );
-              videoCon.sortSimilarVideos(data: myList[index]);
-              Get.to(() => VideoScreen(url: myList[index].video!));
-            },
+            onTap: LocalStorageManager.box.read('isSubActive') == true
+                ? () {
+                    videoCon.initPlayer(
+                      link: myList[index].video!,
+                      description: myList[index].desc!,
+                      title: myList[index].title!,
+                      movieId: myList[index].id,
+                    );
+                    videoCon.sortSimilarVideos(data: myList[index]);
+                    Get.to(() => VideoScreen(url: myList[index].video!));
+                  }
+                : () {
+                    checkSubscriptionStatus(context);
+                  },
             icon: Icons.done,
             iconTap: () {},
             iconColor: AppColors.white));

@@ -3,10 +3,12 @@ import 'package:akwatv/providers/video_controller_provider.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/images.dart';
+import 'package:akwatv/utils/temporary_storage.dart';
 import 'package:akwatv/utils/video_model.dart';
 import 'package:akwatv/views/home/home_view/drawer.dart';
 import 'package:akwatv/views/home/home_view/video_details.dart';
 import 'package:akwatv/views/home/home_view/video_screen.dart';
+import 'package:akwatv/views/home/subscription/widgets/sub_dialogs.dart';
 import 'package:akwatv/views/onboarding/signin.dart';
 import 'package:akwatv/widgets/like_button.dart';
 import 'package:akwatv/widgets/network_widget.dart';
@@ -68,23 +70,31 @@ class _HomePageState extends ConsumerState<HomePage> {
                               child: Stack(
                                 children: [
                                   InkWell(
-                                    onTap: () {
-                                      videoCon.initPlayer(
-                                        link: videoData!.data![0].video!,
-                                        description: videoData.data![0].desc!,
-                                        title: videoData.data![0].title!,
-                                        movieId: videoData.data![0].id,
-                                      );
-                                      videoCon.sortSimilarVideos(
-                                          data: videoData.data![0]);
-                                      Get.to(() => VideoScreen(
-                                          url: videoData.data![0].video!));
-                                      // Get.to(
-                                      //     () => VideoDetailsPage(
-                                      //           videoData: videoData!.data![0],
-                                      //         ),
-                                      //     arguments: videoData!.data![0]);
-                                    },
+                                    onTap: LocalStorageManager.box
+                                                .read('isSubActive') ==
+                                            true
+                                        ? () {
+                                            videoCon.initPlayer(
+                                              link: videoData!.data![0].video!,
+                                              description:
+                                                  videoData.data![0].desc!,
+                                              title: videoData.data![0].title!,
+                                              movieId: videoData.data![0].id,
+                                            );
+                                            videoCon.sortSimilarVideos(
+                                                data: videoData.data![0]);
+                                            Get.to(() => VideoScreen(
+                                                url:
+                                                    videoData.data![0].video!));
+                                            // Get.to(
+                                            //     () => VideoDetailsPage(
+                                            //           videoData: videoData!.data![0],
+                                            //         ),
+                                            //     arguments: videoData!.data![0]);
+                                          }
+                                        : () {
+                                            checkSubscriptionStatus(context);
+                                          },
                                     child: Container(
                                       height: 330,
                                       width: MediaQuery.of(context).size.width,
@@ -221,15 +231,46 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  const Positioned(
+                                  Positioned(
                                       right: 100,
                                       left: 100,
                                       top: 100,
                                       bottom: 100,
-                                      child: Icon(
-                                        Icons.play_circle_outline_outlined,
-                                        color: AppColors.white,
-                                        size: 50,
+                                      child: InkWell(
+                                        onTap: LocalStorageManager.box
+                                                    .read('isSubActive') ==
+                                                true
+                                            ? () {
+                                                videoCon.initPlayer(
+                                                  link:
+                                                      videoData.data![0].video!,
+                                                  description:
+                                                      videoData.data![0].desc!,
+                                                  title:
+                                                      videoData.data![0].title!,
+                                                  movieId:
+                                                      videoData.data![0].id,
+                                                );
+                                                videoCon.sortSimilarVideos(
+                                                    data: videoData.data![0]);
+                                                Get.to(() => VideoScreen(
+                                                    url: videoData
+                                                        .data![0].video!));
+                                                // Get.to(
+                                                //     () => VideoDetailsPage(
+                                                //           videoData: videoData!.data![0],
+                                                //         ),
+                                                //     arguments: videoData!.data![0]);
+                                              }
+                                            : () {
+                                                checkSubscriptionStatus(
+                                                    context);
+                                              },
+                                        child: const Icon(
+                                          Icons.play_circle_outline_outlined,
+                                          color: AppColors.white,
+                                          size: 50,
+                                        ),
                                       )),
                                 ],
                               )),
@@ -307,29 +348,39 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     return Padding(
                                       padding: const EdgeInsets.only(left: 20),
                                       child: VideoBoxWidget(
-                                        ontap: () {
-                                          videoCon.initPlayer(
-                                            link: videoData.data![index].video!,
-                                            description:
-                                                videoData.data![index].desc!,
-                                            title:
-                                                videoData.data![index].title!,
-                                            movieId: videoData.data![index].id,
-                                          );
-                                          videoCon.sortSimilarVideos(
-                                              data: videoData.data![index]);
-                                          Get.to(() => VideoScreen(
-                                              url: videoData
-                                                  .data![index].video!));
+                                        ontap: LocalStorageManager.box
+                                                    .read('isSubActive') ==
+                                                true
+                                            ? () {
+                                                videoCon.initPlayer(
+                                                  link: videoData
+                                                      .data![index].video!,
+                                                  description: videoData
+                                                      .data![index].desc!,
+                                                  title: videoData
+                                                      .data![index].title!,
+                                                  movieId:
+                                                      videoData.data![index].id,
+                                                );
+                                                videoCon.sortSimilarVideos(
+                                                    data:
+                                                        videoData.data![index]);
+                                                Get.to(() => VideoScreen(
+                                                    url: videoData
+                                                        .data![index].video!));
 
-                                          // Get.to(
-                                          //     () => VideoDetailsPage(
-                                          //           videoData:
-                                          //               videoData.data![index],
-                                          //         ),
-                                          //     arguments:
-                                          //         videoData.data![index]);
-                                        },
+                                                // Get.to(
+                                                //     () => VideoDetailsPage(
+                                                //           videoData:
+                                                //               videoData.data![index],
+                                                //         ),
+                                                //     arguments:
+                                                //         videoData.data![index]);
+                                              }
+                                            : () {
+                                                checkSubscriptionStatus(
+                                                    context);
+                                              },
                                         img: videoData.data![index].img!,
                                         title: videoData.data![index].title!,
                                         description:

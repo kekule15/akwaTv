@@ -1,11 +1,12 @@
-
 import 'package:akwatv/providers/subscription_provider.dart';
 import 'package:akwatv/styles/appColors.dart';
 import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/utils/svgs.dart';
+import 'package:akwatv/views/home/subscription/subscription_details.dart';
 import 'package:akwatv/widgets/custom_button.dart';
 import 'package:akwatv/widgets/dialog_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
 confirmSubscriptionSheet(BuildContext context,
     {required String name,
@@ -169,4 +170,51 @@ checkPaymentStatus(BuildContext context, {required VoidCallback onTap}) async {
   });
   return DialogWidgets.modalBottomSheetMenu(context, data,
       height: 500, dismiss: false, showCancelButton: false);
+}
+
+checkSubscriptionStatus(
+  BuildContext context,
+) async {
+  Widget data = Consumer(builder: (context, ref, child) {
+    // var subViewModel = ref.watch(subScriptionProvider);
+
+    return Column(
+      children: [
+        Text(
+          'planExpired'.tr,
+          style: const TextStyle(
+              color: AppColors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(
+          height: 60,
+        ),
+        Text(
+          'planExpiredText'.tr,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              color: AppColors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.w400),
+        ),
+        const SizedBox(
+          height: 60,
+        ),
+        CustomButton(
+          borderColor: false,
+          color: AppColors.primary,
+          onclick: () async {
+            Get.to(() => const SubScriptionDetailsPage());
+          },
+          title: Text(
+            'subscribe'.tr,
+            style: const TextStyle(color: AppColors.white, fontSize: 16),
+          ),
+        ),
+      ],
+    );
+  });
+  return DialogWidgets.modalBottomSheetMenu(context, data,
+      height: 400, dismiss: true);
 }
