@@ -25,7 +25,7 @@ class _ViewNotificationScreenState
   @override
   Widget build(BuildContext context) {
     final notificationModel = ref.watch(viewModel);
-    final network = ref.watch(networkProvider);
+    //final network = ref.watch(networkProvider);
     //networkChecker();
     return Scaffold(
         appBar: AppBar(
@@ -56,8 +56,7 @@ class _ViewNotificationScreenState
           ],
         ),
         backgroundColor: AppColors.black,
-        body: network.isCheck == true
-            ? RefreshIndicator(
+        body:RefreshIndicator(
                 onRefresh: () async {
                   notificationModel.getNotifications();
                 },
@@ -124,6 +123,6 @@ class _ViewNotificationScreenState
                   ],
                 ),
               )
-            : networkWidget());
+           );
   }
 }

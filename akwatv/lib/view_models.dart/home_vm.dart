@@ -110,7 +110,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void changeIndex(int index) async {
-    await read(networkProvider).checkNet();
+    //await read(networkProvider).checkNet();
 
     selectedIndex = index;
     notifyListeners();

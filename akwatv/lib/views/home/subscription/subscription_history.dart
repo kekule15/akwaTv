@@ -15,7 +15,7 @@ class SubscriptionPayHistory extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var subViewModel = ref.watch(subScriptionProvider);
     var data = subViewModel.payHistoryData.data;
-    final network = ref.watch(networkProvider);
+   // final network = ref.watch(networkProvider);
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -28,8 +28,7 @@ class SubscriptionPayHistory extends ConsumerWidget {
                 fontSize: 23),
           ),
         ),
-        body: network.isCheck == true
-            ? ListView(
+        body: ListView(
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -121,6 +120,6 @@ class SubscriptionPayHistory extends ConsumerWidget {
                             )
                 ],
               )
-            : networkWidget());
+           );
   }
 }

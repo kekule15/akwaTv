@@ -31,7 +31,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final videoService = ref.watch(videoViewModel);
-    final network = ref.watch(networkProvider);
+   // final network = ref.watch(networkProvider);
     var videoCon = ref.watch(videoControllerProvider);
     return Scaffold(
         appBar: PreferredSize(
@@ -83,8 +83,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               ),
             ),
             preferredSize: Size.fromHeight(100)),
-        body: network.isCheck == true
-            ? Padding(
+        body:Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Form(
                   key: formKey,
@@ -201,6 +200,6 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   ),
                 ),
               )
-            : networkWidget());
+           );
   }
 }

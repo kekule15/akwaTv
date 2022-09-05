@@ -69,7 +69,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final loginViewModel = ref.watch(viewModel);
     final _viewModel = ref.watch(homeViewModel);
     var data = _viewModel.profileList();
-    final network = ref.watch(networkProvider);
+    //final network = ref.watch(networkProvider);
     var videoCon = ref.watch(videoControllerProvider);
     final videoProvider = ref.watch(videoViewModel);
 
@@ -138,8 +138,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ],
           ),
         ),
-        network.isCheck == true
-            ? Padding(
+       Padding(
                 padding: const EdgeInsets.only(top: 300),
                 child: DefaultTabController(
                   length: 2,
@@ -379,7 +378,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   ),
                 ),
               )
-            : networkWidget(),
+           ,
       ]),
     );
   }

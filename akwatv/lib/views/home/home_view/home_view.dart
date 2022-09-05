@@ -40,14 +40,13 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final _videoViewModel = ref.watch(videoViewModel);
     var videoData = _videoViewModel.listVideoData.data;
-    final network = ref.watch(networkProvider);
+    // final network = ref.watch(networkProvider);
     var videoCon = ref.watch(videoControllerProvider);
 
     return Scaffold(
         key: _scaffoldKey,
         drawer: const MyDrawerPage(),
-        body: network.isCheck == true
-            ? _videoViewModel.listVideoData.data == null
+        body: _videoViewModel.listVideoData.data == null
                 ? const Center(
                     child: SizedBox(
                       height: 20,
@@ -394,6 +393,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                     ],
                   )
-            : networkWidget());
+           );
   }
 }

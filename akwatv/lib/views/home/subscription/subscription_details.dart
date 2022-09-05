@@ -27,7 +27,7 @@ class _SubScriptionDetailsPageState
   Widget build(BuildContext context) {
     var subViewModel = ref.watch(subScriptionProvider);
     var data = subViewModel.subPlans();
-    final network = ref.watch(networkProvider);
+   // final network = ref.watch(networkProvider);
 
     return Scaffold(
       appBar: AppBar(

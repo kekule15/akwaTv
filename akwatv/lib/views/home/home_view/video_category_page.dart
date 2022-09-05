@@ -61,7 +61,7 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
   Widget build(BuildContext context) {
     var categoryData = ModalRoute.of(context)?.settings.arguments as Items;
     final videoProvider = ref.watch(videoViewModel);
-    final network = ref.watch(networkProvider);
+   // final network = ref.watch(networkProvider);
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -72,8 +72,7 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
             style: TextStyle(color: AppColors.white, fontSize: 22),
           ),
         ),
-        body: network.isCheck == true
-            ? Padding(
+        body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListView(
                   children: [
@@ -137,7 +136,7 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
                   ],
                 ),
               )
-            : networkWidget());
+           );
   }
 
   Widget _showBottomSheetWithSearch(int index, List<Datum> myList) {
