@@ -42,11 +42,13 @@ class _ViewAllWatchListState extends ConsumerState<ViewAllWatchList> {
               onTap: LocalStorageManager.box.read('isSubActive') == true
                   ? () {
                       videoCon.initPlayer(
+                       
                         link: watchListVideoData[index].video!,
                         description: watchListVideoData[index].desc!,
                         title: watchListVideoData[index].title!,
                         movieId: watchListVideoData[index].id,
                       );
+                       videoCon.chewieController!.play();
                       videoCon.sortSimilarVideos(
                           data: watchListVideoData[index]);
                       Get.to(() =>

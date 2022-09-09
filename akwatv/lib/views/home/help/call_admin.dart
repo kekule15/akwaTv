@@ -69,10 +69,10 @@ class CallAdminPage extends ConsumerWidget {
           ),
           InkWell(
             onTap: () {
-              launchUrl(Uri.parse("tel:+234 9014700476"));
+              launchUrl(Uri.parse("tel:+234 7066453728"));
             },
             child: const Text(
-              '+234 9014700476',
+              '+234 7066453728',
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.white, fontSize: 30),
             ),

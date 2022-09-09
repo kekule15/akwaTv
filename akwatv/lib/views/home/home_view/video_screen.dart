@@ -251,6 +251,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
                                                     movieId: videoCon
                                                         .similarVideoData[index]
                                                         .id);
+                                                videoCon.chewieController!
+                                                    .play();
                                               },
                                               decs: videoCon
                                                   .similarVideoData[index]

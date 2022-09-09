@@ -31,6 +31,7 @@ class _SplashViewState extends ConsumerState<SplashView>
 
   @override
   void initState() {
+    var subname = PreferenceUtils.getString(key: 'subName');
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _time = Tween(begin: 0.0, end: 20.0).animate(CurvedAnimation(
@@ -43,7 +44,9 @@ class _SplashViewState extends ConsumerState<SplashView>
               : PreferenceUtils.getString(key: 'userId') != '' &&
                       PreferenceUtils.getString(key: 'plan') != ''
                   ? const HomeNavigation()
-                  : const ChoosePlanPage());
+                  : subname == 'Free'
+                      ? const ChoosePlanPage()
+                      : const HomeNavigation());
         }
       }));
 

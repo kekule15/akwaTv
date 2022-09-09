@@ -150,11 +150,13 @@ class _VideoCategoryPageState extends ConsumerState<VideoCategoryPage> {
             onTap: LocalStorageManager.box.read('isSubActive') == true
                 ? () {
                     videoCon.initPlayer(
+                     
                       link: myList[index].video!,
                       description: myList[index].desc!,
                       title: myList[index].title!,
                       movieId: myList[index].id,
                     );
+                     videoCon.chewieController!.play();
                     videoCon.sortSimilarVideos(data: myList[index]);
                     Get.to(() => VideoScreen(url: myList[index].video!));
                   }

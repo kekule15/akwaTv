@@ -27,7 +27,7 @@ class _SubScriptionDetailsPageState
   Widget build(BuildContext context) {
     var subViewModel = ref.watch(subScriptionProvider);
     var data = subViewModel.subPlans();
-   // final network = ref.watch(networkProvider);
+    // final network = ref.watch(networkProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -99,13 +99,16 @@ class _SubScriptionDetailsPageState
                     height: 15,
                   ),
                   Container(
+                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: AppColors.black),
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Text(
-                        'upgradePlanText'.tr,
+                        PreferenceUtils.getString(key: 'subName') == 'Premium'
+                            ? "upgradePlanText2".tr
+                            : 'upgradePlanText'.tr,
                         style: const TextStyle(
                             color: AppColors.white,
                             fontWeight: FontWeight.w400,
@@ -149,8 +152,7 @@ class _SubScriptionDetailsPageState
                                 fontSize: 12),
                           ),
                           Text(
-                           (
-                                LocalStorageManager.box.read('expiredAt')),
+                            (LocalStorageManager.box.read('expiredAt')),
                             style: const TextStyle(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w500,

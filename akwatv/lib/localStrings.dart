@@ -87,12 +87,14 @@ class LocalString extends Translations {
           'congratulations': 'Welcome',
           'currentPlan': 'Current Plan',
           'planExpired': 'Subscription Plan Expired',
-          'planExpiredText': 'Your current subscription has expired and you are required to subscribe to continue enjoying Akwa Amaka Tv Shows',
+          'planExpiredText':
+              'Your current subscription has expired and you are required to subscribe to continue enjoying Akwa Amaka Tv Shows',
           'active': 'Active',
           'expire': 'Expired',
           'upgradePlan': 'Upgrade Plan',
           'upgradePlanText':
               'Upgrade now and enjoy awesome features on Akwa Amaka TV',
+          'upgradePlanText2': 'Stream and enjoy awesome Akwa Amaka Tv shows',
           'amountPaid': 'Amount Paid',
           'validity': 'Validity',
           'paymentHistory': 'Payment History',
@@ -186,12 +188,14 @@ class LocalString extends Translations {
           'congratulations': 'Bienvenu',
           'currentPlan': 'Plan actuel',
           'planExpired': "Plan d'abonnement expiré",
-          'planExpiredText': "Votre abonnement actuel a expiré et vous devez vous abonner pour continuer à profiter des émissions de télévision Akwa Amaka",
+          'planExpiredText':
+              "Votre abonnement actuel a expiré et vous devez vous abonner pour continuer à profiter des émissions de télévision Akwa Amaka",
           'active': 'Actif',
           'expire': 'Expiré',
           'upgradePlan': 'Plan de mise à niveau',
           'upgradePlanText':
               'Mettez à niveau maintenant et profitez de fonctionnalités impressionnantes sur Akwa Amaka TV',
+          'upgradePlanText2': 'Diffusez et profitez des superbes émissions de télévision Akwa Amaka',
           'amountPaid': 'Le montant payé',
           'validity': 'Validité',
           'paymentHistory': 'Historique de paiement',

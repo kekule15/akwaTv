@@ -14,30 +14,32 @@ class MovieControllerViewModel extends BaseViewModel {
   String mTitle = '';
   String mDescription = '';
   String mMovieId = '';
+ 
   String mLink =
       'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4';
   bool likeStatus = false;
   MovieControllerViewModel(Reader read) : super(read) {
     initPlayer(
-      link: mLink,
-      description: mDescription,
-      title: mTitle,
-      movieId: mMovieId,
-    );
+        link: mLink,
+        description: mDescription,
+        title: mTitle,
+        movieId: mMovieId,
+        );
   }
   ChewieController? chewieController;
   VideoPlayerController? videoPlayerController;
-  void initPlayer({
-    required dynamic link,
-    required String description,
-    required String title,
-    required dynamic movieId,
-  }) async {
+  void initPlayer(
+      {required dynamic link,
+      required String description,
+      required String title,
+      required dynamic movieId,
+     }) async {
     mLink = link;
     mDescription = description;
     mMovieId = movieId;
     mTitle = title;
-    
+    //chewieController!.play();
+
     notifyListeners();
 
     // check for rated videos
@@ -54,7 +56,7 @@ class MovieControllerViewModel extends BaseViewModel {
         videoPlayerController: videoPlayerController!,
         autoPlay: true,
         autoInitialize: true,
-        looping: false,
+        looping: true,
         allowFullScreen: true,
         allowPlaybackSpeedChanging: false,
         materialProgressColors: ChewieProgressColors(

@@ -78,7 +78,7 @@ class HelpCenterPage extends ConsumerWidget {
   void launchEmailSubmission() async {
     final Uri params = Uri(
         scheme: 'mailto',
-        path: 'augustusonyekachi111@gmail.com',
+        path: 'akwaamakaproduction@gmail.com',
         query: 'subject=Message&body= I have a complaint');
     String url = params.toString();
     if (await canLaunchUrl(Uri.parse(url))) {

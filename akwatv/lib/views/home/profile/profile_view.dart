@@ -321,6 +321,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                                           ? () {
                                                               videoCon
                                                                   .initPlayer(
+                                                                   
                                                                 link: videoProvider
                                                                     .watchListVideoData[
                                                                         index]
@@ -339,6 +340,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                                                         index]
                                                                     .id,
                                                               );
+                                                               videoCon.chewieController!.play();
                                                               videoCon.sortSimilarVideos(
                                                                   data: videoProvider
                                                                           .watchListVideoData[

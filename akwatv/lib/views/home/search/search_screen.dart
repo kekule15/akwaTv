@@ -31,7 +31,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final videoService = ref.watch(videoViewModel);
-   // final network = ref.watch(networkProvider);
+    // final network = ref.watch(networkProvider);
     var videoCon = ref.watch(videoControllerProvider);
     return Scaffold(
         appBar: PreferredSize(
@@ -83,123 +83,111 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               ),
             ),
             preferredSize: Size.fromHeight(100)),
-        body:Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Form(
-                  key: formKey,
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Text(
-                        'topSearched'.tr,
-                        style:
-                            TextStyle(color: AppColors.white, fontSize: 16.sp),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      videoService.isSearch
-                          ? const Center(
-                              child: SizedBox(
-                                height: 30,
-                                width: 30,
-                                child: CircularProgressIndicator(
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            )
-                          : videoService.searchMovieData.isEmpty == true
-                              ? Center(
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 50,
-                                      ),
-                                      // const SvgImage(
-                                      //   asset: emptyVid,
-                                      //   height: 200,
-                                      //   width: 200,
-                                      // ),
-                                      const SizedBox(
-                                        height: 40,
-                                      ),
-                                      Text(
-                                        'noMovieFetched'.tr,
-                                        style: const TextStyle(
-                                            color: AppColors.white,
-                                            fontSize: 17),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              : Column(
-                                  children: List.generate(
-                                      videoService.searchMovieData.length,
-                                      (index) {
-                                    return Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10),
-                                        child: VideoLayoutWidget(
-                                            title: videoService
-                                                .searchMovieData[index].title!,
-                                            img: videoService
-                                                .searchMovieData[index].img!,
-                                            subtitle: videoService
-                                                .searchMovieData[index].desc!,
-                                            onTap: LocalStorageManager.box
-                                                        .read('isSubActive') ==
-                                                    true
-                                                ? () {
-                                                    videoCon.initPlayer(
-                                                      link: videoService
-                                                          .searchMovieData[
-                                                              index]
-                                                          .video!,
-                                                      description: videoService
-                                                          .searchMovieData[
-                                                              index]
-                                                          .desc!,
-                                                      title: videoService
-                                                          .searchMovieData[
-                                                              index]
-                                                          .title!,
-                                                      movieId: videoService
-                                                          .searchMovieData[
-                                                              index]
-                                                          .id,
-                                                    );
-                                                    videoCon.sortSimilarVideos(
-                                                        data: videoService
-                                                                .searchMovieData[
-                                                            index]);
-                                                    Get.to(() => VideoScreen(
-                                                        url: videoService
-                                                            .searchMovieData[
-                                                                index]
-                                                            .video!));
-                                                  }
-                                                : () {
-                                                    checkSubscriptionStatus(
-                                                        context);
-                                                  },
-                                            icon: Icons.done,
-                                            iconTap: () {
-                                              // deleteWatchList(
-                                              //   data: watchListVideoData[index],
-                                              //   movieID: watchListVideoData[index].id,
-                                              // );
-                                            },
-                                            iconColor: AppColors.white));
-                                  }),
-                                )
-                    ],
-                  ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: formKey,
+            child: ListView(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              children: [
+                const SizedBox(
+                  height: 30,
                 ),
-              )
-           );
+                Text(
+                  'topSearched'.tr,
+                  style: TextStyle(color: AppColors.white, fontSize: 16.sp),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                videoService.isSearch
+                    ? const Center(
+                        child: SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: CircularProgressIndicator(
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      )
+                    : videoService.searchMovieData.isEmpty == true
+                        ? Center(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                // const SvgImage(
+                                //   asset: emptyVid,
+                                //   height: 200,
+                                //   width: 200,
+                                // ),
+                                const SizedBox(
+                                  height: 40,
+                                ),
+                                Text(
+                                  'noMovieFetched'.tr,
+                                  style: const TextStyle(
+                                      color: AppColors.white, fontSize: 17),
+                                )
+                              ],
+                            ),
+                          )
+                        : Column(
+                            children: List.generate(
+                                videoService.searchMovieData.length, (index) {
+                              return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: VideoLayoutWidget(
+                                      title: videoService
+                                          .searchMovieData[index].title!,
+                                      img: videoService
+                                          .searchMovieData[index].img!,
+                                      subtitle: videoService
+                                          .searchMovieData[index].desc!,
+                                      onTap: LocalStorageManager.box
+                                                  .read('isSubActive') ==
+                                              true
+                                          ? () {
+                                              videoCon.initPlayer(
+                                                link: videoService
+                                                    .searchMovieData[index]
+                                                    .video!,
+                                                description: videoService
+                                                    .searchMovieData[index]
+                                                    .desc!,
+                                                title: videoService
+                                                    .searchMovieData[index]
+                                                    .title!,
+                                                movieId: videoService
+                                                    .searchMovieData[index].id,
+                                              );
+                                              videoCon.chewieController!.play();
+                                              videoCon.sortSimilarVideos(
+                                                  data: videoService
+                                                      .searchMovieData[index]);
+                                              Get.to(() => VideoScreen(
+                                                  url: videoService
+                                                      .searchMovieData[index]
+                                                      .video!));
+                                            }
+                                          : () {
+                                              checkSubscriptionStatus(context);
+                                            },
+                                      icon: Icons.done,
+                                      iconTap: () {
+                                        // deleteWatchList(
+                                        //   data: watchListVideoData[index],
+                                        //   movieID: watchListVideoData[index].id,
+                                        // );
+                                      },
+                                      iconColor: AppColors.white));
+                            }),
+                          )
+              ],
+            ),
+          ),
+        ));
   }
 }
