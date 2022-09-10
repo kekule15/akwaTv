@@ -29,7 +29,7 @@ class VideoServiceViewModel extends BaseViewModel {
   VideoServiceViewModel(this.read) : super(read) {
     getVideoList();
     getCategoryList();
-    //getAllWatchList();
+    getAllWatchList();
   }
 
   bool addTOListBTN = false;
@@ -92,7 +92,8 @@ class VideoServiceViewModel extends BaseViewModel {
   }
 
 //delete watchlist item
-  deleteWatchListservice({required dynamic movieID}) async {
+  deleteWatchListservice(
+      {required dynamic movieID, required Datum item}) async {
     deleteTOListBTN = true;
     deleteWatchListData.load();
     notifyListeners();
@@ -101,11 +102,14 @@ class VideoServiceViewModel extends BaseViewModel {
         await read(videoServiceProvider).deleteWatchList(movieID: movieID);
     if (res != null) {
       deleteWatchListData.onSuccess(res);
-      NotifyMe.showAlert(res.message!);
-      await read(loginViewModel).getProfile();
-      getAllWatchList();
+      watchListVideoData.remove(item);
+      
+      // await read(loginViewModel).getProfile();
+      //getAllWatchList();
       deleteTOListBTN = false;
       notifyListeners();
+      NotifyMe.showAlert(res.message!);
+      Get.back();
     } else {
       deleteTOListBTN = false;
       NotifyMe.showAlert(res!.message!);

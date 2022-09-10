@@ -42,13 +42,12 @@ class _ViewAllWatchListState extends ConsumerState<ViewAllWatchList> {
               onTap: LocalStorageManager.box.read('isSubActive') == true
                   ? () {
                       videoCon.initPlayer(
-                       
                         link: watchListVideoData[index].video!,
                         description: watchListVideoData[index].desc!,
                         title: watchListVideoData[index].title!,
                         movieId: watchListVideoData[index].id,
                       );
-                       videoCon.chewieController!.play();
+                      videoCon.chewieController!.play();
                       videoCon.sortSimilarVideos(
                           data: watchListVideoData[index]);
                       Get.to(() =>
@@ -218,14 +217,15 @@ class _ViewAllWatchListState extends ConsumerState<ViewAllWatchList> {
             ),
             TextButton(
               onPressed: () async {
-                videoProvider.deleteWatchListservice(movieID: movieID);
-                watchListVideoData.remove(data);
+                videoProvider.deleteWatchListservice(
+                    movieID: movieID, item: data);
+                // watchListVideoData.remove(data);
 
-                Future.delayed(const Duration(seconds: 1), () {
-                  videoProvider.getAllWatchList();
-                  // getWatchList();
-                  Get.back();
-                });
+                // Future.delayed(const Duration(seconds: 1), () {
+                //   videoProvider.getAllWatchList();
+                //   // getWatchList();
+                //   Get.back();
+                // });
               },
               child: const Text(
                 'Yes',

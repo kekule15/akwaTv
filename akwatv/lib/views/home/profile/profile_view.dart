@@ -468,14 +468,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
             TextButton(
               onPressed: () async {
-                videoProvider.deleteWatchListservice(movieID: movieID);
-                videoProvider.watchListVideoData.remove(data);
+                videoProvider.deleteWatchListservice(movieID: movieID, item: data);
+                // videoProvider.watchListVideoData.remove(data);
 
-                Future.delayed(const Duration(seconds: 1), () {
-                  videoProvider.getAllWatchList();
-                  //getWatchList();
-                  Get.back();
-                });
+                // Future.delayed(const Duration(seconds: 1), () {
+                //   videoProvider.getAllWatchList();
+                //   //getWatchList();
+                //   Get.back();
+                // });
               },
               child: const Text(
                 'Yes',

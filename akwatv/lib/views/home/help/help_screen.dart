@@ -3,6 +3,7 @@ import 'package:akwatv/utils/exports.dart';
 import 'package:akwatv/views/home/help/call_admin.dart';
 import 'package:akwatv/views/home/settings/terms_conditions.dart';
 import 'package:akwatv/views/home/settings/widgets/activity_cards.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -49,6 +50,19 @@ class HelpCenterPage extends ConsumerWidget {
           ),
           ActivityCardWidget(
               onTap: () {
+                Clipboard.setData(const ClipboardData(
+                        text: 'akwaamakaproduction@gmail.com'))
+                    .then((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text(
+                      "Email Copied!",
+                      textAlign: TextAlign.center,
+                    ),
+                    // padding: EdgeInsets.all(5),
+                    behavior: SnackBarBehavior.floating,
+                    //width: 80,
+                  ));
+                });
                 launchEmailSubmission();
                 //Get.to(() => const HelpCenterPage());
               },
