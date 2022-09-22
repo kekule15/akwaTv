@@ -26,6 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'dart:developer';
 
 class LoginViewModel extends BaseViewModel {
   final Reader read;
@@ -154,22 +155,28 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
     final res = await read(onboardingProvider)
         .signUp(name, email, password, phoneNumber);
-
-    if (res.message == "Verification email sent") {
+    log('my response $res');
+    if (res['message'] == "Verification email sent") {
       signupData.onSuccess(res);
-      NotifyMe.showAlert(res.message!);
+      NotifyMe.showAlert(res['message']);
       Get.to(() => const LoginPage());
       signupBtn = false;
       notifyListeners();
-    } else if (res.message == 'ACT-EMAIL-EXIST') {
+    } else if (res['message'] == 'ACT-EMAIL-EXIST') {
       signupData.onError;
-      NotifyMe.showAlert(res.message!);
+      NotifyMe.showAlert(res['message']);
+      signupBtn = false;
+      notifyListeners();
+    } else if (res['errors'] != null) {
+      log('my error ${res['errors']!}');
+      signupData.onError;
+      NotifyMe.showAlert('ACT-PASSWORD-TOO-SHORT');
       signupBtn = false;
       notifyListeners();
     } else {
       signupData.onError;
-      NotifyMe.showAlert(
-          'Registration was not completed. Phone number already used.');
+
+      NotifyMe.showAlert(res['message']);
       signupBtn = false;
       notifyListeners();
     }

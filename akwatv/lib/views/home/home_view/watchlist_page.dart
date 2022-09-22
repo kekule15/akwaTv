@@ -75,6 +75,8 @@ class _ViewAllWatchListState extends ConsumerState<ViewAllWatchList> {
       return searchList;
     }
 
+    
+    
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

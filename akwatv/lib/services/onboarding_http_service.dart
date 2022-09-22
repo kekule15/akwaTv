@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:akwatv/http/api_manager.dart';
 import 'package:akwatv/models/change_user_password_model.dart';
@@ -95,13 +96,13 @@ class OnBoardingService extends ApiManager {
   }
 
   //Sigup with email,password,phonenumber, username
-  Future<SignUpModel> signUp(
+  Future signUp(
     String name,
     String email,
     String password,
     String phoneNumber,
   ) async {
-    final _signUpBody = {
+    final signUpBody = {
       "username": name,
       "email": email,
       "password": password,
@@ -109,12 +110,20 @@ class OnBoardingService extends ApiManager {
       "phone": phoneNumber,
       "verified": false
     };
-    final response = await postHttp(signupRoute, _signUpBody);
-    if (response.responseCodeError == null) {
-      return SignUpModel.fromJson(response.data);
-    } else {
-      return SignUpModel.fromJson(response.data);
+    try {
+      final response = await postHttp(signupRoute, signUpBody);
+
+      return response.data;
+    } catch (e) {
+      log('my error message $e');
+      return e;
     }
+
+    // if (response.responseCodeError == null) {
+    //   return SignUpModel.fromJson(response.data);
+    // } else {
+    //   return SignUpModel.fromJson(response.data);
+    // }
   }
 
   // get profile details
